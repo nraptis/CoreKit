@@ -1,0 +1,327 @@
+//
+//  AnimationWad.swift
+//  Jiggle3
+//
+//  Created by Nicholas Raptis on 5/10/25.
+//
+
+import Foundation
+
+public class AnimationWad {
+    
+    public init() {
+        
+    }
+    
+    public static let minMeasuredSize = Float(200.0)
+    public static let midMeasuredSize = Float(700.0)
+    public static let maxMeasuredSize = Float(1200.0)
+    
+    public static let measuredSizeRatio = (maxMeasuredSize / minMeasuredSize)
+    public static let measuredSizeRatioInverse = (minMeasuredSize / maxMeasuredSize)
+    
+    public static let userAnimationDragPowerMin = Float(0.0)
+    public static let userAnimationDragPowerMax = Float(100.0)
+    public static let userAnimationDragPowerDefault = Float(50.0)
+    
+    public static let userAnimationGrabSpeedMin = Float(0.0)
+    public static let userAnimationGrabSpeedMax = Float(100.0)
+    public static let userAnimationGrabSpeedDefault = Float(50.0)
+    
+    public static let userAnimationGrabStiffnessMin = Float(0.0)
+    public static let userAnimationGrabStiffnessMax = Float(100.0)
+    public static let userAnimationGrabStiffnessDefault = Float(50.0)
+    
+    public static let userAnimationGyroPowerMin = Float(0.0)
+    public static let userAnimationGyroPowerMax = Float(100.0)
+    public static let userAnimationGyroPowerDefault = Float(85.0)
+    
+    public static let animationCursorFalloffRotation_U1 = Math.pi_3
+    public static let animationCursorFalloffRotation_U2 = Math.pi_3 + Math.pi_4
+    public static let animationCursorFalloffRotation_U3 = Math.pi_3 + Math.pi_2
+    
+    public static let animationCursorFalloffRotation_D1 = -(animationCursorFalloffRotation_U1)
+    public static let animationCursorFalloffRotation_D2 = -(animationCursorFalloffRotation_U2)
+    public static let animationCursorFalloffRotation_D3 = -(animationCursorFalloffRotation_U3)
+    
+    public static let animationCursorFalloffScale_U1 = Float(1.25)
+    public static let animationCursorFalloffScale_U2 = Float(1.86)
+    public static let animationCursorFalloffScale_U3 = Float(2.75)
+    
+    public static let animationCursorFalloffScale_D1 = Float(0.75)
+    public static let animationCursorFalloffScale_D2 = Float(0.40)
+    public static let animationCursorFalloffScale_D3 = Float(-0.75)
+    
+    public static let animationCursorScaleWeightUnit_Min = Device.isPad ? Float(132.0) : Float(172.0)
+    public static let animationCursorScaleWeightUnit_Max = Device.isPad ? Float(318.0) : Float(440.0)
+    
+    public static let animationCursorFalloffDistance_R1_Min = Device.isPad ? Float(94.0) : Float(130.0)
+    public static let animationCursorFalloffDistance_R1_Max = Device.isPad ? Float(228.0) : Float(292.0)
+    public static let animationCursorFalloffDistance_R2_Min = Device.isPad ? Float(184.0) : Float(240.0)
+    public static let animationCursorFalloffDistance_R2_Max = Device.isPad ? Float(410.0) : Float(572.0)
+    public static let animationCursorFalloffDistance_R3_Min = Device.isPad ? Float(268.0) : Float(344.0)
+    public static let animationCursorFalloffDistance_R3_Max = Device.isPad ? Float(578.0) : Float(842.0)
+    
+    public static let animationDragPowerMin_R1 = Float(0.32)
+    public static let animationDragPowerMax_R1 = Float(1.0)
+    public static let animationDragPowerMin_R2 = Float(0.36)
+    public static let animationDragPowerMax_R2 = Float(1.0)
+    public static let animationDragPowerMin_R3 = Float(0.72)
+    public static let animationDragPowerMax_R3 = Float(1.0)
+    
+    static let grabDragScaleFactorMin = Float(0.1)
+    static let grabDragScaleFactorMax = Float(1.0)
+    
+    static let grabDragRotateFactorMin = Float(0.1)
+    static let grabDragRotateFactorMax = Float(1.0)
+    
+    public var timeLine = TimeLine()
+    
+    public let animationInstructionGrab = AnimationInstructionGrab()
+    public let animationInstructionContinuous = AnimationInstructionContinuous()
+    public let animationInstructionLoops = AnimationInstructionLoops()
+    
+    public var animationCursorX = Float(0.0)
+    public var animationCursorY = Float(0.0)
+    public var animationCursorScale = Float(1.0)
+    public var animationCursorRotation = Float(0.0)
+    
+    public var measuredSize = AnimationWad.midMeasuredSize
+    
+    public var grabDragPower = AnimationWad.userAnimationDragPowerDefault
+    public var grabSpeed = AnimationWad.userAnimationGrabSpeedDefault
+    public var grabStiffness = AnimationWad.userAnimationGrabStiffnessDefault
+    public var grabGyroPower = AnimationWad.userAnimationGyroPowerDefault
+    
+    var captureTouchCountGrabBefore = 0
+    var captureTouchCountGrabAfter = 0
+    public var isCaptureActiveGrab = false
+    
+    var captureTouchCountContinuousBefore = 0
+    var captureTouchCountContinuousAfter = 0
+    public var isCaptureActiveContinuous = false
+    
+    public var _snapShotContinuousDuration = Float(0.0)
+    public var _snapShotContinuousAngle = Float(0.0)
+    public var _snapShotContinuousPower = Float(0.0)
+    public var _snapShotContinuousSwoop = Float(0.0)
+    public var _snapShotContinuousFrameOffset = Float(0.0)
+    public var _snapShotContinuousStartScale = Float(0.0)
+    public var _snapShotContinuousEndScale = Float(0.0)
+    public var _snapShotContinuousStartRotation = Float(0.0)
+    public var _snapShotContinuousEndRotation = Float(0.0)
+    
+    public var continuousDuration = AnimationInstructionContinuous.userContinuousDurationDefault
+    public var continuousAngle = AnimationInstructionContinuous.userContinuousAngleDefault
+    public var continuousPower = AnimationInstructionContinuous.userContinuousPowerDefault
+    public var continuousSwoop = AnimationInstructionContinuous.userContinuousSwoopDefault
+    public var continuousFrameOffset = AnimationInstructionContinuous.userContinuousFrameOffsetDefault
+    public var continuousStartScale = AnimationInstructionContinuous.userContinuousStartScaleDefault
+    public var continuousEndScale = AnimationInstructionContinuous.userContinuousEndScaleDefault
+    public var continuousStartRotation = AnimationInstructionContinuous.userContinuousStartRotationDefault
+    public var continuousEndRotation = AnimationInstructionContinuous.userContinuousEndRotationDefault
+    
+    public func snapShotContinuousDragHistory() {
+        _snapShotContinuousDuration = continuousDuration
+        _snapShotContinuousAngle = continuousAngle
+        _snapShotContinuousPower = continuousPower
+        _snapShotContinuousSwoop = continuousSwoop
+        _snapShotContinuousFrameOffset = continuousFrameOffset
+        _snapShotContinuousStartScale = continuousStartScale
+        _snapShotContinuousEndScale = continuousEndScale
+        _snapShotContinuousStartRotation = continuousStartRotation
+        _snapShotContinuousEndRotation = continuousEndRotation
+    }
+    
+    static func getAnimationCursorFalloffDistance_R1(format: AnimationTouchFormat,
+                                                     measuredSize: Float,
+                                                     userGrabDragPower: Float) -> Float {
+        
+        let measurePercentLinear = getMeasurePercentLinear(measuredSize: measuredSize)
+        
+        let animationCursorFalloffDistance_R1 = getAnimationCursorFalloffDistance_R1(measurePercentLinear: measurePercentLinear)
+        
+        switch format {
+        case .grab:
+            let grabDragPowerPercentLinear = AnimationWad.getGrabDragPowerPercentLinear(userGrabDragPower: userGrabDragPower)
+            let grabDragPower_R1 = getGrabDragPower_R1(grabDragPowerPercentLinear: grabDragPowerPercentLinear)
+            let adjustedFallOffDistance_R1 = animationCursorFalloffDistance_R1 * grabDragPower_R1
+            return adjustedFallOffDistance_R1
+            
+        case .continuous:
+            return animationCursorFalloffDistance_R1
+        }
+    }
+    
+    static func getAnimationCursorFalloffDistance_Radii(measuredSize: Float,
+                                                        userGrabDragPower: Float,
+                                                        distance_R1: inout Float,
+                                                        distance_R2: inout Float) {
+        
+        let measurePercentLinear = getMeasurePercentLinear(measuredSize: measuredSize)
+        
+        let animationCursorFalloffDistance_R1 = getAnimationCursorFalloffDistance_R1(measurePercentLinear: measurePercentLinear)
+        let animationCursorFalloffDistance_R2 = getAnimationCursorFalloffDistance_R2(measurePercentLinear: measurePercentLinear)
+        
+        let grabDragPowerPercentLinear = AnimationWad.getGrabDragPowerPercentLinear(userGrabDragPower: userGrabDragPower)
+        
+        let grabDragPower_R1 = getGrabDragPower_R1(grabDragPowerPercentLinear: grabDragPowerPercentLinear)
+        let grabDragPower_R2 = getGrabDragPower_R2(grabDragPowerPercentLinear: grabDragPowerPercentLinear)
+        
+        let deltaR2R1 = animationCursorFalloffDistance_R2 - animationCursorFalloffDistance_R1
+        
+        let adjustedFallOffDistance_R1 = animationCursorFalloffDistance_R1 * grabDragPower_R1
+        let adjustedFallOffDistance_R2 = adjustedFallOffDistance_R1 + deltaR2R1 * grabDragPower_R2
+        
+        distance_R1 = adjustedFallOffDistance_R1
+        distance_R2 = adjustedFallOffDistance_R2
+    }
+    
+    static func getAnimationCursorFalloffDistance_Radii(measuredSize: Float,
+                                                        userGrabDragPower: Float,
+                                                        distance_R1: inout Float,
+                                                        distance_R2: inout Float,
+                                                        distance_R3: inout Float) {
+        
+        let measurePercentLinear = getMeasurePercentLinear(measuredSize: measuredSize)
+        
+        let animationCursorFalloffDistance_R1 = getAnimationCursorFalloffDistance_R1(measurePercentLinear: measurePercentLinear)
+        let animationCursorFalloffDistance_R2 = getAnimationCursorFalloffDistance_R2(measurePercentLinear: measurePercentLinear)
+        let animationCursorFalloffDistance_R3 = getAnimationCursorFalloffDistance_R3(measurePercentLinear: measurePercentLinear)
+        
+        let grabDragPowerPercentLinear = AnimationWad.getGrabDragPowerPercentLinear(userGrabDragPower: userGrabDragPower)
+        
+        let grabDragPower_R1 = getGrabDragPower_R1(grabDragPowerPercentLinear: grabDragPowerPercentLinear)
+        let grabDragPower_R2 = getGrabDragPower_R2(grabDragPowerPercentLinear: grabDragPowerPercentLinear)
+        let grabDragPower_R3 = getGrabDragPower_R3(grabDragPowerPercentLinear: grabDragPowerPercentLinear)
+        
+        let deltaR2R1 = animationCursorFalloffDistance_R2 - animationCursorFalloffDistance_R1
+        let deltaR3R2 = animationCursorFalloffDistance_R3 - animationCursorFalloffDistance_R2
+        
+        let adjustedFallOffDistance_R1 = animationCursorFalloffDistance_R1 * grabDragPower_R1
+        let adjustedFallOffDistance_R2 = adjustedFallOffDistance_R1 + deltaR2R1 * grabDragPower_R2
+        let adjustedFallOffDistance_R3 = adjustedFallOffDistance_R2 + deltaR3R2 * grabDragPower_R3
+        
+        distance_R1 = adjustedFallOffDistance_R1
+        distance_R2 = adjustedFallOffDistance_R2
+        distance_R3 = adjustedFallOffDistance_R3
+    }
+    
+    static func getGrabDragSpeedPercentLinear(userGrabDragSpeed: Float) -> Float {
+        let numer = (userGrabDragSpeed - AnimationWad.userAnimationGrabSpeedMin)
+        let denom = (AnimationWad.userAnimationGrabSpeedMax - AnimationWad.userAnimationGrabSpeedMin)
+        var percentLinear = numer / denom
+        if percentLinear > 1.0 { percentLinear = 1.0 }
+        if percentLinear < 0.0 { percentLinear = 0.0 }
+        return percentLinear
+    }
+    
+    static func getGrabDragStiffnessPercentLinear(userGrabDragStiffness: Float) -> Float {
+        let numer = (userGrabDragStiffness - AnimationWad.userAnimationGrabStiffnessMin)
+        let denom = (AnimationWad.userAnimationGrabStiffnessMax - AnimationWad.userAnimationGrabStiffnessMin)
+        var percentLinear = numer / denom
+        if percentLinear > 1.0 { percentLinear = 1.0 }
+        if percentLinear < 0.0 { percentLinear = 0.0 }
+        return percentLinear
+    }
+    
+    static func getGrabDragGyroPowerPercentLinear(userGrabDragGyroPower: Float) -> Float {
+        let numer = (userGrabDragGyroPower - AnimationWad.userAnimationGyroPowerMin)
+        let denom = (AnimationWad.userAnimationGyroPowerMax - AnimationWad.userAnimationGyroPowerMin)
+        var percentLinear = numer / denom
+        if percentLinear > 1.0 { percentLinear = 1.0 }
+        if percentLinear < 0.0 { percentLinear = 0.0 }
+        return percentLinear
+    }
+    
+    static func getGrabDragPowerPercentLinear(userGrabDragPower: Float) -> Float {
+        let numer = (userGrabDragPower - AnimationWad.userAnimationDragPowerMin)
+        let denom = (AnimationWad.userAnimationDragPowerMax - AnimationWad.userAnimationDragPowerMin)
+        var percentLinear = numer / denom
+        if percentLinear > 1.0 { percentLinear = 1.0 }
+        if percentLinear < 0.0 { percentLinear = 0.0 }
+        return percentLinear
+    }
+    
+    static func getGrabDragPower_R1(grabDragPowerPercentLinear: Float) -> Float {
+        let powerLow = AnimationWad.animationDragPowerMin_R1
+        let powerDelta = (AnimationWad.animationDragPowerMax_R1 - powerLow)
+        return powerLow + powerDelta * grabDragPowerPercentLinear
+    }
+    
+    static func getGrabDragPower_R2(grabDragPowerPercentLinear: Float) -> Float {
+        let powerLow = AnimationWad.animationDragPowerMin_R2
+        let powerDelta = (AnimationWad.animationDragPowerMax_R2 - powerLow)
+        return powerLow + powerDelta * grabDragPowerPercentLinear
+    }
+    
+    static func getGrabDragPower_R3(grabDragPowerPercentLinear: Float) -> Float {
+        let powerLow = AnimationWad.animationDragPowerMin_R3
+        let powerDelta = (AnimationWad.animationDragPowerMax_R3 - powerLow)
+        return powerLow + powerDelta * grabDragPowerPercentLinear
+    }
+    
+    public static func getMeasurePercentLinear(measuredSize: Float) -> Float {
+        var percentLinear = (measuredSize - AnimationWad.minMeasuredSize) / (AnimationWad.maxMeasuredSize - AnimationWad.minMeasuredSize)
+        if percentLinear > 1.0 { percentLinear = 1.0 }
+        if percentLinear < 0.0 { percentLinear = 0.0 }
+        return percentLinear
+    }
+    
+    static func getAnimationCursorFalloffDistance_R1(measuredSize: Float) -> Float {
+        let measurePercentLinear = getMeasurePercentLinear(measuredSize: measuredSize)
+        return getAnimationCursorFalloffDistance_R1(measurePercentLinear: measurePercentLinear)
+    }
+    
+    static func getAnimationCursorFalloffDistance_R1(measurePercentLinear: Float) -> Float {
+        let radiusLow = AnimationWad.animationCursorFalloffDistance_R1_Min
+        let radiusDelta = (AnimationWad.animationCursorFalloffDistance_R1_Max - radiusLow)
+        return radiusLow + radiusDelta * measurePercentLinear
+    }
+    
+    static func getAnimationCursorFalloffDistance_R2(measuredSize: Float) -> Float {
+        let measurePercentLinear = getMeasurePercentLinear(measuredSize: measuredSize)
+        return getAnimationCursorFalloffDistance_R2(measurePercentLinear: measurePercentLinear)
+    }
+    
+    static func getAnimationCursorFalloffDistance_R2(measurePercentLinear: Float) -> Float {
+        let radiusLow = AnimationWad.animationCursorFalloffDistance_R2_Min
+        let radiusDelta = (AnimationWad.animationCursorFalloffDistance_R2_Max - radiusLow)
+        return radiusLow + radiusDelta * measurePercentLinear
+    }
+    
+    static func getAnimationCursorFalloffDistance_R3(measuredSize: Float) -> Float {
+        let measurePercentLinear = getMeasurePercentLinear(measuredSize: measuredSize)
+        return getAnimationCursorFalloffDistance_R3(measurePercentLinear: measurePercentLinear)
+    }
+    
+    static func getAnimationCursorFalloffDistance_R3(measurePercentLinear: Float) -> Float {
+        let radiusLow = AnimationWad.animationCursorFalloffDistance_R3_Min
+        let radiusDelta = (AnimationWad.animationCursorFalloffDistance_R3_Max - radiusLow)
+        return radiusLow + radiusDelta * measurePercentLinear
+    }
+    
+    static func getAnimationCursorScaleWeightUnit(measuredSize: Float) -> Float {
+        let measurePercentLinear = getMeasurePercentLinear(measuredSize: measuredSize)
+        return getAnimationCursorScaleWeightUnit(measurePercentLinear: measurePercentLinear)
+    }
+    
+    static func getAnimationCursorScaleWeightUnit(measurePercentLinear: Float) -> Float {
+        let unitLow = AnimationWad.animationCursorScaleWeightUnit_Min
+        let unitDelta = (AnimationWad.animationCursorScaleWeightUnit_Max - unitLow)
+        return unitLow + unitDelta * measurePercentLinear
+    }
+    
+    static func getGrabDragScaleFactor(grabDragPowerPercentLinear: Float) -> Float {
+        let factorLow = AnimationWad.grabDragScaleFactorMin
+        let factorDelta = (AnimationWad.grabDragScaleFactorMax - factorLow)
+        return factorLow + factorDelta * grabDragPowerPercentLinear
+    }
+    
+    static func getGrabDragRotateFactor(grabDragPowerPercentLinear: Float) -> Float {
+        let factorLow = AnimationWad.grabDragRotateFactorMin
+        let factorDelta = (AnimationWad.grabDragRotateFactorMax - factorLow)
+        return factorLow + factorDelta * grabDragPowerPercentLinear
+    }
+    
+}
