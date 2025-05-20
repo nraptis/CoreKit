@@ -40,6 +40,11 @@ public class WeightCurvePartsFactory {
         while weightCurveMapperNodes.count <= weightCurveMapperNodeCount {
             weightCurveMapperNodes.append(weightCurveMapperNode)
         }
+        
+        
+        
+        
+        
         weightCurveMapperNodes[weightCurveMapperNodeCount] = weightCurveMapperNode
         weightCurveMapperNodeCount += 1
     }

@@ -13,7 +13,7 @@ protocol AnimationCommandsCommandable {
 }
 
 extension AnimationCommandsCommandable {
-    @MainActor func performStateCommands(jiggle: some AnimationControllerJiggle,
+    @MainActor func performStateCommands(jiggle: Jiggle,
                                          jiggleDocument: AnimationControllerJiggleDocument,
                                          animationTouches: [AnimationTouch],
                                          animationTouchCount: Int) {
@@ -37,5 +37,4 @@ extension AnimationCommandsCommandable {
             }
         }
     }
-    
 }

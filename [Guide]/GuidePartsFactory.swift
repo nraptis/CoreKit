@@ -148,6 +148,10 @@ public class GuidePartsFactory {
         while directedWeightPoints.count <= directedWeightPointCount {
             directedWeightPoints.append(directedWeightPoint)
         }
+        
+        directedWeightPoint.isManualTanHandleEnabledIn = false
+        directedWeightPoint.isManualTanHandleEnabledOut = false
+        
         directedWeightPoints[directedWeightPointCount] = directedWeightPoint
         directedWeightPointCount += 1
     }

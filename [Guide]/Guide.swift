@@ -101,7 +101,7 @@ public class Guide {
     public var isBroken = false
     public var isGuideClockwise = false
     
-    var spline = FancySpline()
+    public private(set) var spline = FancySpline()
     let borderTool = BorderTool()
     
     public let guideWeightSegmentBucket = GuideWeightSegmentBucket()

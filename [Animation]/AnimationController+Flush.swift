@@ -11,7 +11,7 @@ extension AnimationController {
     
     @MainActor func flushAll(jiggleViewModel: AnimationControllerJiggleViewModel,
                              jiggleDocument: AnimationControllerJiggleDocument,
-                             jiggles: [some AnimationControllerJiggle],
+                             jiggles: [Jiggle],
                              jiggleCount: Int,
                              animationMode: AnimatonMode) {
         snapshot_pre(jiggles: jiggles,
@@ -29,7 +29,7 @@ extension AnimationController {
     
     @MainActor func flushAllExpired(jiggleViewModel: AnimationControllerJiggleViewModel,
                                     jiggleDocument: AnimationControllerJiggleDocument,
-                                    jiggles: [some AnimationControllerJiggle],
+                                    jiggles: [Jiggle],
                                     jiggleCount: Int,
                                     animationMode: AnimatonMode) {
         

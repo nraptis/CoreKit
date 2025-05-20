@@ -34,7 +34,7 @@ public protocol AnimationControllerJiggleDocument: AnyObject {
 
 public protocol AnimationControllerJiggleViewModel: AnyObject {
     @MainActor func continuousRealizeJiggleDidStartGrab()
-    @MainActor func continuousRealizeJiggleDidStopGrab(jiggle: some AnimationControllerJiggle)
+    @MainActor func continuousRealizeJiggleDidStopGrab(jiggle: Jiggle)
 }
 
 public protocol AnimationControllerJiggle: AnyObject {
@@ -71,14 +71,14 @@ public class AnimationController {
     // [Animation Mode Verify] 12-19-2024
     // Looks good, no problem. I've read each line.
     @MainActor public func update(deltaTime: Float,
-                           jiggleViewModel: AnimationControllerJiggleViewModel,
-                           jiggleDocument: AnimationControllerJiggleDocument,
-                           jiggles: [some AnimationControllerJiggle],
-                           jiggleCount: Int,
-                           isGyroEnabled: Bool,
-                           animationMode: AnimatonMode,
-                           gyroSmoothX: Float,
-                           gyroSmoothY: Float) {
+                                  jiggleViewModel: AnimationControllerJiggleViewModel,
+                                  jiggleDocument: AnimationControllerJiggleDocument,
+                                  jiggles: [Jiggle],
+                                  jiggleCount: Int,
+                                  isGyroEnabled: Bool,
+                                  animationMode: AnimatonMode,
+                                  gyroSmoothX: Float,
+                                  gyroSmoothY: Float) {
         
         clock += deltaTime
         
@@ -205,7 +205,7 @@ public class AnimationController {
     // [Animation Mode Verify] 12-19-2024
     // Looks good, no problem. I've read each line.
     // A good candidate for a better name...
-    @MainActor func snapshot_pre(jiggles: [some AnimationControllerJiggle],
+    @MainActor func snapshot_pre(jiggles: [Jiggle],
                                  jiggleCount: Int,
                                  animationMode: AnimatonMode) {
         for jiggleIndex in 0..<jiggleCount {
@@ -216,13 +216,13 @@ public class AnimationController {
                 break
             case .grab:
                 animationWad.animationInstructionGrab.stateBag.snapshotBefore(jiggle: jiggle,
-                                                                        animationTouches: animationTouches,
-                                                                        animationTouchCount: animationTouchCount)
+                                                                              animationTouches: animationTouches,
+                                                                              animationTouchCount: animationTouchCount)
                 jiggle.animationWad.captureTouchCountGrabBefore = animationTouchesCount(jiggle: jiggle, format: .grab)
             case .continuous:
                 animationWad.animationInstructionContinuous.stateBag.snapshotBefore(jiggle: jiggle,
-                                                                              animationTouches: animationTouches,
-                                                                              animationTouchCount: animationTouchCount)
+                                                                                    animationTouches: animationTouches,
+                                                                                    animationTouchCount: animationTouchCount)
                 jiggle.animationWad.captureTouchCountContinuousBefore = animationTouchesCount(jiggle: jiggle, format: .continuous)
             case .loops:
                 break
@@ -232,7 +232,7 @@ public class AnimationController {
     
     @MainActor func snapshot_post(jiggleViewModel: AnimationControllerJiggleViewModel,
                                   jiggleDocument: AnimationControllerJiggleDocument,
-                                  jiggles: [some AnimationControllerJiggle],
+                                  jiggles: [Jiggle],
                                   jiggleCount: Int,
                                   animationMode: AnimatonMode) {
         for jiggleIndex in 0..<jiggleCount {
@@ -292,10 +292,10 @@ public class AnimationController {
     }
     
     @MainActor public func handleJigglesDidChange(jiggleViewModel: AnimationControllerJiggleViewModel,
-                                           jiggleDocument: AnimationControllerJiggleDocument,
-                                           jiggles: [some AnimationControllerJiggle],
-                                           jiggleCount: Int,
-                                           animationMode: AnimatonMode) {
+                                                  jiggleDocument: AnimationControllerJiggleDocument,
+                                                  jiggles: [Jiggle],
+                                                  jiggleCount: Int,
+                                                  animationMode: AnimatonMode) {
         
         snapshot_pre(jiggles: jiggles,
                      jiggleCount: jiggleCount,
@@ -311,10 +311,10 @@ public class AnimationController {
     }
     
     @MainActor public func handleAnimationModeDidChange(jiggleViewModel: AnimationControllerJiggleViewModel,
-                                                 jiggleDocument: AnimationControllerJiggleDocument,
-                                                 jiggles: [some AnimationControllerJiggle],
-                                                 jiggleCount: Int,
-                                                 animationMode: AnimatonMode) {
+                                                        jiggleDocument: AnimationControllerJiggleDocument,
+                                                        jiggles: [Jiggle],
+                                                        jiggleCount: Int,
+                                                        animationMode: AnimatonMode) {
         
         flushAll(jiggleViewModel: jiggleViewModel,
                  jiggleDocument: jiggleDocument,
@@ -325,10 +325,10 @@ public class AnimationController {
     }
     
     @MainActor public func handleDocumentModeDidChange(jiggleViewModel: AnimationControllerJiggleViewModel,
-                                                jiggleDocument: AnimationControllerJiggleDocument,
-                                                jiggles: [some AnimationControllerJiggle],
-                                                jiggleCount: Int,
-                                                animationMode: AnimatonMode) {
+                                                       jiggleDocument: AnimationControllerJiggleDocument,
+                                                       jiggles: [Jiggle],
+                                                       jiggleCount: Int,
+                                                       animationMode: AnimatonMode) {
         
         flushAll(jiggleViewModel: jiggleViewModel,
                  jiggleDocument: jiggleDocument,
@@ -341,10 +341,10 @@ public class AnimationController {
     
     
     @MainActor public func applicationWillResignActive(jiggleViewModel: AnimationControllerJiggleViewModel,
-                                                jiggleDocument: AnimationControllerJiggleDocument,
-                                                jiggles: [some AnimationControllerJiggle],
-                                                jiggleCount: Int,
-                                                animationMode: AnimatonMode) {
+                                                       jiggleDocument: AnimationControllerJiggleDocument,
+                                                       jiggles: [Jiggle],
+                                                       jiggleCount: Int,
+                                                       animationMode: AnimatonMode) {
         
         flushAll(jiggleViewModel: jiggleViewModel,
                  jiggleDocument: jiggleDocument,

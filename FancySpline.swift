@@ -8,6 +8,8 @@ public class FancySpline {
     
     public init() { }
     
+    
+    
     public private(set) var capacity = 0
     public private(set) var count = 0
     public private(set) var maxPos = Float(0.0)
@@ -706,5 +708,40 @@ public class FancySpline {
         
     }
     */
+    
+    
+    public func getInsertLocationBefore(index: Int) -> InsertLocation? {
+        if count > 1 {
+            if closed {
+                if index == 0 {
+                    let x = getX(index: count - 1, percent: 0.5)
+                    let y = getY(index: count - 1, percent: 0.5)
+                    let point = Math.Point(x: x, y: y)
+                    return InsertLocation(index: count, point: point)
+                }
+            }
+            
+            if index > 0 && index <= maxIndex {
+                let x = getX(index: index - 1, percent: 0.5)
+                let y = getY(index: index - 1, percent: 0.5)
+                let point = Math.Point(x: x, y: y)
+                return InsertLocation(index: index, point: point)
+            }
+        }
+        return nil
+    }
+    
+    public func getInsertLocationAfter(index: Int) -> InsertLocation? {
+        if count > 1 {
+            if index >= 0 && index < maxIndex {
+                let x = getX(index: index, percent: 0.5)
+                let y = getY(index: index, percent: 0.5)
+                let point = Math.Point(x: x, y: y)
+                return InsertLocation(index: index + 1, point: point)
+            }
+        }
+        return nil
+    }
+    
     
 }

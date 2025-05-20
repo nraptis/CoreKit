@@ -11,7 +11,7 @@ extension AnimationController {
     
     @MainActor public func touchesBegan(jiggleViewModel: AnimationControllerJiggleViewModel,
                                         jiggleDocument: AnimationControllerJiggleDocument,
-                                        jiggles: [some AnimationControllerJiggle],
+                                        jiggles: [Jiggle],
                                         jiggleCount: Int,
                                         animationMode: AnimatonMode,
                                         touches: [UITouch],
@@ -97,7 +97,7 @@ extension AnimationController {
     
     @MainActor public func touchesMoved(jiggleViewModel: AnimationControllerJiggleViewModel,
                                         jiggleDocument: AnimationControllerJiggleDocument,
-                                        jiggles: [some AnimationControllerJiggle],
+                                        jiggles: [Jiggle],
                                         jiggleCount: Int,
                                         animationMode: AnimatonMode,
                                         touches: [UITouch],
@@ -164,7 +164,7 @@ extension AnimationController {
     
     @MainActor public func touchesEnded(jiggleViewModel: AnimationControllerJiggleViewModel,
                                         jiggleDocument: AnimationControllerJiggleDocument,
-                                        jiggles: [some AnimationControllerJiggle],
+                                        jiggles: [Jiggle],
                                         jiggleCount: Int,
                                         animationMode: AnimatonMode,
                                         touches: [UITouch],
@@ -220,7 +220,7 @@ extension AnimationController {
     
     @MainActor public func killDragAll(jiggleViewModel: AnimationControllerJiggleViewModel,
                                        jiggleDocument: AnimationControllerJiggleDocument,
-                                       jiggles: [some AnimationControllerJiggle],
+                                       jiggles: [Jiggle],
                                        jiggleCount: Int,
                                        animationMode: AnimatonMode) {
         flushAll(jiggleViewModel: jiggleViewModel,
@@ -232,7 +232,7 @@ extension AnimationController {
     
     @MainActor private func checkContinuousDisabledAndFlushIfNeeded(jiggleViewModel: AnimationControllerJiggleViewModel,
                                                                     jiggleDocument: AnimationControllerJiggleDocument,
-                                                                    jiggles: [some AnimationControllerJiggle],
+                                                                    jiggles: [Jiggle],
                                                                     jiggleCount: Int,
                                                                     animationMode: AnimatonMode,
                                                                     isContinuousDisableGrabEnabled: Bool) -> Bool {
@@ -258,7 +258,7 @@ extension AnimationController {
     
     @MainActor private func checkSliderActiveAndFlushIfNeeded(jiggleViewModel: AnimationControllerJiggleViewModel,
                                                               jiggleDocument: AnimationControllerJiggleDocument,
-                                                              jiggles: [some AnimationControllerJiggle],
+                                                              jiggles: [Jiggle],
                                                               jiggleCount: Int,
                                                               animationMode: AnimatonMode,
                                                               isAnySliderActive: Bool) -> Bool {
