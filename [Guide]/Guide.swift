@@ -219,6 +219,34 @@ public class Guide {
         guidePointCount += 1
     }
     
+    @MainActor public func replaceGuidePoints(datas: [ControlPointData],
+                                              jiggleDocument: some SelectedGuidePointListeningConforming) {
+        
+        purgeGuidePoints()
+        
+        for data in datas {
+            let guidePoint = GuidePartsFactory.shared.withdrawGuidePoint()
+            guidePoint.x = data.x
+            guidePoint.y = data.y
+            
+            guidePoint.isManualTanHandleEnabledIn = data.isManualTanHandleEnabledIn
+            guidePoint.isManualTanHandleEnabledOut = data.isManualTanHandleEnabledOut
+            
+            if data.isManualTanHandleEnabledIn {
+                guidePoint.tanDirectionIn = data.tanDirectionIn
+                guidePoint.tanMagnitudeIn = data.tanMagnitudeIn
+            }
+            if data.isManualTanHandleEnabledOut {
+                guidePoint.tanDirectionOut = data.tanDirectionOut
+                guidePoint.tanMagnitudeOut = data.tanMagnitudeOut
+            }
+            
+            addGuidePoint(guidePoint: guidePoint,
+                          jiggleDocument: jiggleDocument,
+                          ignoreRealize: true)
+        }
+    }
+    
     @MainActor public func switchSelectedGuidePoint(newSelectedGuidePointIndex: Int,
                                                            selectedTanType: TanTypeOrNone,
                                                            jiggleDocument: some SelectedGuidePointListeningConforming,

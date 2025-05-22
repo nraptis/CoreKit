@@ -112,11 +112,9 @@ public class StochasticSplineReducer {
     
     func unvisitBothNeighbors(bucketIndex: Int) {
         if bucketIndex < 0 {
-            print("FATAL: Attempting to unvisit bucketIndex = \(bucketIndex) / \(bucketCount)")
             return
         }
         if bucketIndex >= bucketCount {
-            print("FATAL: Attempting to unvisit bucketIndex = \(bucketIndex) / \(bucketCount)")
             return
         }
         var indexBck1 = bucketIndex - 1

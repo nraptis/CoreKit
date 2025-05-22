@@ -413,6 +413,36 @@ public class Jiggle {
         jigglePointCount += 1
     }
     
+    @MainActor public func replaceJigglePoints(datas: [ControlPointData],
+                                   jiggleDocument: SelectedJigglePointListeningConforming) {
+        
+        purgeJigglePoints()
+        
+        for data in datas {
+            let jigglePoint = JigglePartsFactory.shared.withdrawJigglePoint()
+            jigglePoint.x = data.x
+            jigglePoint.y = data.y
+            
+            jigglePoint.isManualTanHandleEnabledIn = data.isManualTanHandleEnabledIn
+            jigglePoint.isManualTanHandleEnabledOut = data.isManualTanHandleEnabledOut
+            
+            if data.isManualTanHandleEnabledIn {
+                jigglePoint.tanDirectionIn = data.tanDirectionIn
+                jigglePoint.tanMagnitudeIn = data.tanMagnitudeIn
+            }
+            if data.isManualTanHandleEnabledOut {
+                jigglePoint.tanDirectionOut = data.tanDirectionOut
+                jigglePoint.tanMagnitudeOut = data.tanMagnitudeOut
+            }
+            addJigglePoint(newJigglePoint: jigglePoint,
+                           jiggleDocument: jiggleDocument,
+                           ignoreRealize: true)
+        }
+        
+    }
+    
+    
+    
     @MainActor public func switchSelectedJigglePoint(newSelectedJigglePointIndex: Int,
                                               selectedTanType: TanTypeOrNone,
                                               jiggleDocument: SelectedJigglePointListeningConforming,

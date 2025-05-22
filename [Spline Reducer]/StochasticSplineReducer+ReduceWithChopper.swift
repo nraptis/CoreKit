@@ -121,7 +121,6 @@ extension StochasticSplineReducer {
             exploredPool.ingest(chopper: pathChopper)
             
             if !loadUpTestBucketsFromPathChopperPath() {
-                print("FATAL ERROR: We should not fail to load the test buckets")
                 KP_failureCount += 1
                 continue
             }
@@ -170,7 +169,6 @@ extension StochasticSplineReducer {
         _testBucketCount = pathChopper.pathCount
         
         if pathChopper.pathCount < 3 {
-            print("FATAL: pathChopper.pathCount < 3 (\(pathChopper.pathCount))")
             return false
         }
         
