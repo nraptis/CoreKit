@@ -255,8 +255,12 @@ public extension Guide {
         
         guideWeightPointInsidePolygonBucket.build(guideWeightSegments: guideWeightSegments,
                                                    guideWeightSegmentCount: guideWeightSegmentCount)
+        
+        /*
         guideWeightSegmentBucket.build(guideWeightSegments: guideWeightSegments,
                                         guideWeightSegmentCount: guideWeightSegmentCount)
+        */
+        
         currentHashSpline.change()
     }
     
@@ -414,7 +418,6 @@ public extension Guide {
 
         solidLineBufferRegularFill.removeAll(keepingCapacity: true)
         solidLineBufferRegularFill.thickness = lineThicknessFill
-        
         
         for guideWeightPointIndex in 0..<guideWeightPointCount {
             let guideWeightPoint = guideWeightPoints[guideWeightPointIndex]

@@ -151,13 +151,13 @@ public extension JiggleMesh {
             if isDarkMode {
                 for jiggleMeshPointIndex in 0..<jiggleMeshPointCount {
                     let jiggleMeshPoint = jiggleMeshPoints[jiggleMeshPointIndex]
-                    let red = RTJ.getFillRedDark(level: jiggleMeshPoint.level,
+                    let red = RTJ.getFillRedDark(level: jiggleMeshPoint.depth,
                                                          ceiling: ceiling,
                                                          percent: jiggleMeshPoint.percentOuter)
-                    let green = RTJ.getFillGreenDark(level: jiggleMeshPoint.level,
+                    let green = RTJ.getFillGreenDark(level: jiggleMeshPoint.depth,
                                                              ceiling: ceiling,
                                                              percent: jiggleMeshPoint.percentOuter)
-                    let blue = RTJ.getFillBlueDark(level: jiggleMeshPoint.level,
+                    let blue = RTJ.getFillBlueDark(level: jiggleMeshPoint.depth,
                                                            ceiling: ceiling,
                                                            percent: jiggleMeshPoint.percentOuter)
                     let vertex = Shape2DColoredVertex(x: jiggleMeshPoint.transformedX,
@@ -172,13 +172,13 @@ public extension JiggleMesh {
             } else {
                 for jiggleMeshPointIndex in 0..<jiggleMeshPointCount {
                     let jiggleMeshPoint = jiggleMeshPoints[jiggleMeshPointIndex]
-                    let red = RTJ.getFillRedLight(level: jiggleMeshPoint.level,
+                    let red = RTJ.getFillRedLight(level: jiggleMeshPoint.depth,
                                                           ceiling: ceiling,
                                                           percent: jiggleMeshPoint.percentOuter)
-                    let green = RTJ.getFillGreenLight(level: jiggleMeshPoint.level,
+                    let green = RTJ.getFillGreenLight(level: jiggleMeshPoint.depth,
                                                               ceiling: ceiling,
                                                               percent: jiggleMeshPoint.percentOuter)
-                    let blue = RTJ.getFillBlueLight(level: jiggleMeshPoint.level,
+                    let blue = RTJ.getFillBlueLight(level: jiggleMeshPoint.depth,
                                                             ceiling: ceiling,
                                                             percent: jiggleMeshPoint.percentOuter)
                     let vertex = Shape2DColoredVertex(x: jiggleMeshPoint.transformedX,
@@ -259,13 +259,13 @@ public extension JiggleMesh {
         if isDarkMode {
             for jiggleMeshPointIndex in 0..<jiggleMeshPointCount {
                 let jiggleMeshPoint = jiggleMeshPoints[jiggleMeshPointIndex]
-                let red = RTJ.getFillRedDark(level: jiggleMeshPoint.level,
+                let red = RTJ.getFillRedDark(level: jiggleMeshPoint.depth,
                                                      ceiling: ceiling,
                                                      percent: jiggleMeshPoint.percentOuter)
-                let green = RTJ.getFillGreenDark(level: jiggleMeshPoint.level,
+                let green = RTJ.getFillGreenDark(level: jiggleMeshPoint.depth,
                                                          ceiling: ceiling,
                                                          percent: jiggleMeshPoint.percentOuter)
-                let blue = RTJ.getFillBlueDark(level: jiggleMeshPoint.level,
+                let blue = RTJ.getFillBlueDark(level: jiggleMeshPoint.depth,
                                                        ceiling: ceiling,
                                                        percent: jiggleMeshPoint.percentOuter)
                 let vertex = Sprite3DLightedColoredVertex(x: jiggleMeshPoint.transformedX,
@@ -285,13 +285,13 @@ public extension JiggleMesh {
         } else {
             for jiggleMeshPointIndex in 0..<jiggleMeshPointCount {
                 let jiggleMeshPoint = jiggleMeshPoints[jiggleMeshPointIndex]
-                let red = RTJ.getFillRedLight(level: jiggleMeshPoint.level,
+                let red = RTJ.getFillRedLight(level: jiggleMeshPoint.depth,
                                                       ceiling: ceiling,
                                                       percent: jiggleMeshPoint.percentOuter)
-                let green = RTJ.getFillGreenLight(level: jiggleMeshPoint.level,
+                let green = RTJ.getFillGreenLight(level: jiggleMeshPoint.depth,
                                                           ceiling: ceiling,
                                                           percent: jiggleMeshPoint.percentOuter)
-                let blue = RTJ.getFillBlueLight(level: jiggleMeshPoint.level,
+                let blue = RTJ.getFillBlueLight(level: jiggleMeshPoint.depth,
                                                         ceiling: ceiling,
                                                         percent: jiggleMeshPoint.percentOuter)
                 let vertex = Sprite3DLightedColoredVertex(x: jiggleMeshPoint.transformedX,

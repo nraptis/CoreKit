@@ -18,11 +18,11 @@ extension AnimationController {
                                         points: [Math.Point],
                                         allTouchCount: Int,
                                         displayMode: DisplayMode,
-                                        
                                         touchTargetTouchSource: TouchTargetTouchSource,
                                         isPrecise: Bool,
                                         isAnySliderActive: Bool,
-                                        isContinuousDisableGrabEnabled: Bool) {
+                                        isContinuousDisableGrabEnabled: Bool,
+                                        isAnimationContinuousAppliedToAll: Bool) {
         
         if checkSliderActiveAndFlushIfNeeded(jiggleViewModel: jiggleViewModel,
                                              jiggleDocument: jiggleDocument,
@@ -70,7 +70,8 @@ extension AnimationController {
                               animationMode: animationMode,
                               displayMode: displayMode,
                               touchTargetTouchSource: touchTargetTouchSource,
-                              isPrecise: isPrecise)
+                              isPrecise: isPrecise,
+                              isAnimationContinuousAppliedToAll: isAnimationContinuousAppliedToAll)
         
         recordHistoryForTouches(touches: touches)
         
@@ -104,11 +105,11 @@ extension AnimationController {
                                         points: [Math.Point],
                                         allTouchCount: Int,
                                         displayMode: DisplayMode,
-                                        
                                         touchTargetTouchSource: TouchTargetTouchSource,
                                         isPrecise: Bool,
                                         isAnySliderActive: Bool,
-                                        isContinuousDisableGrabEnabled: Bool) {
+                                        isContinuousDisableGrabEnabled: Bool,
+                                        isAnimationContinuousAppliedToAll: Bool) {
         
         if checkSliderActiveAndFlushIfNeeded(jiggleViewModel: jiggleViewModel,
                                              jiggleDocument: jiggleDocument,
@@ -151,7 +152,8 @@ extension AnimationController {
                               animationMode: animationMode,
                               displayMode: displayMode,
                               touchTargetTouchSource: touchTargetTouchSource,
-                              isPrecise: isPrecise)
+                              isPrecise: isPrecise,
+                              isAnimationContinuousAppliedToAll: isAnimationContinuousAppliedToAll)
         
         recordHistoryForTouches(touches: touches)
         

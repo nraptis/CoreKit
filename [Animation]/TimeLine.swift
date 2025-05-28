@@ -44,12 +44,24 @@ public class TimeLine {
     public var rangeX = Float(0.0)
     public var rangeY = Float(0.0)
     
-    public var animationDuration = AnimationInstructionLoops.userLoopDurationDefault
+    public var animationDuration = AnimationConstants_Loop.duration.user_default
     
-    public let swatchPositionX = TimeLineSwatch(swatch: .x, defaultType: .flat, frameOffset: AnimationInstructionLoops.userLoopFrameOffsetQuarter)
-    public let swatchPositionY = TimeLineSwatch(swatch: .y, defaultType: .curve, frameOffset: AnimationInstructionLoops.userLoopFrameOffsetZero)
-    public let swatchScale = TimeLineSwatch(swatch: .scale, defaultType: .flat, frameOffset: AnimationInstructionLoops.userLoopFrameOffsetZero)
-    public let swatchRotation = TimeLineSwatch(swatch: .rotation, defaultType: .flat, frameOffset: AnimationInstructionLoops.userLoopFrameOffsetZero)
+    public let swatchPositionX = TimeLineSwatch(swatch: .x,
+                                                defaultType: .flat,
+                                                frameOffset: AnimationConstants_Loop.frameOffset.user_quarter,
+                                                isMirrorFlipChannel: true)
+    public let swatchPositionY = TimeLineSwatch(swatch: .y,
+                                                defaultType: .curve,
+                                                frameOffset: AnimationConstants_Loop.frameOffset.user_lo,
+                                                isMirrorFlipChannel: false)
+    public let swatchScale = TimeLineSwatch(swatch: .scale,
+                                            defaultType: .flat,
+                                            frameOffset: AnimationConstants_Loop.frameOffset.user_lo,
+                                            isMirrorFlipChannel: false)
+    public let swatchRotation = TimeLineSwatch(swatch: .rotation,
+                                               defaultType: .flat,
+                                               frameOffset: AnimationConstants_Loop.frameOffset.user_lo,
+                                               isMirrorFlipChannel: true)
     
     public func getSwatch(swatch: Swatch) -> TimeLineSwatch {
         switch swatch {

@@ -40,8 +40,7 @@ public struct TriangleBufferHash: Equatable {
     }
     
     public mutating func invalidate() {
-        polyHash.triangulationType = .none
-        polyHash.splineHash.value = -999
+        polyHash.invalidate()
     }
 }
 
@@ -86,7 +85,6 @@ public struct TriangleBufferWeightsHash: Equatable {
     }
     
     public mutating func invalidate() {
-        polyHash.triangulationType = .none
-        polyHash.splineHash.value = -999
+        polyHash.invalidate()
     }
 }

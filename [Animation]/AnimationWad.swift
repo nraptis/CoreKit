@@ -19,23 +19,7 @@ public class AnimationWad {
     
     public static let measuredSizeRatio = (maxMeasuredSize / minMeasuredSize)
     public static let measuredSizeRatioInverse = (minMeasuredSize / maxMeasuredSize)
-    
-    public static let userAnimationDragPowerMin = Float(0.0)
-    public static let userAnimationDragPowerMax = Float(100.0)
-    public static let userAnimationDragPowerDefault = Float(50.0)
-    
-    public static let userAnimationGrabSpeedMin = Float(0.0)
-    public static let userAnimationGrabSpeedMax = Float(100.0)
-    public static let userAnimationGrabSpeedDefault = Float(50.0)
-    
-    public static let userAnimationGrabStiffnessMin = Float(0.0)
-    public static let userAnimationGrabStiffnessMax = Float(100.0)
-    public static let userAnimationGrabStiffnessDefault = Float(50.0)
-    
-    public static let userAnimationGyroPowerMin = Float(0.0)
-    public static let userAnimationGyroPowerMax = Float(100.0)
-    public static let userAnimationGyroPowerDefault = Float(85.0)
-    
+
     public static let animationCursorFalloffRotation_U1 = Math.pi_3
     public static let animationCursorFalloffRotation_U2 = Math.pi_3 + Math.pi_4
     public static let animationCursorFalloffRotation_U3 = Math.pi_3 + Math.pi_2
@@ -88,10 +72,10 @@ public class AnimationWad {
     
     public var measuredSize = AnimationWad.midMeasuredSize
     
-    public var grabDragPower = AnimationWad.userAnimationDragPowerDefault
-    public var grabSpeed = AnimationWad.userAnimationGrabSpeedDefault
-    public var grabStiffness = AnimationWad.userAnimationGrabStiffnessDefault
-    public var grabGyroPower = AnimationWad.userAnimationGyroPowerDefault
+    public var grabDragPower = AnimationConstants_Grab.power.user_default
+    public var grabSpeed = AnimationConstants_Grab.speed.user_default
+    public var grabStiffness = AnimationConstants_Grab.stiffness.user_default
+    public var grabGyroPower = AnimationConstants_Grab.gyro.user_default
     
     var captureTouchCountGrabBefore = 0
     var captureTouchCountGrabAfter = 0
@@ -105,27 +89,76 @@ public class AnimationWad {
     public var _snapShotContinuousAngle = Float(0.0)
     public var _snapShotContinuousPower = Float(0.0)
     public var _snapShotContinuousSwoop = Float(0.0)
+    public var _snapShotContinuousWiggle = Float(0.0)
+    
     public var _snapShotContinuousFrameOffset = Float(0.0)
     public var _snapShotContinuousStartScale = Float(0.0)
     public var _snapShotContinuousEndScale = Float(0.0)
     public var _snapShotContinuousStartRotation = Float(0.0)
     public var _snapShotContinuousEndRotation = Float(0.0)
     
-    public var continuousDuration = AnimationInstructionContinuous.userContinuousDurationDefault
-    public var continuousAngle = AnimationInstructionContinuous.userContinuousAngleDefault
-    public var continuousPower = AnimationInstructionContinuous.userContinuousPowerDefault
-    public var continuousSwoop = AnimationInstructionContinuous.userContinuousSwoopDefault
-    public var continuousFrameOffset = AnimationInstructionContinuous.userContinuousFrameOffsetDefault
-    public var continuousStartScale = AnimationInstructionContinuous.userContinuousStartScaleDefault
-    public var continuousEndScale = AnimationInstructionContinuous.userContinuousEndScaleDefault
-    public var continuousStartRotation = AnimationInstructionContinuous.userContinuousStartRotationDefault
-    public var continuousEndRotation = AnimationInstructionContinuous.userContinuousEndRotationDefault
+    public var continuousDuration = AnimationConstants_Continuous.duration.user_default
+    public var continuousAngle = AnimationConstants_Continuous.angle.user_default
+    public var continuousPower = AnimationConstants_Continuous.power.user_default
+    public var continuousSwoop = AnimationConstants_Continuous.swoop.user_default
+    public var continuousWiggle = AnimationConstants_Continuous.wiggle.user_default
+    
+    public var continuousFrameOffset = AnimationConstants_Continuous.frameOffset.user_default
+    public var continuousStartScale = AnimationConstants_Continuous.startScale.user_default
+    public var continuousEndScale = AnimationConstants_Continuous.endScale.user_default
+    public var continuousStartRotation = AnimationConstants_Continuous.startRotation.user_default
+    public var continuousEndRotation = AnimationConstants_Continuous.endRotation.user_default
+    
+    public func readContinuous_Update(otherAnimationWad: AnimationWad, isMirrorMode: Bool) {
+        
+        animationInstructionContinuous.readContinuous(otherInstruction: otherAnimationWad.animationInstructionContinuous,
+                                                      otherAnimationWad: otherAnimationWad,
+                                                      animationWad: self,
+                                                      isMirrorMode: isMirrorMode)
+        
+    }
+    
+    public func readContinuous_GrabStop(otherAnimationWad: AnimationWad, isMirrorMode: Bool) {
+        
+        continuousDuration = otherAnimationWad.continuousDuration
+        if isMirrorMode {
+            continuousAngle = -(otherAnimationWad.continuousAngle)
+        } else {
+            continuousAngle = otherAnimationWad.continuousAngle
+        }
+        continuousPower = otherAnimationWad.continuousPower
+        if isMirrorMode {
+            continuousSwoop = -(otherAnimationWad.continuousSwoop)
+        } else {
+            continuousSwoop = otherAnimationWad.continuousSwoop
+        }
+        continuousFrameOffset = otherAnimationWad.continuousFrameOffset
+        continuousStartScale = otherAnimationWad.continuousStartScale
+        continuousEndScale = otherAnimationWad.continuousEndScale
+        if isMirrorMode {
+            continuousStartRotation = -(otherAnimationWad.continuousStartRotation)
+        } else {
+            continuousStartRotation = otherAnimationWad.continuousStartRotation
+        }
+        if isMirrorMode {
+            continuousEndRotation = -(otherAnimationWad.continuousEndRotation)
+        } else {
+            continuousEndRotation = otherAnimationWad.continuousEndRotation
+        }
+
+        animationInstructionContinuous.readContinuous(otherInstruction: otherAnimationWad.animationInstructionContinuous,
+                                                      otherAnimationWad: otherAnimationWad,
+                                                      animationWad: self,
+                                                      isMirrorMode: isMirrorMode)
+        
+    }
     
     public func snapShotContinuousDragHistory() {
         _snapShotContinuousDuration = continuousDuration
         _snapShotContinuousAngle = continuousAngle
         _snapShotContinuousPower = continuousPower
         _snapShotContinuousSwoop = continuousSwoop
+        _snapShotContinuousWiggle = continuousWiggle
         _snapShotContinuousFrameOffset = continuousFrameOffset
         _snapShotContinuousStartScale = continuousStartScale
         _snapShotContinuousEndScale = continuousEndScale
@@ -208,39 +241,51 @@ public class AnimationWad {
     }
     
     static func getGrabDragSpeedPercentLinear(userGrabDragSpeed: Float) -> Float {
+        AnimationConstants_Grab.speed.getPercent(userValue: userGrabDragSpeed)
+        /*
         let numer = (userGrabDragSpeed - AnimationWad.userAnimationGrabSpeedMin)
         let denom = (AnimationWad.userAnimationGrabSpeedMax - AnimationWad.userAnimationGrabSpeedMin)
         var percentLinear = numer / denom
         if percentLinear > 1.0 { percentLinear = 1.0 }
         if percentLinear < 0.0 { percentLinear = 0.0 }
         return percentLinear
+        */
     }
     
     static func getGrabDragStiffnessPercentLinear(userGrabDragStiffness: Float) -> Float {
+        AnimationConstants_Grab.stiffness.getPercent(userValue: userGrabDragStiffness)
+        /*
         let numer = (userGrabDragStiffness - AnimationWad.userAnimationGrabStiffnessMin)
         let denom = (AnimationWad.userAnimationGrabStiffnessMax - AnimationWad.userAnimationGrabStiffnessMin)
         var percentLinear = numer / denom
         if percentLinear > 1.0 { percentLinear = 1.0 }
         if percentLinear < 0.0 { percentLinear = 0.0 }
         return percentLinear
+        */
     }
     
     static func getGrabDragGyroPowerPercentLinear(userGrabDragGyroPower: Float) -> Float {
+        AnimationConstants_Grab.gyro.getPercent(userValue: userGrabDragGyroPower)
+        /*
         let numer = (userGrabDragGyroPower - AnimationWad.userAnimationGyroPowerMin)
         let denom = (AnimationWad.userAnimationGyroPowerMax - AnimationWad.userAnimationGyroPowerMin)
         var percentLinear = numer / denom
         if percentLinear > 1.0 { percentLinear = 1.0 }
         if percentLinear < 0.0 { percentLinear = 0.0 }
         return percentLinear
+        */
     }
     
     static func getGrabDragPowerPercentLinear(userGrabDragPower: Float) -> Float {
+        AnimationConstants_Grab.power.getPercent(userValue: userGrabDragPower)
+        /*
         let numer = (userGrabDragPower - AnimationWad.userAnimationDragPowerMin)
         let denom = (AnimationWad.userAnimationDragPowerMax - AnimationWad.userAnimationDragPowerMin)
         var percentLinear = numer / denom
         if percentLinear > 1.0 { percentLinear = 1.0 }
         if percentLinear < 0.0 { percentLinear = 0.0 }
         return percentLinear
+        */
     }
     
     static func getGrabDragPower_R1(grabDragPowerPercentLinear: Float) -> Float {

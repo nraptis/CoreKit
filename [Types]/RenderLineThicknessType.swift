@@ -13,16 +13,16 @@ import Foundation
     case c
     case d
     
-    public func process(start: Int, step: Int) -> Int {
+    public func process(start: Float, step: Float) -> Float {
         switch self {
         case .a:
-            start + step * 0
+            start + step * Float(0.0)
         case .b:
-            start + step * 1
+            start + step * Float(1.0)
         case .c:
-            start + step * 2
+            start + step * Float(2.0)
         case .d:
-            start + step * 3
+            start + step * Float(3.0)
         }
     }
     

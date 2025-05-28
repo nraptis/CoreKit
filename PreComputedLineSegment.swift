@@ -136,7 +136,8 @@ public extension PrecomputedLineSegment {
         }
     }
     
-    func distanceSquaredToClosestPoint(_ x: Float, _ y: Float) -> Float {
+    @inline(__always) func distanceSquaredToClosestPoint(_ x: Float, _ y: Float) -> Float {
+        
         let factor1X = x - x1
         let factor1Y = y - y1
         if lengthSquared > Math.epsilon {

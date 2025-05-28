@@ -13,7 +13,8 @@ extension AnimationController {
                                           animationMode: AnimatonMode,
                                           displayMode: DisplayMode,
                                           touchTargetTouchSource: TouchTargetTouchSource,
-                                          isPrecise: Bool) {
+                                          isPrecise: Bool,
+                                          isAnimationContinuousAppliedToAll: Bool) {
         
         switch animationMode {
         case .unknown:
@@ -57,9 +58,9 @@ extension AnimationController {
                     _ = _attemptLinkingTouchToJiggle_Continuous(animationTouch: animationTouch,
                                                                 jiggleDocument: jiggleDocument,
                                                                 displayMode: displayMode,
-                                                                
                                                                 touchTargetTouchSource: touchTargetTouchSource,
-                                                                isPrecise: isPrecise)
+                                                                isPrecise: isPrecise,
+                                                                isAnimationContinuousAppliedToAll: isAnimationContinuousAppliedToAll)
                     
                 default:
                     break
@@ -104,24 +105,50 @@ extension AnimationController {
                                                                     jiggleDocument: AnimationControllerJiggleDocument,
                                                                     displayMode: DisplayMode,
                                                                     touchTargetTouchSource: TouchTargetTouchSource,
-                                                                    isPrecise: Bool) -> Bool {
+                                                                    isPrecise: Bool,
+                                                                    isAnimationContinuousAppliedToAll: Bool) -> Bool {
         
         let selectJiggleCommand = SelectJiggleCommand(isJiggleCenterFirstPriority: false,
                                                       isFrozenIncluded: true)
         let selectJiggleResponse = jiggleDocument.getJiggleToSelect(points: [animationTouch.point],
                                                                     command: selectJiggleCommand,
                                                                     touchTargetTouchSource: touchTargetTouchSource)
+        
         switch selectJiggleResponse {
         case .invalid:
             return false
         case .valid(let selectJiggleResponseData):
             let jiggleIndex = selectJiggleResponseData.jiggleIndex
-            if let jiggle = jiggleDocument.getJiggleAnyObject(jiggleIndex) {
-                animationTouch.linkToResidency(residency: .jiggleContinuous(jiggle))
+            if let jiggleToSelect = jiggleDocument.getJiggleAnyObject(jiggleIndex) {
+                
+                // Now the clincher. We don't want double sell for t bad bag
+                
+                if isAnimationContinuousAppliedToAll {
+                    for animationTouchIndex in 0..<animationTouchCount {
+                        let animationTouch = animationTouches[animationTouchIndex]
+                        switch animationTouch.residency {
+                        case .jiggleContinuous(let jiggleFromExistingTouch):
+                            if jiggleFromExistingTouch !== jiggleToSelect {
+                                return false
+                            }
+                        case .jiggleGrab:
+                            break
+                        case .unassigned:
+                            break
+                        }
+                    }
+                }
+                
+                
+                animationTouch.linkToResidency(residency: .jiggleContinuous(jiggleToSelect))
                 jiggleDocument.switchSelectedJiggle(newSelectedJiggleIndex: jiggleIndex,
                                                     displayMode: displayMode,
                                                     isPrecise: isPrecise)
                 return true
+                
+                
+                
+                
             } else {
                 return false
             }

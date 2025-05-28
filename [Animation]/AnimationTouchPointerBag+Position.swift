@@ -182,7 +182,7 @@ extension AnimationTouchPointerBag {
         }
         
         // We convert angle to the range [0.0...1.0]
-        let fixedAngle = fixRotation_GreaterThanZero(rotation: angle)
+        let fixedAngle = AnimationTouchPointerBag.fixRotation_GreaterThanZero(rotation: angle)
         var anglePercent = fixedAngle / Math.pi2
         if anglePercent < 0.0 { anglePercent = 0.0 }
         if anglePercent > 1.0 { anglePercent = 1.0 }
@@ -192,15 +192,16 @@ extension AnimationTouchPointerBag {
         if powerPercent < 0.0 { powerPercent = 0.0 }
         if powerPercent > 1.0 { powerPercent = 1.0 }
         
-        // We convert angle to slider value [-180.0...180.0]
-        let angleMin = AnimationInstructionContinuous.userContinuousAngleMin
-        let angleMax = AnimationInstructionContinuous.userContinuousAngleMax
-        animationWad.continuousAngle = angleMin + (angleMax - angleMin) * anglePercent
+        // We convert angle to slider value [-90.0...90.0]
+        animationWad.continuousAngle = AnimationConstants_Continuous.angle.getUserValueFromPercent(anglePercent)
+        
         
         // We convert power to slider value [0.0...100.0]
-        let powerMin = AnimationInstructionContinuous.userContinuousPowerMin
-        let powerMax = AnimationInstructionContinuous.userContinuousPowerMax
-        animationWad.continuousPower = powerMin + (powerMax - powerMin) * powerPercent
+        //let powerMin = AnimationInstructionContinuous.userContinuousPowerMin
+        //let powerMax = AnimationInstructionContinuous.userContinuousPowerMax
+        animationWad.continuousPower = AnimationConstants_Continuous.power.getUserValueFromPercent(powerPercent)
+        //powerMin + (powerMax - powerMin) * powerPercent
+        
         
         // This will trigger the sliders to update, that is all.
         // It's also the reason we're on the main actor...
@@ -209,7 +210,7 @@ extension AnimationTouchPointerBag {
     
     // [Animation Mode Verify] 12-19-2024
     // Looks good, no problem. I've read each line.
-    private func fixRotation_GreaterThanZero(rotation: Float) -> Float {
+    static func fixRotation_GreaterThanZero(rotation: Float) -> Float {
         var result = rotation
         if result >= Math.pi2 || result <= Math._pi2 {
             result = fmodf(rotation, Math.pi2)

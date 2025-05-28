@@ -388,9 +388,12 @@ extension AnimationTouchPointerBag {
             if percentDown < 0.0 { percentDown = 0.0 }
             scalePercent = 0.5 - percentDown * 0.5
         }
-        let scaleMin = AnimationInstructionContinuous.userContinuousScaleMin
-        let scaleMax = AnimationInstructionContinuous.userContinuousScaleMax
-        animationWad.continuousStartScale = scaleMin + (scaleMax - scaleMin) * scalePercent
+        //let scaleMin = AnimationInstructionContinuous.userContinuousScaleMin
+        //let scaleMax = AnimationInstructionContinuous.userContinuousScaleMax
+        animationWad.continuousStartScale = AnimationConstants_Continuous.startScale.getUserValueFromPercent(scalePercent)
+        
+        //scaleMin + (scaleMax - scaleMin) * scalePercent
+        
         
         // This will trigger the slider to update, that is all.
         // It's also the reason we're on the main actor...

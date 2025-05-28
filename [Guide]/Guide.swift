@@ -94,7 +94,7 @@ public class Guide {
     public let solidLineBufferPreciseStroke = SolidLineBuffer<Shape2DVertex, UniformsShapeVertex, UniformsShapeFragment>(sentinelNode: .init())
     public let solidLineBufferPreciseFill = SolidLineBuffer<Shape2DVertex, UniformsShapeVertex, UniformsShapeFragment>(sentinelNode: .init())
     
-    public let weightCurvePoint = WeightCurvePoint()
+    //public let weightCurvePoint = WeightCurvePoint()
     
     public var percent = Float(0.0)
     
@@ -477,8 +477,9 @@ public class Guide {
     }
     
     public func purge() {
-        weightCurvePoint.isManualHeightEnabled = false
-        weightCurvePoint.isManualTanHandleEnabled = false
+        
+        //weightCurvePoint.isManualHeightEnabled = false
+        //weightCurvePoint.isManualTanHandleEnabled = false
         
         purgeOutlineGuideWeightSegments()
         purgeOutlineGuideWeightPoints()

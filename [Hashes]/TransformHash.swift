@@ -28,6 +28,13 @@ public struct TransformHash: Equatable {
         self.scale = scale
         self.rotation = rotation
     }
+    
+    public mutating func invalidate() {
+        centerX = Float(-100_000.0)
+        centerY = Float(-100_000.0)
+        scale = Float(-100_000.0)
+        rotation = Float(-100_000.0)
+    }
 }
 
 public struct TransformHashExtended: Equatable {
@@ -51,5 +58,13 @@ public struct TransformHashExtended: Equatable {
         self.scale = scale
         self.rotation = rotation
         self.worldScale = worldScale
+    }
+    
+    public mutating func invalidate() {
+        centerX = Float(-100_000.0)
+        centerY = Float(-100_000.0)
+        scale = Float(-100_000.0)
+        rotation = Float(-100_000.0)
+        worldScale = Float(-100_000.0)
     }
 }

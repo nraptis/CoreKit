@@ -10,7 +10,7 @@ import Foundation
 public struct PolyMeshConstants {
     
     //TODO: This is changed for faster rwender..
-    static let SCALE = Float(0.7)
+    static let SCALE = Float(0.85)
     //static let SCALE = Float(2.0)
     
     static let POSH_SCALE = Float(1.20)

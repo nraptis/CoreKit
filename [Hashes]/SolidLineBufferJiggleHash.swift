@@ -54,4 +54,9 @@ public struct SolidLineBufferJiggleHash: Equatable {
         self.isDarkMode = isDarkMode
         
     }
+    
+    public mutating func invalidate() {
+        outlineHash.invalidate()
+    }
+    
 }

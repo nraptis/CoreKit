@@ -182,6 +182,7 @@ public class Jiggle {
     public typealias Vector = Math.Vector
     
     public let weightCurvePointStart = WeightCurvePoint()
+    public let weightCurvePointMiddle = WeightCurvePoint()
     public let weightCurvePointEnd = WeightCurvePoint()
     public var weightCurve = WeightCurve()
     public let polyMesh = PolyMesh()
@@ -211,6 +212,77 @@ public class Jiggle {
     public let solidLineBufferPreciseStroke = SolidLineBuffer<Shape2DVertex, UniformsShapeVertex, UniformsShapeFragment>(sentinelNode: .init())
     public let solidLineBufferPreciseFill = SolidLineBuffer<Shape2DVertex, UniformsShapeVertex, UniformsShapeFragment>(sentinelNode: .init())
     
+    public func resetAll_Unsafe() {
+        
+        polyMesh.ring.isBroken = false
+        
+        jiggleMesh.purge()
+        purgeJigglePoints()
+        purgeGuides()
+        purgeOutlineJiggleWeightPoints()
+        purgeOutlineJiggleWeightSegments()
+        
+        center.x = 0.0
+        center.y = 0.0
+        
+        offsetCenter.x = 0.0
+        offsetCenter.y = 0.0
+        
+        scale = 1.0
+        rotation = 0.0
+        
+        guideCenter.x = 0.0
+        guideCenter.y = 0.0
+        
+        selectedJigglePointIndex = -1
+        selectedGuideIndex = -1
+        selectedGraphIndex = -1
+        
+        animationWad.measuredSize = AnimationWad.midMeasuredSize
+        
+        isFrozen = false
+        
+        currentHashSpline.invalidate()
+        currentHashPoly.invalidate()
+        currentHashMeshStandard.invalidate()
+        currentHashMeshWeights.invalidate()
+        currentHashOutline.invalidate()
+        currentHashSolidLineBufferStandard.invalidate()
+        currentHashSolidLineBufferPrecise.invalidate()
+        currentHashWeightCurve.invalidate()
+        currentHashTrianglesStandard.invalidate()
+        currentHashTrianglesWeights.invalidate()
+        currentHashTrianglesSwivel.invalidate()
+        currentHashTrianglesViewStandard.invalidate()
+        currentHashTrianglesViewStereoscopic.invalidate()
+        
+        weightCurvePointStart.reset()
+        weightCurvePointMiddle.reset()
+        weightCurvePointEnd.reset()
+        
+        didUpdate = false
+        
+        for channelIndex in 0..<animationWad.timeLine.swatchPositionX.channelCount {
+            let channel = animationWad.timeLine.swatchPositionX.channels[channelIndex]
+            channel.purgeTempPrecomputedLineSegments()
+        }
+        
+        for channelIndex in 0..<animationWad.timeLine.swatchPositionY.channelCount {
+            let channel = animationWad.timeLine.swatchPositionY.channels[channelIndex]
+            channel.purgeTempPrecomputedLineSegments()
+        }
+        
+        for channelIndex in 0..<animationWad.timeLine.swatchScale.channelCount {
+            let channel = animationWad.timeLine.swatchScale.channels[channelIndex]
+            channel.purgeTempPrecomputedLineSegments()
+        }
+        
+        for channelIndex in 0..<animationWad.timeLine.swatchRotation.channelCount {
+            let channel = animationWad.timeLine.swatchRotation.channels[channelIndex]
+            channel.purgeTempPrecomputedLineSegments()
+        }
+    }
+    
     // Needs to be INT for undo / redo...
     public var selectedJigglePointIndex = -1
     public func getSelectedJigglePoint() -> JigglePoint? {
@@ -230,9 +302,8 @@ public class Jiggle {
     }
     
     // Needs to be INT for undo / redo...
-    //var selectedGuideIndex = -1
+    public private(set) var selectedGuideIndex = -1
     public func getSelectedGuide() -> Guide? {
-        let selectedGuideIndex = (selectedWeightCurveIndex - 1)
         if selectedGuideIndex >= 0 && selectedGuideIndex < guideCount {
             if guides[selectedGuideIndex].isFrozen == false {
                 return guides[selectedGuideIndex]
@@ -242,71 +313,29 @@ public class Jiggle {
     }
     
     // Needs to be INT for undo / redo...
-    public var selectedWeightCurveIndex = -1
-    public var selectedWeightCurveGraphIndex = -1
-    public func getSelectedWeightCurvePointBasedOnGraphIndex() -> WeightCurvePoint? {
-        if selectedWeightCurveGraphIndex >= 0 && selectedWeightCurveGraphIndex < weightCurve.weightCurvePointCount {
-            return weightCurve.weightCurvePoints[selectedWeightCurveGraphIndex]
-        }
-        return nil
-    }
-    
+    public var selectedGraphIndex = -1
     public func getSelectedWeightCurvePoint() -> WeightCurvePoint? {
-        if selectedWeightCurveIndex >= 0 && selectedWeightCurveIndex < weightCurve.weightCurvePointCount {
-            return weightCurve.weightCurvePoints[selectedWeightCurveIndex]
-        }
-        return nil
-    }
-    
-    public func getWeightCurvePoint(weightCurveIndex: Int) -> WeightCurvePoint? {
-        if weightCurveIndex < 0 {
+        if selectedGraphIndex == 0 {
+            return weightCurvePointStart
+        } else if selectedGraphIndex == 1 {
+            return weightCurvePointMiddle
+        } else if selectedGraphIndex == 2 {
+            return weightCurvePointEnd
+        } else {
             return nil
-        } else if weightCurveIndex == 0 {
-            return weightCurvePointStart
-        } else if weightCurveIndex <= (guideCount) {
-            return guides[weightCurveIndex - 1].weightCurvePoint
-        } else {
-            return weightCurvePointEnd
         }
     }
     
-    public func getWeightCurvePoint(isFirstControlPoint: Bool,
-                             isLastControlPoint: Bool,
-                             guideIndex: Int) -> WeightCurvePoint? {
-        if isFirstControlPoint {
+    public func getWeightCurvePoint(_ graphIndex: Int) -> WeightCurvePoint? {
+        if graphIndex == 0 {
             return weightCurvePointStart
-        } else if isLastControlPoint {
+        } else if graphIndex == 1 {
+            return weightCurvePointMiddle
+        } else if graphIndex == 2 {
             return weightCurvePointEnd
         } else {
-            if guideIndex >= 0 && guideIndex < guideCount {
-                return guides[guideIndex].weightCurvePoint
-            } else {
-                return nil
-            }
+            return nil
         }
-    }
-    
-    public func getWeightCurveIndex(isFirstControlPoint: Bool,
-                             isLastControlPoint: Bool,
-                             guideIndex: Int) -> Int {
-        if isFirstControlPoint {
-            return 0
-        } else if isLastControlPoint {
-            return guideCount + 1
-        } else {
-            if guideIndex >= 0 && guideIndex < guideCount {
-                return guideIndex + 1
-            } else {
-                return -1
-            }
-        }
-    }
-    
-    public func getWeightCurvePoint(_ index: Int) -> WeightCurvePoint? {
-        if index >= 0 && index < weightCurve.weightCurvePointCount {
-            return weightCurve.weightCurvePoints[index]
-        }
-        return nil
     }
     
     public var jigglePoints = [JigglePoint]()
@@ -518,46 +547,6 @@ public class Jiggle {
     
     public var guides = [Guide]()
     public var guideCount = 0
-    public func getGraphIndex(weightCurveIndex: Int) -> Int {
-        if weightCurveIndex <= 0 {
-            return 0
-        }
-        if weightCurveIndex >= (guideCount + 1) {
-            return guideCount + 1
-        }
-        
-        let guideIndex = (weightCurveIndex - 1)
-        if guideIndex >= 0 && guideIndex < guideCount {
-            let guide = guides[guideIndex]
-            for graphIndex in 0..<weightCurve.weightCurvePointCount {
-                if weightCurve.weightCurvePoints[graphIndex] === guide.weightCurvePoint {
-                    return graphIndex
-                }
-            }
-        }
-        return -1
-    }
-    
-    public func getWeightCurveIndex(graphIndex: Int) -> Int {
-        if graphIndex <= 0 {
-            return 0
-        }
-        if graphIndex >= (guideCount + 1) {
-            return guideCount + 1
-        }
-        
-        if graphIndex >= 0 && graphIndex < weightCurve.weightCurvePointCount {
-            let weightCurvePoint = weightCurve.weightCurvePoints[graphIndex]
-            for guideIndex in 0..<guideCount {
-                let guide = guides[guideIndex]
-                if guide.weightCurvePoint === weightCurvePoint {
-                    return guideIndex + 1
-                }
-            }
-        }
-        
-        return -1
-    }
     
     public func getWeightDepthIndex(guideIndex: Int) -> Int? {
         if guideIndex >= 0 && guideIndex < guideCount {
@@ -580,68 +569,25 @@ public class Jiggle {
         return nil
     }
     
-    public func getWeightCurveIndex(weightCurvePoint: WeightCurvePoint) -> Int? {
+    public func getGraphIndex(weightCurvePoint: WeightCurvePoint) -> Int? {
         if weightCurvePoint === weightCurvePointStart {
             return 0
-        }
-        if weightCurvePoint === weightCurvePointEnd {
-            return guideCount + 1
-        }
-        for guideIndex in 0..<guideCount {
-            let guide = guides[guideIndex]
-            if guide.weightCurvePoint === weightCurvePoint {
-                return (guideIndex + 1)
-            }
+        } else if weightCurvePoint === weightCurvePointMiddle {
+            return 1
+        } else if weightCurvePoint === weightCurvePointEnd {
+            return 2
         }
         return nil
-    }
-    
-    public func getSelectedWeightCurveGraphIndexIsFirstControlPoint() -> Bool {
-        if selectedWeightCurveGraphIndex <= 0 {
-            return true
-        }
-        return false
-    }
-    
-    public func getSelectedWeightCurveGraphIndexIsLastControlPoint() -> Bool {
-        if selectedWeightCurveGraphIndex >= (guideCount + 1) {
-            return true
-        }
-        return false
-    }
-    
-    public func getSelectedWeightCurveGraphIndexWeightCurveIndex() -> Int? {
-        if selectedWeightCurveGraphIndex == 0 {
-            return 0
-        }
-        if selectedWeightCurveGraphIndex >= 0 && selectedWeightCurveGraphIndex < weightCurve.weightCurvePointCount {
-            let weightCurvePoint = weightCurve.weightCurvePoints[selectedWeightCurveGraphIndex]
-            for guideIndex in 0..<guideCount {
-                let guide = guides[guideIndex]
-                if guide.weightCurvePoint === weightCurvePoint {
-                    return guideIndex + 1
-                }
-            }
-        }
-        if selectedWeightCurveGraphIndex > 0 {
-            return guideCount + 1
-        }
-        return nil
-    }
-    
-    public func getSelectedGuideIndex() -> Int {
-        (selectedWeightCurveIndex - 1)
     }
     
     @MainActor public func addGuideNotFromLoad(_ guide: Guide,
                                         jiggleDocument: SelectedJigglePointListeningConforming,
                                         ignoreRealize: Bool) {
+        let newSelectedGuideIndex = guideCount
         addGuide(guide)
-        let currentSelectedWeightCurveIndex = guideCount
-        switchSelectedWeightCurveIndex(index: currentSelectedWeightCurveIndex,
-                                       jiggleDocument: jiggleDocument,
-                                       ignoreRealize: ignoreRealize)
-        //jiggleMesh.readAndSortValidGuides(jiggle: self)
+        switchSelectedGuideIndex(index: newSelectedGuideIndex,
+                                 jiggleDocument: jiggleDocument,
+                                 ignoreRealize: ignoreRealize)
         readAndSortValidGuides()
     }
     
@@ -668,10 +614,10 @@ public class Jiggle {
         guides[index] = newGuide
         guideCount += 1
         
-        let currentSelectedWeightCurveIndex = index + 1
-        switchSelectedWeightCurveIndex(index: currentSelectedWeightCurveIndex,
-                                       jiggleDocument: jiggleDocument,
-                                       ignoreRealize: ignoreRealize)
+        
+        switchSelectedGuideIndex(index: index,
+                                 jiggleDocument: jiggleDocument,
+                                 ignoreRealize: ignoreRealize)
     }
     
     public func containsJigglePoint(_ jigglePoint: JigglePoint) -> Bool {
@@ -693,7 +639,6 @@ public class Jiggle {
     }
     
     public func isGuideSelected(_ guide: Guide) -> Bool {
-        let selectedGuideIndex = (selectedWeightCurveIndex - 1)
         if selectedGuideIndex >= 0 && selectedGuideIndex < guideCount {
             if guides[selectedGuideIndex] === guide {
                 return true
@@ -776,21 +721,19 @@ public class Jiggle {
                 
                 if let newSelectedGuide = newSelectedGuide,
                    let newSelectedGuideIndex = getGuideIndex(newSelectedGuide) {
-                    switchSelectedWeightCurveIndex(index: newSelectedGuideIndex + 1,
-                                                   jiggleDocument: jiggleDocument,
-                                                   ignoreRealize: ignoreRealize)
-                    
+                    switchSelectedGuideIndex(index: newSelectedGuideIndex,
+                                             jiggleDocument: jiggleDocument,
+                                             ignoreRealize: ignoreRealize)
                     
                 } else {
-                    switchSelectedWeightCurveIndex(index: 0,
-                                                   jiggleDocument: jiggleDocument,
-                                                   ignoreRealize: ignoreRealize)
-                    
+                    switchSelectedGuideIndex(index: -1,
+                                             jiggleDocument: jiggleDocument,
+                                             ignoreRealize: ignoreRealize)
                 }
             } else {
-                switchSelectedWeightCurveIndex(index: 0,
-                                               jiggleDocument: jiggleDocument,
-                                               ignoreRealize: ignoreRealize)
+                switchSelectedGuideIndex(index: -1,
+                                         jiggleDocument: jiggleDocument,
+                                         ignoreRealize: ignoreRealize)
             }
             return true
         }
@@ -1219,8 +1162,7 @@ public class Jiggle {
                                          tanFactorWeightCurve: tanFactorWeightCurve,
                                          tanFactorWeightCurveAuto: factorWeightCurveAuto,
                                          weightCurvePointStart: weightCurvePointStart,
-                                         owningList: guides,
-                                         owningListCount: guideCount,
+                                         weightCurvePointMiddle: weightCurvePointMiddle,
                                          weightCurvePointEnd: weightCurvePointEnd)
         
         weightCurve.refreshSpline(frameWidth: graphWidth,
@@ -1234,8 +1176,7 @@ public class Jiggle {
                                       paddingH: graphPaddingH,
                                       paddingV: graphPaddingV,
                                       weightCurvePointStart: weightCurvePointStart,
-                                      owningList: guides,
-                                      owningListCount: guideCount,
+                                      weightCurvePointMiddle: weightCurvePointMiddle,
                                       weightCurvePointEnd: weightCurvePointEnd)
         
         currentHashTrianglesSwivel.invalidate()
@@ -1246,16 +1187,10 @@ public class Jiggle {
     
     @MainActor public func resetWeightGraph(resetType: WeightCurveResetType) {
         weightCurve.resetType = resetType
-        weightCurvePointStart.isManualHeightEnabled = false
-        weightCurvePointStart.isManualTanHandleEnabled = false
-        weightCurvePointEnd.isManualHeightEnabled = false
-        weightCurvePointEnd.isManualTanHandleEnabled = false
-        for guideIndex in 0..<guideCount {
-            let guide = guides[guideIndex]
-            let weightCurvePoint = guide.weightCurvePoint
-            weightCurvePoint.isManualHeightEnabled = false
-            weightCurvePoint.isManualTanHandleEnabled = false
-        }
+        
+        weightCurvePointStart.reset()
+        weightCurvePointMiddle.reset()
+        weightCurvePointEnd.reset()
     }
     
     @MainActor public func refreshTimeLine(timeLineWidth: Float,
@@ -1281,32 +1216,30 @@ public class Jiggle {
                                       tanFactorTimeLine: tanFactorTimeLine)
     }
     
-    public typealias SelectedWeightCurveDataUpdatePublisher = PassthroughSubject<Void, Never>
-    public func switchSelectedWeightCurveIndexToDefault(isSelected: Bool,
-                                                 jiggleDocument: SelectedJigglePointListeningConforming,
-                                                 ignoreRealize: Bool) {
-        if guideCount > 0 {
-            switchSelectedWeightCurveIndex(index: guideCount,
-                                           jiggleDocument: jiggleDocument,
-                                           ignoreRealize: ignoreRealize)
-        } else {
-            switchSelectedWeightCurveIndex(index: 0,
-                                           jiggleDocument: jiggleDocument,
-                                           ignoreRealize: ignoreRealize)
-        }
-    }
-    
-    public func switchSelectedWeightCurveIndex(index: Int,
-                                        jiggleDocument: SelectedJigglePointListeningConforming,
-                                        ignoreRealize: Bool) {
-        selectedWeightCurveIndex = index
+    public func switchSelectedGuideIndex(index: Int,
+                                         jiggleDocument: SelectedJigglePointListeningConforming,
+                                         ignoreRealize: Bool) {
         
-        selectedWeightCurveGraphIndex = getGraphIndex(weightCurveIndex: selectedWeightCurveIndex)
+        selectedGuideIndex = index
         
         markGuideAsFrontMostGuide(getSelectedGuide())
         
         if !ignoreRealize {
             jiggleDocument.realizeRecentSelectionChange_Guide()
+        }
+    }
+    
+    public func switchSelectedGuideIndexIndexToDefault(isSelected: Bool,
+                                                 jiggleDocument: SelectedJigglePointListeningConforming,
+                                                 ignoreRealize: Bool) {
+        if guideCount > 0 {
+            switchSelectedGuideIndex(index: guideCount - 1,
+                                           jiggleDocument: jiggleDocument,
+                                           ignoreRealize: ignoreRealize)
+        } else {
+            switchSelectedGuideIndex(index: -1,
+                                           jiggleDocument: jiggleDocument,
+                                           ignoreRealize: ignoreRealize)
         }
     }
     

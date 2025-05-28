@@ -51,9 +51,11 @@ public class TimeLineSwatch {
     public var selectedChannelIndex: Int
     public var frameOffset: Float
     public let sentinelChannel = TimeLineChannel(controlPointCount: 16, channelIndex: -1, swatch: .x, defaultType: .curve)
+    public let isMirrorFlipChannel: Bool
     init(swatch: Swatch,
          defaultType: TimeLineChannel.DefaultType,
-         frameOffset: Float) {
+         frameOffset: Float,
+         isMirrorFlipChannel: Bool) {
         var _channelCount = 0
         var _channels = [TimeLineChannel]()
         var channelIndex = 0
@@ -71,6 +73,7 @@ public class TimeLineSwatch {
         self.channels = _channels
         self.selectedChannel = _channels[0]
         self.frameOffset = frameOffset
+        self.isMirrorFlipChannel = isMirrorFlipChannel
         selectedChannelIndex = 0
     }
     

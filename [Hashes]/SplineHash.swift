@@ -11,6 +11,8 @@ import Foundation
 
 public struct SplineHash: Equatable {
     
+    nonisolated(unsafe) static var invalid_index = -2
+    
     public init() {
         
     }
@@ -22,4 +24,13 @@ public struct SplineHash: Equatable {
             value = 0
         }
     }
+    
+    public mutating func invalidate() {
+        value = SplineHash.invalid_index
+        SplineHash.invalid_index -= 1
+        if SplineHash.invalid_index < -100_000 {
+            SplineHash.invalid_index = -2
+        }
+    }
+    
 }

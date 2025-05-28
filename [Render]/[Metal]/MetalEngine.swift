@@ -121,7 +121,6 @@ public class MetalEngine {
                                                  height: drawable.texture.height >> 1)
             bloomTexture2 = createStorageTexture(width: drawable.texture.width >> 1,
                                                  height: drawable.texture.height >> 1)
-            
             storageSprite.load(graphics: graphics, texture: storageTexture, scaleFactor: scale)
             storageSpritePrebloom.load(graphics: graphics, texture: storageTexturePrebloom, scaleFactor: scale)
             storageSpriteBloom.load(graphics: graphics, texture: storageTextureBloom, scaleFactor: scale)
@@ -255,9 +254,7 @@ public class MetalEngine {
                 delegate.draw3D(renderEncoder: renderEncoder3D)
                 renderEncoder3D.endEncoding()
             }
-            
         }
-        
         
         if storeVideoTexture {
             let renderPassDescriptor2D = MTLRenderPassDescriptor()

@@ -15,6 +15,24 @@ public class WeightCurvePoint {
         
     }
     
+    public func reset() {
+        isManualHeightEnabled = false
+        isManualTanHandleEnabled = false
+        
+        //TODO: This should all not be...
+        normalizedTanDirection = Float.random(in: 0.0...Math.pi2)
+        normalizedTanMagnitudeIn = Float.random(in: 4.0...16.0)
+        normalizedTanMagnitudeOut = Float.random(in: 4.0...16.0)
+        
+        normalizedHeightFactor = Float.random(in: 0.0...1.0)
+        
+        tempX = -100.0
+        tempY = -100.0
+        defaultY = -100.0
+        holdY = -100.0
+        
+    }
+    
     public var normalizedTanDirection = Float(0.0)
     public var normalizedTanMagnitudeIn = Float(0.0)
     public var normalizedTanMagnitudeOut = Float(0.0)

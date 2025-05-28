@@ -114,35 +114,35 @@ public struct LinePointSizes {
     }
     
     public static func getLineBase(lineThicknessType: RenderLineThicknessType,
-                            isPad: Bool) -> Int {
+                            isPad: Bool) -> Float {
         if isPad {
             // [G][O][L][D][E][N] [$$$$$$$$$$$$$$$$$$] 8========>
-            return lineThicknessType.process(start: 3, step: 1)
+            return lineThicknessType.process(start: 1.0, step: 0.35)
         } else {
             // [G][O][L][D][E][N] [$$$$$$$$$$$$$$$$$$] 8========>
-            return lineThicknessType.process(start: 4, step: 2)
+            return lineThicknessType.process(start: 0.75, step: 0.375)
         }
     }
     
     static func getLineStrokeExpandBase(lineThicknessType: RenderLineThicknessType,
-                                        isPad: Bool) -> Int {
+                                        isPad: Bool) -> Float {
         if isPad {
             switch lineThicknessType {
             case .a, .b:
                 // [G][O][L][D][E][N] [$$$$$$$$$$$$$$$$$$] 8========>
-                return 3
+                return 1.0
             default:
                 // [G][O][L][D][E][N] [$$$$$$$$$$$$$$$$$$] 8========>
-                return 5
+                return 1.5
             }
         } else {
             switch lineThicknessType {
             case .a, .b:
                 // [G][O][L][D][E][N] [$$$$$$$$$$$$$$$$$$] 8========>
-                return 6
+                return 1.25
             default:
                 // [G][O][L][D][E][N] [$$$$$$$$$$$$$$$$$$] 8========>
-                return 10
+                return 1.85
             }
         }
     }
@@ -188,43 +188,57 @@ public struct LinePointSizes {
         return fillBase + strokeExpand
     }
     
+    
+    // On ipad, scale were "0.320155025"
+    // On iphone, scale were "0.185271323"
     public static func getLineThicknessFill(lineThicknessType: RenderLineThicknessType,
-                                            isPad: Bool,
-                                            universeScaleInverse: Float) -> Float {
+                                            isPad: Bool) -> Float {
         // [G][O][L][D][E][N] [$$$$$$$$$$$$$$$$$$] 8========>
         let baseAmount = getLineBase(lineThicknessType: lineThicknessType,
                                      isPad: isPad)
-        return Float(baseAmount) * universeScaleInverse
+        if isPad {
+            return Float(baseAmount)
+        } else {
+            return Float(baseAmount)
+        }
+        
     }
     
     public static func getLineThicknessStroke(lineThicknessType: RenderLineThicknessType,
-                                              isPad: Bool,
-                                              universeScaleInverse: Float) -> Float {
+                                              isPad: Bool) -> Float {
         // [G][O][L][D][E][N] [$$$$$$$$$$$$$$$$$$] 8========>
         let baseAmount = getLineBase(lineThicknessType: lineThicknessType,
                                      isPad: isPad)
         let strokeExpand = getLineStrokeExpandBase(lineThicknessType: lineThicknessType,
                                                    isPad: isPad)
-        return Float(baseAmount + strokeExpand + strokeExpand) * universeScaleInverse
+        return Float(baseAmount + strokeExpand + strokeExpand)
     }
     
     public static func getLineThicknessDrawingFill(lineThicknessType: RenderLineThicknessType,
-                                                   isPad: Bool,
-                                                   universeScaleInverse: Float) -> Float {
-        // [G][O][L][D][E][N] [$$$$$$$$$$$$$$$$$$] 8========>
+                                                   isPad: Bool) -> Float {
+        let drawExpand: Float
+        if Device.isPad {
+            drawExpand = 0.65
+        } else {
+            drawExpand = 0.4
+        }
         let baseAmount = getLineBase(lineThicknessType: lineThicknessType,
-                                     isPad: isPad) + 2
-        return Float(baseAmount) * universeScaleInverse
+                                     isPad: isPad) + drawExpand
+        return Float(baseAmount)
     }
     
     public static func getLineThicknessDrawingStroke(lineThicknessType: RenderLineThicknessType,
-                                                     isPad: Bool,
-                                                     universeScaleInverse: Float) -> Float {
-        // [G][O][L][D][E][N] [$$$$$$$$$$$$$$$$$$] 8========>
+                                                     isPad: Bool) -> Float {
+        let drawExpand: Float
+        if Device.isPad {
+            drawExpand = 0.65
+        } else {
+            drawExpand = 0.4
+        }
         let baseAmount = getLineBase(lineThicknessType: lineThicknessType,
-                                     isPad: isPad) + 2
+                                     isPad: isPad) + drawExpand
         let strokeExpand = getLineStrokeExpandBase(lineThicknessType: lineThicknessType,
                                                    isPad: isPad)
-        return Float(baseAmount + strokeExpand) * universeScaleInverse
+        return Float(baseAmount + strokeExpand)
     }
 }

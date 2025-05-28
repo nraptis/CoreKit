@@ -20,7 +20,7 @@ public struct WeightCurveHash: Equatable {
     public var paddingH: Float = 0.0
     public var paddingV: Float = 0.0
     public var weightCurvePointStart = WeightCurvePointHash()
-    public var weightCurvePoints = [WeightCurvePointHash]()
+    public var weightCurvePointMiddle = WeightCurvePointHash()
     public var weightCurvePointEnd = WeightCurvePointHash()
     
     public mutating func change(frameWidth: Float,
@@ -28,13 +28,11 @@ public struct WeightCurveHash: Equatable {
                                 paddingH: Float,
                                 paddingV: Float,
                                 weightCurvePointStart: WeightCurvePoint,
-                                owningList: [Guide],
-                                owningListCount: Int,
+                                weightCurvePointMiddle: WeightCurvePoint,
                                 weightCurvePointEnd: WeightCurvePoint) {
         
         self.frameWidth = frameWidth
         self.frameHeight = frameHeight
-        
         self.paddingH = paddingH
         self.paddingV = paddingV
         
@@ -45,20 +43,12 @@ public struct WeightCurveHash: Equatable {
                                                  normalizedHeightFactor: weightCurvePointStart.normalizedHeightFactor,
                                                  isManualTanHandleEnabled: weightCurvePointStart.isManualTanHandleEnabled)
         
-        if weightCurvePoints.count != owningListCount {
-            weightCurvePoints = [WeightCurvePointHash](repeating: WeightCurvePointHash(),
-                                                                     count: owningListCount)
-        }
-        
-        for guideIndex in 0..<owningListCount {
-            let weightCurveControlPoint = owningList[guideIndex].weightCurvePoint
-            weightCurvePoints[guideIndex].change(normalizedTanDirection: weightCurveControlPoint.normalizedTanDirection,
-                                                        normalizedTanMagnitudeIn: weightCurveControlPoint.normalizedTanMagnitudeIn,
-                                                        normalizedTanMagnitudeOut: weightCurveControlPoint.normalizedTanMagnitudeOut,
-                                                        isManualHeightEnabled: weightCurveControlPoint.isManualHeightEnabled,
-                                                        normalizedHeightFactor: weightCurveControlPoint.normalizedHeightFactor,
-                                                        isManualTanHandleEnabled: weightCurveControlPoint.isManualTanHandleEnabled)
-        }
+        self.weightCurvePointMiddle.change(normalizedTanDirection: weightCurvePointMiddle.normalizedTanDirection,
+                                                         normalizedTanMagnitudeIn: weightCurvePointMiddle.normalizedTanMagnitudeIn,
+                                                         normalizedTanMagnitudeOut: weightCurvePointMiddle.normalizedTanMagnitudeOut,
+                                                         isManualHeightEnabled: weightCurvePointMiddle.isManualHeightEnabled,
+                                                         normalizedHeightFactor: weightCurvePointMiddle.normalizedHeightFactor,
+                                                         isManualTanHandleEnabled: weightCurvePointMiddle.isManualTanHandleEnabled)
         
         self.weightCurvePointEnd.change(normalizedTanDirection: weightCurvePointEnd.normalizedTanDirection,
                                                normalizedTanMagnitudeIn: weightCurvePointEnd.normalizedTanMagnitudeIn,
@@ -67,6 +57,16 @@ public struct WeightCurveHash: Equatable {
                                                normalizedHeightFactor: weightCurvePointEnd.normalizedHeightFactor,
                                                isManualTanHandleEnabled: weightCurvePointEnd.isManualTanHandleEnabled)
         
+    }
+    
+    public mutating func invalidate() {
+        frameWidth = 0.0
+        frameHeight = 0.0
+        paddingH = 0.0
+        paddingV = 0.0
+        weightCurvePointStart.invalidate()
+        weightCurvePointMiddle.invalidate()
+        weightCurvePointEnd.invalidate()
     }
     
 }

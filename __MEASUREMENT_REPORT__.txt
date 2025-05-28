@@ -1,0 +1,70 @@
+
+==== Test 3 (The Breaker)
+
+(This is the bottleneck of the whole app)
+[[MEASURE]] ((Old Method)) For Jiggle With 5 Guides: 46_375_494 loops, Center 230.1219, -373.8564
+[[MEASURE]] ((Old Method)) For Jiggle With 5 Guides: 45_668_248 loops, Center -504.43985, 232.28433
+[[MEASURE]] ((Old Method)) For Jiggle With 5 Guides: 39_424_696 loops, Center 230.1219, -373.8564
+[[MEASURE]] ((Old Method)) For Jiggle With 5 Guides: 38_932_494 loops, Center -504.43985, 232.28433
+
+(Over 20x improvement, still savage)
+[[MEASURE]] ((New Method)) For Jiggle With 5 Guides: 2_657_157 loops, Center 230.1219, -373.8564
+[[MEASURE]] ((New Method)) For Jiggle With 5 Guides: 2_569_447 loops, Center -504.43985, 232.28433
+[[MEASURE]] ((New Method)) For Jiggle With 5 Guides: 2_161_271 loops, Center 230.1219, -373.8564
+[[MEASURE]] ((New Method)) For Jiggle With 5 Guides: 2_086_459 loops, Center -504.43985, 232.28433
+
+==== Test 1
+
+[[MEASURE]] ((Old Method)) For Jiggle With 4 Guides: 4_849_640 loops, Center -113.64092, 137.88765
+[[MEASURE]] ((Old Method)) For Jiggle With 4 Guides: 5_600_370 loops, Center 34.59588, -177.69438
+[[MEASURE]] ((Old Method)) For Jiggle With 4 Guides: 4_305_672 loops, Center -113.64092, 137.88765
+[[MEASURE]] ((Old Method)) For Jiggle With 4 Guides: 4_881_669 loops, Center 34.59588, -177.69438
+
+[[MEASURE]] ((New Method)) For Jiggle With 4 Guides: 277_572 loops, Center -113.64092, 137.88765
+[[MEASURE]] ((New Method)) For Jiggle With 4 Guides: 356_365 loops, Center 34.59588, -177.69438
+[[MEASURE]] ((New Method)) For Jiggle With 4 Guides: 244_519 loops, Center -113.64092, 137.88765
+[[MEASURE]] ((New Method)) For Jiggle With 4 Guides: 307_632 loops, Center 34.59588, -177.69438
+
+
+==== Test 2
+
+[[MEASURE]] ((Old Method)) For Jiggle With 4 Guides: 3_786_981 loops, Center 196.60059, 15.021118
+[[MEASURE]] ((Old Method)) For Jiggle With 4 Guides: 3_571_526 loops, Center -187.77301, 12.788208
+[[MEASURE]] ((Old Method)) For Jiggle With 4 Guides: 3_284_046 loops, Center 196.60059, 15.021118
+[[MEASURE]] ((Old Method)) For Jiggle With 4 Guides: 3_101_512 loops, Center -187.77301, 12.788208
+
+[[MEASURE]] ((New Method)) For Jiggle With 4 Guides: 284_069 loops, Center 196.60059, 15.021118
+[[MEASURE]] ((New Method)) For Jiggle With 4 Guides: 222_030 loops, Center -187.77301, 12.788208
+[[MEASURE]] ((New Method)) For Jiggle With 4 Guides: 244_414 loops, Center 196.60059, 15.021118
+[[MEASURE]] ((New Method)) For Jiggle With 4 Guides: 201_377 loops, Center -187.77301, 12.788208
+
+
+==== Test 4
+
+[[MEASURE]] ((Old Method)) For Jiggle With 1 Guides: 3_815_361 loops, Center 10.453217, 131.22263
+[[MEASURE]] ((Old Method)) For Jiggle With 1 Guides: 3_129_071 loops, Center -124.38274, -140.4144
+[[MEASURE]] ((Old Method)) For Jiggle With 1 Guides: 3_246_507 loops, Center 10.453217, 131.22263
+[[MEASURE]] ((Old Method)) For Jiggle With 1 Guides: 2_674_525 loops, Center -124.38274, -140.4144
+
+[[MEASURE]] ((New Method)) For Jiggle With 1 Guides: 203_756 loops, Center 10.453217, 131.22263
+[[MEASURE]] ((New Method)) For Jiggle With 1 Guides: 292_476 loops, Center -124.38274, -140.4144
+[[MEASURE]] ((New Method)) For Jiggle With 1 Guides: 178_615 loops, Center 10.453217, 131.22263
+[[MEASURE]] ((New Method)) For Jiggle With 1 Guides: 258_515 loops, Center -124.38274, -140.4144
+
+
+==== Test 5
+
+[[MEASURE]] ((Old Method)) For Jiggle With 3 Guides: 2_741_636 loops, Center 180.81335, -38.677856
+[[MEASURE]] ((Old Method)) For Jiggle With 3 Guides: 2_670_218 loops, Center -111.31641, -85.474365
+[[MEASURE]] ((Old Method)) For Jiggle With 3 Guides: 2_407_231 loops, Center 180.81335, -38.677856
+[[MEASURE]] ((Old Method)) For Jiggle With 3 Guides: 2_357_693 loops, Center -111.31641, -85.474365
+
+[[MEASURE]] ((New Method)) For Jiggle With 3 Guides: 305_259 loops, Center 180.81335, -38.677856
+[[MEASURE]] ((New Method)) For Jiggle With 3 Guides: 289_025 loops, Center -111.31641, -85.474365
+[[MEASURE]] ((New Method)) For Jiggle With 3 Guides: 270_500 loops, Center 180.81335, -38.677856
+[[MEASURE]] ((New Method)) For Jiggle With 3 Guides: 257_828 loops, Center -111.31641, -85.474365
+
+
+
+
+Note: The way "loops" is measured does not give a perfect indication of speed improvements, but it's close enough to estimate.

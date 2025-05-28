@@ -36,4 +36,13 @@ public struct WeightCurvePointHash: Equatable {//}, Hashable {
             self.isManualTanHandleEnabled = isManualTanHandleEnabled
         }
     
+    public mutating func invalidate() {
+        normalizedTanDirection = Float(0.0)
+        normalizedTanMagnitudeIn = Float(0.0)
+        normalizedTanMagnitudeOut = Float(0.0)
+        isManualHeightEnabled = false
+        normalizedHeightFactor = Float(0.0)
+        isManualTanHandleEnabled = false
+    }
+    
 }

@@ -31,4 +31,8 @@ public struct MeshWeightsHash: Equatable {
         self.guideCenterY = guideCenterY
         self.isDarkMode = isDarkMode
     }
+    
+    public mutating func invalidate() {
+        polyHash.invalidate()
+    }
 }

@@ -69,4 +69,8 @@ public struct SolidLineBufferGuideHash: Equatable {
         self.creatorMode = creatorMode
         self.weightMode = weightMode
     }
+    
+    public mutating func invalidate() {
+        outlineHash.invalidate()
+    }
 }

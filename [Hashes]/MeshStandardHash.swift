@@ -22,4 +22,8 @@ public struct MeshStandardHash: Equatable {
         self.polyHash = polyHash
         self.isDarkMode = isDarkMode
     }
+    
+    public mutating func invalidate() {
+        polyHash.invalidate()
+    }
 }

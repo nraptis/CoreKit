@@ -21,9 +21,6 @@ public class AnimationInstructionGrab: AnimationCommandsCommandable {
     static let snoozeTimeLimit = Float(2.0)
     static let snoozeTickLimit = 3
     
-    //static let speedHiMin = Float(3218.0 * 1.6)
-    //static let speedHiMax = Float(5640.0 * 1.6)
-    
     static let speedHiMin = Float(Device.isPad ? 3780.0 : 5460.0)
     static let speedHiMax = Float(Device.isPad ? 6260.0 : 9800.0)
     

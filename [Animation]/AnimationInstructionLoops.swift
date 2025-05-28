@@ -14,19 +14,7 @@ import Foundation
 public class AnimationInstructionLoops {
     
     typealias Point = Math.Point
-    
-    public static let userLoopDurationMin = Float(0.0)
-    public static let userLoopDurationMax = Float(100.0)
-    public static let userLoopDurationDefault = Float(62.0)
-    
-    public static let userLoopFrameOffsetMin = Float(0.0)
-    public static let userLoopFrameOffsetMax = Float(100.0)
-    public static let userLoopFrameOffsetDefault = Float(0.0)
-    public static let userLoopFrameOffsetZero = userLoopFrameOffsetMin
-    public static let userLoopFrameOffsetQuarter = userLoopFrameOffsetMin + (userLoopFrameOffsetMax - userLoopFrameOffsetMin) * 0.25
-    
-    public static let loopDurationMin = Float(0.24)
-    public static let loopDurationMax = Float(1.78)
+
     
     public var keyFrame = Float(0.0)
     
@@ -51,18 +39,19 @@ public class AnimationInstructionLoops {
                        jiggleDocument: AnimationControllerJiggleDocument,
                        isGyroEnabled: Bool) {
         
-        let userLoopDurationPercentLinear = (animationWad.timeLine.animationDuration - Self.userLoopDurationMin) / (Self.userLoopDurationMax - Self.userLoopDurationMin)
+        let userLoopDurationPercentLinear = AnimationConstants_Loop.duration.getPercent(userValue: animationWad.timeLine.animationDuration)
+        
         let loopDurationPercentLinear = (1.0 - userLoopDurationPercentLinear)
         let loopDurationPercent = Math.mixPercentQuadratic(percent: loopDurationPercentLinear, linearFactor: 0.35)
-        let loopDuration = Self.loopDurationMin + (Self.loopDurationMax - Self.loopDurationMin) * loopDurationPercent
+        let loopDuration = AnimationConstants_Loop.duration.getValueFromPercent(loopDurationPercent)
         
         keyFrame += deltaTime
         while keyFrame >= loopDuration {
             keyFrame -= loopDuration
         }
         
-        let frameOffsetMin = AnimationInstructionLoops.userLoopFrameOffsetMin
-        let frameOffsetDelta = AnimationInstructionLoops.userLoopFrameOffsetMax - AnimationInstructionLoops.userLoopFrameOffsetMin
+        let frameOffsetMin = AnimationConstants_Loop.frameOffset.user_lo
+        let frameOffsetDelta = AnimationConstants_Loop.frameOffset.user_hi - frameOffsetMin
         
         let measurePercentLinear = AnimationWad.getMeasurePercentLinear(measuredSize: animationWad.measuredSize)
         let distanceR2 = AnimationWad.getAnimationCursorFalloffDistance_R2(measurePercentLinear: measurePercentLinear)

@@ -33,6 +33,10 @@ public struct OutlineHash: Equatable {
         self.splineHash = splineHash
         self.lineThicknessType = lineThicknessType
     }
+    
+    public mutating func invalidate() {
+        splineHash.invalidate()
+    }
 }
 
 public struct OutlineHashExtended: Equatable {
@@ -59,6 +63,10 @@ public struct OutlineHashExtended: Equatable {
                              worldScale: worldScale)
         self.splineHash = splineHash
         self.lineThicknessType = lineThicknessType
+    }
+    
+    public mutating func invalidate() {
+        splineHash.invalidate()
     }
 }
 
@@ -95,6 +103,10 @@ public struct OutlineHashGuide: Equatable {
         
         self.lineThicknessType = lineThicknessType
     }
+    
+    public mutating func invalidate() {
+        splineHash.invalidate()
+    }
 }
 
 public struct OutlineHashGuideExtended: Equatable {
@@ -130,5 +142,9 @@ public struct OutlineHashGuideExtended: Equatable {
                                    rotation: jiggleRotation)
         self.splineHash = splineHash
         self.lineThicknessType = lineThicknessType
+    }
+    
+    public mutating func invalidate() {
+        splineHash.invalidate()
     }
 }

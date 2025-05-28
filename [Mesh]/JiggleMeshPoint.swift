@@ -7,6 +7,16 @@
 
 import Foundation
 
+extension JiggleMeshPoint: Hashable {
+    public static func == (lhs: JiggleMeshPoint, rhs: JiggleMeshPoint) -> Bool {
+        lhs === rhs
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(ObjectIdentifier(self))
+    }
+}
+
 public class JiggleMeshPoint {
     
     public var isEdge = false
@@ -32,23 +42,74 @@ public class JiggleMeshPoint {
     
     public var height = Float(0.0)
     
-    public var heightLinear = Float(0.0)
+    //public var heightLinear = Float(0.0)
     
     public var percent = Float(0.0)
     
+    //var bestDistance = Float(0.0)
+    
+    func calculateOuterDistance(guideWeightSegments: [GuideWeightSegment],
+                                              guideWeightSegmentCount: Int) {
+        
+        if guideWeightSegmentCount <= 0 {
+            print("**Shouldn't Happen, how can there be no segment?")
+            distanceOuter = Float(0.0)
+        }
+        
+        var _bestDistanceSquared = Float(100_000_000.0)
+        for guideWeightSegmentIndex in 0..<guideWeightSegmentCount {
+            let guideWeightSegment = guideWeightSegments[guideWeightSegmentIndex]
+            let distanceSquared = guideWeightSegment.distanceSquaredToClosestPoint(baseX, baseY)
+            if distanceSquared < _bestDistanceSquared {
+                _bestDistanceSquared = distanceSquared
+            }
+        }
+        
+        if _bestDistanceSquared > Math.epsilon {
+            distanceOuter = sqrtf(_bestDistanceSquared)
+        } else {
+            distanceOuter = Float(0.0)
+        }
+    }
+    
+    func calculateInnerDistance(guideWeightSegments: [GuideWeightSegment],
+                                              guideWeightSegmentCount: Int) {
+        
+        if guideWeightSegmentCount <= 0 {
+            print("**Shouldn't Happen, how can there be no segment?")
+            distanceInner = Float(0.0)
+        }
+        
+        var _bestDistanceSquared = Float(100_000_000.0)
+        for guideWeightSegmentIndex in 0..<guideWeightSegmentCount {
+            let guideWeightSegment = guideWeightSegments[guideWeightSegmentIndex]
+            let distanceSquared = guideWeightSegment.distanceSquaredToClosestPoint(baseX, baseY)
+            if distanceSquared < _bestDistanceSquared {
+                _bestDistanceSquared = distanceSquared
+            }
+        }
+        
+        if _bestDistanceSquared > Math.epsilon {
+            distanceInner = sqrtf(_bestDistanceSquared)
+        } else {
+            distanceInner = Float(0.0)
+        }
+    }
+    
     // These are used on a level pass, subject to change.
-    public var distance = Float(0.0)
+    var distanceWeightCenter = Float(0.0)
+    
     //var distancePercent = Float(0.0)
     
-    public var percentInner = Float(0.0)
+    //public var percentInner = Float(0.0)
     public var percentOuter = Float(1.0)
     
     public var distanceInner = Float(0.0)
     public var distanceOuter = Float(0.0)
     
-    public var distanceFromEdge = Float(0.0)
+    //public var distanceFromEdge = Float(0.0)
     
-    public var level = 0
+    public var depth = 0
     
     public func updateActive(amountX: Float,
                       amountY: Float,

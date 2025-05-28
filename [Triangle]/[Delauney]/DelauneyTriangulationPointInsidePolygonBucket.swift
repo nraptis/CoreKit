@@ -45,7 +45,7 @@ final class DelauneyTriangulationPointInsidePolygonBucket {
         
     }
     
-    private static let countH = 24
+    private static let countH = 64
     
     private var nodes = [DelauneyTriangulationPointInsidePolygonBucketNode]()
     private var gridX: [Float]

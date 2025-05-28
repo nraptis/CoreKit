@@ -27,8 +27,8 @@ public class JiggleMeshPartsFactory {
     var jiggleMeshPointCount = 0
     func depositJiggleMeshPoint(_ jiggleMeshPoint: JiggleMeshPoint) {
         
-        jiggleMeshPoint.distanceFromEdge = 0.0
-        jiggleMeshPoint.level = 0
+        //jiggleMeshPoint.distanceFromEdge = 0.0
+        jiggleMeshPoint.depth = 0
         
         while jiggleMeshPoints.count <= jiggleMeshPointCount {
             jiggleMeshPoints.append(jiggleMeshPoint)

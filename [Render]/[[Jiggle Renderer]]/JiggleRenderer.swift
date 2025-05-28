@@ -785,11 +785,11 @@ public class JiggleRenderer {
     public func refreshLines(universeScaleInverse: Float) {
         let lineThicknessType = LinePointSizes.userLineThicknessType
         lineWidthFillBase = LinePointSizes.getLineThicknessFill(lineThicknessType: lineThicknessType,
-                                                                isPad: Device.isPad,
-                                                                universeScaleInverse: universeScaleInverse) * 0.5
+                                                                isPad: Device.isPad) * 0.5
+                                                                //universeScaleInverse: universeScaleInverse) * 0.5
         lineWidthStrokeBase = LinePointSizes.getLineThicknessStroke(lineThicknessType: lineThicknessType,
-                                                                    isPad: Device.isPad,
-                                                                    universeScaleInverse: universeScaleInverse) * 0.5
+                                                                    isPad: Device.isPad) * 0.5
+                                                                    //universeScaleInverse: universeScaleInverse) * 0.5
     }
     
     public func load(graphics: Graphics,

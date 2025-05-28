@@ -11,6 +11,8 @@ import Foundation
 
 public struct PolyHash: Equatable {
     
+    
+    
     public init() {
         
     }
@@ -21,5 +23,10 @@ public struct PolyHash: Equatable {
                          triangulationType: TriangulationType) {
         self.splineHash = splineHash
         self.triangulationType = triangulationType
+    }
+    
+    public mutating func invalidate() {
+        splineHash.invalidate()
+        triangulationType = .none
     }
 }

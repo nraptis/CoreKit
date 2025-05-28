@@ -244,6 +244,7 @@ public struct Math {
         if result < 0.0 { result = 0.0 }
         return result
     }
+
     
     public struct Point: CustomStringConvertible, PointProtocol {
         public var x: Float

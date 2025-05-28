@@ -42,10 +42,9 @@ public final class GuideWeightPointInsidePolygonBucket {
             guideWeightSegments[guideWeightSegmentCount] = guideWeightSegment
             guideWeightSegmentCount += 1
         }
-        
     }
     
-    private static let countH = 24
+    private static let countH = 64
     
     private var nodes = [GuideWeightPointInsidePolygonBucketNode]()
     private var gridX: [Float]

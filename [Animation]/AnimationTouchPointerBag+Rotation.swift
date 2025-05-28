@@ -328,9 +328,12 @@ extension AnimationTouchPointerBag {
         if rotationPercent < 0.0 { rotationPercent = 0.0 }
         
         // Not we get into a range [-180.0...180.0]
-        let angleMin = AnimationInstructionContinuous.userContinuousRotationMin
-        let angleMax = AnimationInstructionContinuous.userContinuousRotationMax
-        animationWad.continuousStartRotation = angleMin + (angleMax - angleMin) * rotationPercent
+        //let angleMin = AnimationInstructionContinuous.userContinuousRotationMin
+        //let angleMax = AnimationInstructionContinuous.userContinuousRotationMax
+        //animationWad.continuousStartRotation = angleMin + (angleMax - angleMin) * rotationPercent
+        animationWad.continuousStartRotation = AnimationConstants_Continuous.startRotation.getUserValueFromPercent(rotationPercent)
+        
+        
         
         // This will trigger the slider to update, that is all.
         // It's also the reason we're on the main actor...

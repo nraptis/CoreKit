@@ -44,9 +44,9 @@ public class WeightCurve {
                                      tanFactorWeightCurve: Float,
                                      tanFactorWeightCurveAuto: Float,
                                      weightCurvePointStart: WeightCurvePoint,
-                                     owningList: [Guide],
-                                     owningListCount: Int,
+                                     weightCurvePointMiddle: WeightCurvePoint,
                                      weightCurvePointEnd: WeightCurvePoint) {
+        
         self.paddingH = paddingH
         self.paddingV = paddingV
         
@@ -72,11 +72,7 @@ public class WeightCurve {
         
 
         addWeightCurvePoint(weightCurvePointStart)
-        for guideIndex in 0..<owningListCount {
-            let owner = owningList[guideIndex]
-            let weightCurvePoint = owner.weightCurvePoint
-            addWeightCurvePoint(weightCurvePoint)
-        }
+        addWeightCurvePoint(weightCurvePointMiddle)
         addWeightCurvePoint(weightCurvePointEnd)
         
         switch resetType {
@@ -480,7 +476,11 @@ public class WeightCurve {
                             if tempY < 0.0 { tempY = 0.0 }
                             if tempY > 1.0 { tempY = 1.0 }
                             weightCurvePoint.holdY = tempY
+                        } else {
+                            weightCurvePoint.holdY = weightCurvePoint.tempY
                         }
+                    } else {
+                        weightCurvePoint.holdY = weightCurvePoint.tempY
                     }
                 }
             }

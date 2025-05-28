@@ -73,11 +73,12 @@ public extension Jiggle {
                     let isGuideSelected = (guideIndex == selectedGuideIndex)
                     let isGuideFrozen = guide.isFrozen
                     let lineThicknessStroke = LinePointSizes.getLineThicknessStroke(lineThicknessType: lineThicknessType,
-                                                                                    isPad: Device.isPad,
-                                                                                    universeScaleInverse: universeScaleInverse)
+                                                                                    isPad: Device.isPad)
+                                                                                    //universeScaleInverse: universeScaleInverse)
                     let lineThicknessFill = LinePointSizes.getLineThicknessFill(lineThicknessType: lineThicknessType,
-                                                                                isPad: Device.isPad,
-                                                                                universeScaleInverse: universeScaleInverse)
+                                                                                isPad: Device.isPad)
+                                                                                //universeScaleInverse: universeScaleInverse)
+                    
                     guide.execute(guideCommand: guideCommand,
                                   worldScaleStandard: worldScaleStandard,
                                   worldScalePrecise: worldScalePrecise,
@@ -160,11 +161,11 @@ public extension Jiggle {
                 let isGuideSelected = (guideIndex == selectedGuideIndex)
                 let isGuideFrozen = guide.isFrozen
                 let lineThicknessStroke = LinePointSizes.getLineThicknessStroke(lineThicknessType: lineThicknessType,
-                                                                                isPad: Device.isPad,
-                                                                                universeScaleInverse: universeScaleInverse)
+                                                                                isPad: Device.isPad)
+                                                                                //universeScaleInverse: universeScaleInverse)
                 let lineThicknessFill = LinePointSizes.getLineThicknessFill(lineThicknessType: lineThicknessType,
-                                                                            isPad: Device.isPad,
-                                                                            universeScaleInverse: universeScaleInverse)
+                                                                            isPad: Device.isPad)
+                                                                            //universeScaleInverse: universeScaleInverse)
                 if guide === targetGuide {
                     guide.execute(guideCommand: guideCommandForTarget,
                                   worldScaleStandard: worldScaleStandard,
@@ -252,8 +253,7 @@ public extension Jiggle {
                                         paddingH: graphPaddingH,
                                         paddingV: graphPaddingV,
                                         weightCurvePointStart: weightCurvePointStart,
-                                        owningList: guides,
-                                        owningListCount: guideCount,
+                                        weightCurvePointMiddle: weightCurvePointMiddle,
                                         weightCurvePointEnd: weightCurvePointEnd)
             if checkWeightCurveHash != currentHashWeightCurve {
                 refreshWeightCurve(graphWidth: graphWidth,
@@ -641,9 +641,9 @@ public extension Jiggle {
     }
     
     private func refreshMeshWeightsOnly() {
-        
         jiggleMesh.refreshMeshWeightsOnly(weightCurveMapperNodes: weightCurve.mapper.weightCurveMapperNodes,
-                                          weightCurveMapperNodeCount: weightCurve.mapper.weightCurveMapperNodeCount)
+                                          weightCurveMapperNodeCount: weightCurve.mapper.weightCurveMapperNodeCount,
+                                          guideCount: guideCount)
         currentHashTrianglesStandard.invalidate()
         currentHashTrianglesSwivel.invalidate()
         currentHashTrianglesWeights.invalidate()
@@ -738,18 +738,18 @@ public extension Jiggle {
         
         solidLineBufferRegularBloom.removeAll(keepingCapacity: true)
         solidLineBufferRegularBloom.thickness = LinePointSizes.getLineThicknessStroke(lineThicknessType: lineThicknessType,
-                                                                                      isPad: Device.isPad,
-                                                                                      universeScaleInverse: universeScaleInverse)
+                                                                                      isPad: Device.isPad)
+                                                                                      //universeScaleInverse: universeScaleInverse)
         
         solidLineBufferRegularStroke.removeAll(keepingCapacity: true)
         solidLineBufferRegularStroke.thickness = LinePointSizes.getLineThicknessStroke(lineThicknessType: lineThicknessType,
-                                                                                       isPad: Device.isPad,
-                                                                                       universeScaleInverse: universeScaleInverse)
+                                                                                       isPad: Device.isPad)
+                                                                                       //universeScaleInverse: universeScaleInverse)
         
         solidLineBufferRegularFill.removeAll(keepingCapacity: true)
         solidLineBufferRegularFill.thickness = LinePointSizes.getLineThicknessFill(lineThicknessType: lineThicknessType,
-                                                                                   isPad: Device.isPad,
-                                                                                   universeScaleInverse: universeScaleInverse)
+                                                                                   isPad: Device.isPad)
+                                                                                   //universeScaleInverse: universeScaleInverse)
         
         for outlineJiggleWeightPointIndex in 0..<outlineJiggleWeightPointCount {
             let outlineJiggleWeightPoint = outlineJiggleWeightPoints[outlineJiggleWeightPointIndex]

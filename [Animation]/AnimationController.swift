@@ -33,7 +33,8 @@ public protocol AnimationControllerJiggleDocument: AnyObject {
 }
 
 public protocol AnimationControllerJiggleViewModel: AnyObject {
-    @MainActor func continuousRealizeJiggleDidStartGrab()
+    @MainActor func continuousRealizeJiggleDidStartGrab(jiggle: Jiggle)
+    @MainActor func continuousRealizeJiggleDidUpdateGrab(jiggle: Jiggle)
     @MainActor func continuousRealizeJiggleDidStopGrab(jiggle: Jiggle)
 }
 
@@ -46,6 +47,15 @@ public class AnimationController {
     public init() {
         
     }
+    
+    static func mirrorAngle(_ angle: Float) -> Float {
+        return angle
+    }
+    
+    static func mirrorSwoop(_ angle: Float) -> Float {
+        return angle
+    }
+    
     
     typealias Point = Math.Point
     typealias Vector = Math.Vector
@@ -274,15 +284,19 @@ public class AnimationController {
                                                                                  animationTouchCount: animationTouchCount)
                 jiggle.animationWad.captureTouchCountContinuousAfter = animationTouchesCount(jiggle: jiggle, format: .continuous)
                 if (jiggle.animationWad.captureTouchCountContinuousBefore <= 0) && (jiggle.animationWad.captureTouchCountContinuousAfter >= 1) {
-                    jiggle.animationWad.snapShotContinuousDragHistory()
-                    jiggle.animationWad.isCaptureActiveContinuous = true
-                    jiggleViewModel.continuousRealizeJiggleDidStartGrab()
+                    //jiggle.animationWad.snapShotContinuousDragHistory()
+                    //jiggle.animationWad.isCaptureActiveContinuous = true
+                    jiggleViewModel.continuousRealizeJiggleDidStartGrab(jiggle: jiggle)
                 }
+                
+                if (jiggle.animationWad.captureTouchCountContinuousBefore > 0) || (jiggle.animationWad.captureTouchCountContinuousAfter > 0) {
+                    jiggleViewModel.continuousRealizeJiggleDidUpdateGrab(jiggle: jiggle)
+                }
+                
+                
                 if (jiggle.animationWad.captureTouchCountContinuousBefore >= 1) && (jiggle.animationWad.captureTouchCountContinuousAfter <= 0) {
-                    jiggle.animationWad.isCaptureActiveContinuous = false
-                    animationWad.animationInstructionContinuous.captureContinuousStartConditions(animationWad: animationWad,
-                                                                                                 jiggleDocument: jiggleDocument)
-                    animationWad.animationInstructionContinuous.snapToAnimationStartFrame(animationWad: animationWad)
+                    //jiggle.animationWad.isCaptureActiveContinuous = false
+                    
                     jiggleViewModel.continuousRealizeJiggleDidStopGrab(jiggle: jiggle)
                 }
             case .loops:

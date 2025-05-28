@@ -32,7 +32,6 @@ public class TimeLineChannel {
     public let controlPointCount: Int
     public let channelIndex: Int
     public let swatch: Swatch
-    public let dummyControlPoint = TimeLineControlPoint()
     public init(controlPointCount: Int,
                 channelIndex: Int,
                 swatch: Swatch,

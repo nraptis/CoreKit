@@ -16,8 +16,8 @@ public extension Jiggle {
                                                               paddingH: Float,
                                                               paddingV: Float,
                                                        tanFactorWeightCurve: Float) {
-        selectedWeightCurveGraphIndex = getGraphIndex(weightCurveIndex: selectedWeightCurveIndex)
-        if getSelectedWeightCurvePointBasedOnGraphIndex() !== nil {
+        
+        if let selectedWeightCurvePoint = getSelectedWeightCurvePoint() {
             weightCurve.refreshSpline(frameWidth: frameWidth,
                                       frameHeight: frameHeight,
                                       paddingH: paddingH,

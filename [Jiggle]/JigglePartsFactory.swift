@@ -39,32 +39,7 @@ public class JigglePartsFactory {
     var jiggleCount = 0
     public func depositJiggle(_ jiggle: Jiggle) {
         
-        jiggle.center.x = 0.0
-        jiggle.center.y = 0.0
         
-        jiggle.offsetCenter.x = 0.0
-        jiggle.offsetCenter.y = 0.0
-        
-        jiggle.scale = 1.0
-        jiggle.rotation = 0.0
-        
-        jiggle.guideCenter.x = 0.0
-        jiggle.guideCenter.y = 0.0
-        
-        jiggle.selectedJigglePointIndex = -1
-        jiggle.selectedWeightCurveIndex = -1
-        jiggle.selectedWeightCurveGraphIndex = -1
-        
-        jiggle.animationWad.measuredSize = AnimationWad.midMeasuredSize
-        
-        jiggle.isFrozen = false
-        
-        jiggle.weightCurvePointStart.isManualHeightEnabled = false
-        jiggle.weightCurvePointStart.isManualTanHandleEnabled = false
-        jiggle.weightCurvePointEnd.isManualHeightEnabled = false
-        jiggle.weightCurvePointEnd.isManualTanHandleEnabled = false
-        
-        jiggle.didUpdate = false
         
         depositJiggleContent(jiggle)
         
@@ -78,33 +53,57 @@ public class JigglePartsFactory {
     
     public func depositJiggleContent(_ jiggle: Jiggle) {
         
-        jiggle.polyMesh.ring.isBroken = false
+        //jiggle.polyMesh.ring.isBroken = false
         
+        jiggle.resetAll_Unsafe()
+        
+        /*
         jiggle.jiggleMesh.purge()
         jiggle.purgeJigglePoints()
         jiggle.purgeGuides()
         jiggle.purgeOutlineJiggleWeightPoints()
         jiggle.purgeOutlineJiggleWeightSegments()
         
-        for channelIndex in 0..<jiggle.animationWad.timeLine.swatchPositionX.channelCount {
-            let channel = jiggle.animationWad.timeLine.swatchPositionX.channels[channelIndex]
-            channel.purgeTempPrecomputedLineSegments()
-        }
+        jiggle.center.x = 0.0
+        jiggle.center.y = 0.0
         
-        for channelIndex in 0..<jiggle.animationWad.timeLine.swatchPositionY.channelCount {
-            let channel = jiggle.animationWad.timeLine.swatchPositionY.channels[channelIndex]
-            channel.purgeTempPrecomputedLineSegments()
-        }
+        jiggle.offsetCenter.x = 0.0
+        jiggle.offsetCenter.y = 0.0
         
-        for channelIndex in 0..<jiggle.animationWad.timeLine.swatchScale.channelCount {
-            let channel = jiggle.animationWad.timeLine.swatchScale.channels[channelIndex]
-            channel.purgeTempPrecomputedLineSegments()
-        }
+        jiggle.scale = 1.0
+        jiggle.rotation = 0.0
         
-        for channelIndex in 0..<jiggle.animationWad.timeLine.swatchRotation.channelCount {
-            let channel = jiggle.animationWad.timeLine.swatchRotation.channels[channelIndex]
-            channel.purgeTempPrecomputedLineSegments()
-        }
+        jiggle.guideCenter.x = 0.0
+        jiggle.guideCenter.y = 0.0
+        
+        jiggle.deselectAll_Unsafe()
+        
+        jiggle.animationWad.measuredSize = AnimationWad.midMeasuredSize
+        
+        jiggle.isFrozen = false
+        
+        jiggle.currentHashSpline.invalidate()
+        jiggle.currentHashPoly.invalidate()
+        jiggle.currentHashMeshStandard.invalidate()
+        jiggle.currentHashMeshWeights.invalidate()
+        jiggle.currentHashOutline.invalidate()
+        jiggle.currentHashSolidLineBufferStandard.invalidate()
+        jiggle.currentHashSolidLineBufferPrecise.invalidate()
+        jiggle.currentHashWeightCurve.invalidate()
+        jiggle.currentHashTrianglesStandard.invalidate()
+        jiggle.currentHashTrianglesWeights.invalidate()
+        jiggle.currentHashTrianglesSwivel.invalidate()
+        jiggle.currentHashTrianglesViewStandard.invalidate()
+        jiggle.currentHashTrianglesViewStereoscopic.invalidate()
+        
+        jiggle.weightCurvePointStart.reset()
+        jiggle.weightCurvePointMiddle.reset()
+        jiggle.weightCurvePointEnd.reset()
+        
+        jiggle.didUpdate = false
+        */
+        
+        
     }
     
     public func withdrawJiggle(circleSpriteFactory: CircleSpriteFactory,
@@ -112,13 +111,18 @@ public class JigglePartsFactory {
         if jiggleCount > 0 {
             jiggleCount -= 1
             let result = jiggles[jiggleCount]
+            result.weightCurvePointStart.reset()
+            result.weightCurvePointEnd.reset()
             let jiggleRenderer = (result.renderer as! JiggleRenderer)
             jiggleRenderer.refreshPoints(circleSpriteFactory: circleSpriteFactory)
             jiggleRenderer.refreshLines(universeScaleInverse: universeScaleInverse)
-            return jiggles[jiggleCount]
+            
+            return result
         }
         let renderer = JiggleRenderer()
         let result = Jiggle()
+        result.weightCurvePointStart.reset()
+        result.weightCurvePointEnd.reset()
         result.renderer = renderer
         renderer.refreshPoints(circleSpriteFactory: circleSpriteFactory)
         renderer.refreshLines(universeScaleInverse: universeScaleInverse)
@@ -149,8 +153,15 @@ public class JigglePartsFactory {
         guide.isFrozen = false
         guide.isBroken = false
         
-        guide.weightCurvePoint.isManualHeightEnabled = false
-        guide.weightCurvePoint.isManualTanHandleEnabled = false
+        guide.currentHashSpline.invalidate()
+        guide.currentHashOutline.invalidate()
+        guide.currentHashSolidLineBufferStandard.invalidate()
+        guide.currentHashSolidLineBufferPrecise.invalidate()
+        
+        //guide.weightCurvePoint.reset()
+        
+        //guide.weightCurvePoint.isManualHeightEnabled = false
+        //guide.weightCurvePoint.isManualTanHandleEnabled = false
 
         
         guides[guideCount] = guide
