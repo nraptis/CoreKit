@@ -10,6 +10,19 @@ import Metal
 
 public class JiggleMesh {
     
+    public private(set) var widthNaturalized = Float(1024.0)
+    public private(set) var heightNaturalized = Float(1024.0)
+    
+    public private(set) var meshMinX = Float(0.0)
+    public private(set) var meshMaxX = Float(0.0)
+    public private(set) var meshMinY = Float(0.0)
+    public private(set) var meshMaxY = Float(0.0)
+    
+    var baseMinX = Float(0.0)
+    var baseMaxX = Float(0.0)
+    var baseMinY = Float(0.0)
+    var baseMaxY = Float(0.0)
+    
     public var editBufferStandardRegular = IndexedShapeBuffer2DColored()
     public var editBufferWeightsRegular = IndexedShapeBuffer2DColored()
     public var editBufferStandardPrecise = IndexedShapeBuffer2DColored()
@@ -21,10 +34,6 @@ public class JiggleMesh {
     public var viewBuffer = IndexedSpriteBuffer3D()
     public var viewBufferStereoscopic = IndexedSpriteBuffer3DStereoscopic()
     
-    public init() {
-        
-    }
-    
     public private(set) var indices = [UInt32]()
     public private(set) var indexCount = 0
     
@@ -33,6 +42,10 @@ public class JiggleMesh {
     public static let heightFactorPhonePortrait = Float(0.80)
     public static let heightFactorPhoneLandscape = Float(0.65)
     public static let heightFactorPad = Float(0.85)
+    
+    public init() {
+        
+    }
     
     public var jiggleMeshPoints = [JiggleMeshPoint]()
     public var jiggleMeshPointCount = 0
@@ -50,12 +63,6 @@ public class JiggleMesh {
         }
         jiggleMeshPointCount = 0
     }
-    
-    var baseMinX = Float(0.0)
-    var baseMaxX = Float(0.0)
-    
-    var baseMinY = Float(0.0)
-    var baseMaxY = Float(0.0)
     
     var level_0_MeshPoints = [JiggleMeshPoint]()
     var level_0_MeshPointCount = 0
@@ -95,7 +102,6 @@ public class JiggleMesh {
     func purgeLevel_2_MeshPoints() {
         level_2_MeshPointCount = 0
     }
-    
     
     var level_3_MeshPoints = [JiggleMeshPoint]()
     var level_3_MeshPointCount = 0
@@ -187,77 +193,6 @@ public class JiggleMesh {
         guideWeightPointCount = 0
     }
     
-    
-    /*
-    var examineJiggleMeshPoints = [JiggleMeshPoint]()
-    var examineJiggleMeshPointCount = 0
-    func addExaineJiggleMeshPoint(_ examineJiggleMeshPoint: JiggleMeshPoint) {
-        while examineJiggleMeshPoints.count <= examineJiggleMeshPointCount {
-            examineJiggleMeshPoints.append(examineJiggleMeshPoint)
-        }
-        examineJiggleMeshPoints[examineJiggleMeshPointCount] = examineJiggleMeshPoint
-        examineJiggleMeshPointCount += 1
-    }
-    func resetExaineJiggleMeshPoints() {
-        examineJiggleMeshPointCount = 0
-    }
-    
-    func calculateExaminePoints() {
-        resetExaineJiggleMeshPoints()
-        for jiggleMeshPointIndex in 0..<jiggleMeshPointCount {
-            let jiggleMeshPoint = jiggleMeshPoints[jiggleMeshPointIndex]
-            addExaineJiggleMeshPoint(jiggleMeshPoint)
-        }
-    }
-    
-    
-    func calculateExaminePoints(level: Int) {
-        resetExaineJiggleMeshPoints()
-        
-        if level == 0 {
-            for jiggleMeshPointIndex in 0..<level_0_MeshPointCount {
-                let jiggleMeshPoint = level_0_MeshPoints[jiggleMeshPointIndex]
-                addExaineJiggleMeshPoint(jiggleMeshPoint)
-            }
-        } else if level == 1 {
-            for jiggleMeshPointIndex in 0..<level_1_MeshPointCount {
-                let jiggleMeshPoint = level_1_MeshPoints[jiggleMeshPointIndex]
-                addExaineJiggleMeshPoint(jiggleMeshPoint)
-            }
-        } else if level == 2 {
-            for jiggleMeshPointIndex in 0..<level_2_MeshPointCount {
-                let jiggleMeshPoint = level_2_MeshPoints[jiggleMeshPointIndex]
-                addExaineJiggleMeshPoint(jiggleMeshPoint)
-            }
-        } else if level == 3 {
-            for jiggleMeshPointIndex in 0..<level_3_MeshPointCount {
-                let jiggleMeshPoint = level_3_MeshPoints[jiggleMeshPointIndex]
-                addExaineJiggleMeshPoint(jiggleMeshPoint)
-            }
-        } else if level == 4 {
-            for jiggleMeshPointIndex in 0..<level_4_MeshPointCount {
-                let jiggleMeshPoint = level_4_MeshPoints[jiggleMeshPointIndex]
-                addExaineJiggleMeshPoint(jiggleMeshPoint)
-            }
-        } else {
-            for jiggleMeshPointIndex in 0..<level_5_MeshPointCount {
-                let jiggleMeshPoint = level_5_MeshPoints[jiggleMeshPointIndex]
-                addExaineJiggleMeshPoint(jiggleMeshPoint)
-            }
-        }
-        
-        
-        /*
-         for jiggleMeshPointIndex in 0..<jiggleMeshPointCount {
-         let jiggleMeshPoint = jiggleMeshPoints[jiggleMeshPointIndex]
-         if jiggleMeshPoint.level == level {
-         addExaineJiggleMeshPoint(jiggleMeshPoint)
-         }
-         }
-         */
-    }
-    */
-    
     public func handleShapeUpdate(ringLineSegments: [RingLineSegment],
                                   ringLineSegmentCount: Int,
                                   ringPoints: [RingPoint],
@@ -296,9 +231,6 @@ public class JiggleMesh {
             return 0.0
         }
     }
-    
-    var widthNaturalized = Float(1024.0)
-    var heightNaturalized = Float(1024.0)
     
     public func load(graphics: Graphics,
                      backgroundSprite: Sprite,
@@ -357,10 +289,6 @@ public class JiggleMesh {
         }
     }
     
-    public var meshMinX = Float(0.0)
-    public var meshMaxX = Float(0.0)
-    public var meshMinY = Float(0.0)
-    public var meshMaxY = Float(0.0)
     public func refreshMeshStandard(triangleData: PolyMeshTriangleData,
                                     jiggleCenter: Math.Point,
                                     jiggleScale: Float,
@@ -391,11 +319,6 @@ public class JiggleMesh {
                     jiggleScale: jiggleScale,
                     jiggleRotation: jiggleRotation)
         
-        // This is where we want to do the buckets...
-        
-        
-        
-        
         calculateMeshPointLevels(sortedGuides: sortedGuides,
                                  sortedGuideCount: sortedGuideCount)
         
@@ -403,12 +326,12 @@ public class JiggleMesh {
                               sortedGuideCount: sortedGuideCount)
         
         calculateMeshPointOuterPercents(sortedGuides: sortedGuides,
-                                         sortedGuideCount: sortedGuideCount,
-                                         landscape: landscape,
-                                         scale: scale,
-                                         isPad: isIpad,
-                                         guideCenterX: guideCenterX,
-                                         guideCenterY: guideCenterY)
+                                        sortedGuideCount: sortedGuideCount,
+                                        landscape: landscape,
+                                        scale: scale,
+                                        isPad: isIpad,
+                                        guideCenterX: guideCenterX,
+                                        guideCenterY: guideCenterY)
         calculateHeights(weightCurveMapperNodes: weightCurveMapperNodes,
                          weightCurveMapperNodeCount: weightCurveMapperNodeCount,
                          guideCount: sortedGuideCount)
@@ -542,10 +465,8 @@ public class JiggleMesh {
                 if jiggleMeshPoint.baseY > baseMaxY {
                     baseMaxY = jiggleMeshPoint.baseY
                 }
-                
             }
         }
-        
         
         refreshTransform(jiggleCenter: jiggleCenter, jiggleScale: jiggleScale, jiggleRotation: jiggleRotation)
     }
@@ -618,12 +539,12 @@ public class JiggleMesh {
         let index: Int
         let percent: Float
     }
-
+    
     private func getWeightLocation(lhs: Float,
-                                                    gp1: Float,
-                                                    percentOuter: Float) -> WeightLocation {
+                                   gp1: Float,
+                                   bleed: Float) -> WeightLocation {
         
-        let percent = lhs + percentOuter * gp1
+        let percent = lhs + bleed * gp1
         if percent > 0.5 {
             let percent = (percent - 0.5) * 2.0
             return WeightLocation(index: 1, percent: percent)
@@ -643,7 +564,7 @@ public class JiggleMesh {
         
         for pointIndex in 0..<level_0_MeshPointCount {
             let jiggleMeshPoint = level_0_MeshPoints[pointIndex]
-            let slot = getWeightLocation(lhs: lhs, gp1: gp1, percentOuter: jiggleMeshPoint.percentOuter)
+            let slot = getWeightLocation(lhs: lhs, gp1: gp1, bleed: jiggleMeshPoint.bleed)
             let weightCurveMapperNode = weightCurveMapperNodes[slot.index]
             let measuredY = weightCurveMapperNode.getY(x: slot.percent)
             jiggleMeshPoint.height = measuredY * heightMaximum
@@ -652,7 +573,7 @@ public class JiggleMesh {
         lhs = Float(1.0) / nc_a
         for pointIndex in 0..<level_1_MeshPointCount {
             let jiggleMeshPoint = level_1_MeshPoints[pointIndex]
-            let slot = getWeightLocation(lhs: lhs, gp1: gp1, percentOuter: jiggleMeshPoint.percentOuter)
+            let slot = getWeightLocation(lhs: lhs, gp1: gp1, bleed: jiggleMeshPoint.bleed)
             let weightCurveMapperNode = weightCurveMapperNodes[slot.index]
             let measuredY = weightCurveMapperNode.getY(x: slot.percent)
             jiggleMeshPoint.height = measuredY * heightMaximum
@@ -661,7 +582,7 @@ public class JiggleMesh {
         lhs = Float(2.0) / nc_a
         for pointIndex in 0..<level_2_MeshPointCount {
             let jiggleMeshPoint = level_2_MeshPoints[pointIndex]
-            let slot = getWeightLocation(lhs: lhs, gp1: gp1, percentOuter: jiggleMeshPoint.percentOuter)
+            let slot = getWeightLocation(lhs: lhs, gp1: gp1, bleed: jiggleMeshPoint.bleed)
             let weightCurveMapperNode = weightCurveMapperNodes[slot.index]
             let measuredY = weightCurveMapperNode.getY(x: slot.percent)
             jiggleMeshPoint.height = measuredY * heightMaximum
@@ -670,7 +591,7 @@ public class JiggleMesh {
         lhs = Float(3.0) / nc_a
         for pointIndex in 0..<level_3_MeshPointCount {
             let jiggleMeshPoint = level_3_MeshPoints[pointIndex]
-            let slot = getWeightLocation(lhs: lhs, gp1: gp1, percentOuter: jiggleMeshPoint.percentOuter)
+            let slot = getWeightLocation(lhs: lhs, gp1: gp1, bleed: jiggleMeshPoint.bleed)
             let weightCurveMapperNode = weightCurveMapperNodes[slot.index]
             let measuredY = weightCurveMapperNode.getY(x: slot.percent)
             jiggleMeshPoint.height = measuredY * heightMaximum
@@ -679,7 +600,7 @@ public class JiggleMesh {
         lhs = Float(4.0) / nc_a
         for pointIndex in 0..<level_4_MeshPointCount {
             let jiggleMeshPoint = level_4_MeshPoints[pointIndex]
-            let slot = getWeightLocation(lhs: lhs, gp1: gp1, percentOuter: jiggleMeshPoint.percentOuter)
+            let slot = getWeightLocation(lhs: lhs, gp1: gp1, bleed: jiggleMeshPoint.bleed)
             let weightCurveMapperNode = weightCurveMapperNodes[slot.index]
             let measuredY = weightCurveMapperNode.getY(x: slot.percent)
             jiggleMeshPoint.height = measuredY * heightMaximum
@@ -688,7 +609,7 @@ public class JiggleMesh {
         lhs = Float(5.0) / nc_a
         for pointIndex in 0..<level_5_MeshPointCount {
             let jiggleMeshPoint = level_5_MeshPoints[pointIndex]
-            let slot = getWeightLocation(lhs: lhs, gp1: gp1, percentOuter: jiggleMeshPoint.percentOuter)
+            let slot = getWeightLocation(lhs: lhs, gp1: gp1, bleed: jiggleMeshPoint.bleed)
             let weightCurveMapperNode = weightCurveMapperNodes[slot.index]
             let measuredY = weightCurveMapperNode.getY(x: slot.percent)
             jiggleMeshPoint.height = measuredY * heightMaximum
@@ -821,16 +742,15 @@ public class JiggleMesh {
             guide.guideWeightSegmentBucket.prepareForPoints_Outer(jiggleMeshPoints: level_5_MeshPoints,
                                                                   jiggleMeshPointCount: level_5_MeshPointCount)
         }
-        
     }
     
     private func calculateMeshPointOuterPercents(sortedGuides: [Guide],
-                                                  sortedGuideCount: Int,
-                                                  landscape: Bool,
-                                                  scale: Float,
-                                                  isPad: Bool,
-                                                  guideCenterX: Float,
-                                                  guideCenterY: Float) {
+                                                 sortedGuideCount: Int,
+                                                 landscape: Bool,
+                                                 scale: Float,
+                                                 isPad: Bool,
+                                                 guideCenterX: Float,
+                                                 guideCenterY: Float) {
         
         guideWeightSegmentBucket.calculateOuterDistance(fallbackSegments: guideWeightSegments,
                                                         fallbackSegmentCount: guideWeightSegmentCount)
@@ -844,15 +764,10 @@ public class JiggleMesh {
         }
         
         let guide0 = sortedGuides[0]
-        
-        guideWeightSegmentBucket.crossValidateOuterInner(otherBucker: guide0.guideWeightSegmentBucket)
-        
         guide0.guideWeightSegmentBucket.calculateOuterDistance(fallbackSegments: guide0.guideWeightSegments,
                                                                fallbackSegmentCount: guide0.guideWeightSegmentCount)
-        
         guide0.guideWeightSegmentBucket.calculateInnerDistance(fallbackSegments: guide0.guideWeightSegments,
                                                                fallbackSegmentCount: guide0.guideWeightSegmentCount)
-        
         guideWeightSegmentBucket.blendOuterWithInner()
         
         if sortedGuideCount <= 1 {
@@ -863,14 +778,10 @@ public class JiggleMesh {
         }
         
         let guide1 = sortedGuides[1]
-        guide0.guideWeightSegmentBucket.crossValidateOuterInner(otherBucker: guide1.guideWeightSegmentBucket)
-        
         guide1.guideWeightSegmentBucket.calculateOuterDistance(fallbackSegments: guide1.guideWeightSegments,
                                                                fallbackSegmentCount: guide1.guideWeightSegmentCount)
-        
         guide1.guideWeightSegmentBucket.calculateInnerDistance(fallbackSegments: guide1.guideWeightSegments,
                                                                fallbackSegmentCount: guide1.guideWeightSegmentCount)
-        
         guide0.guideWeightSegmentBucket.blendOuterWithInner()
         
         if sortedGuideCount <= 2 {
@@ -880,18 +791,11 @@ public class JiggleMesh {
             return
         }
         
-        
-        
-        
         let guide2 = sortedGuides[2]
-        guide1.guideWeightSegmentBucket.crossValidateOuterInner(otherBucker: guide2.guideWeightSegmentBucket)
-        
         guide2.guideWeightSegmentBucket.calculateOuterDistance(fallbackSegments: guide2.guideWeightSegments,
                                                                fallbackSegmentCount: guide2.guideWeightSegmentCount)
-        
         guide2.guideWeightSegmentBucket.calculateInnerDistance(fallbackSegments: guide2.guideWeightSegments,
                                                                fallbackSegmentCount: guide2.guideWeightSegmentCount)
-        
         guide1.guideWeightSegmentBucket.blendOuterWithInner()
         
         if sortedGuideCount <= 3 {
@@ -901,17 +805,12 @@ public class JiggleMesh {
             return
         }
         
-        
-        
         let guide3 = sortedGuides[3]
-        guide2.guideWeightSegmentBucket.crossValidateOuterInner(otherBucker: guide3.guideWeightSegmentBucket)
         
         guide3.guideWeightSegmentBucket.calculateOuterDistance(fallbackSegments: guide3.guideWeightSegments,
                                                                fallbackSegmentCount: guide3.guideWeightSegmentCount)
-        
         guide3.guideWeightSegmentBucket.calculateInnerDistance(fallbackSegments: guide3.guideWeightSegments,
                                                                fallbackSegmentCount: guide3.guideWeightSegmentCount)
-        
         guide2.guideWeightSegmentBucket.blendOuterWithInner()
         
         if sortedGuideCount <= 4 {
@@ -921,19 +820,12 @@ public class JiggleMesh {
             return
         }
         
-        
-        
         let guide4 = sortedGuides[4]
-        guide3.guideWeightSegmentBucket.crossValidateOuterInner(otherBucker: guide4.guideWeightSegmentBucket)
-        
         guide4.guideWeightSegmentBucket.calculateOuterDistance(fallbackSegments: guide4.guideWeightSegments,
                                                                fallbackSegmentCount: guide4.guideWeightSegmentCount)
-        
         guide4.guideWeightSegmentBucket.calculateInnerDistance(fallbackSegments: guide4.guideWeightSegments,
                                                                fallbackSegmentCount: guide4.guideWeightSegmentCount)
-        
         guide3.guideWeightSegmentBucket.blendOuterWithInner()
-        
         guide4.guideWeightSegmentBucket.calculateOuterDistanceToWeightCenter(guideCenterX: guideCenterX,
                                                                              guideCenterY: guideCenterY)
         guide4.guideWeightSegmentBucket.blendOuterWithWeightCenter()
@@ -943,4 +835,5 @@ public class JiggleMesh {
         purgeJiggleMeshPoints()
         purgeGuideWeightSegments()
     }
+    
 }

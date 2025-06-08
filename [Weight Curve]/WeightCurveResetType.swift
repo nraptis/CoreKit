@@ -20,4 +20,5 @@ public enum WeightCurveResetType: UInt8 {
     case linear3
     case linear2
     case linear1
+    
 }

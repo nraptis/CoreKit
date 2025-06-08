@@ -11,26 +11,13 @@ import Foundation
 
 public class WeightCurvePoint {
     
-    public init() {
+    init() {
         
     }
     
     public func reset() {
         isManualHeightEnabled = false
         isManualTanHandleEnabled = false
-        
-        //TODO: This should all not be...
-        normalizedTanDirection = Float.random(in: 0.0...Math.pi2)
-        normalizedTanMagnitudeIn = Float.random(in: 4.0...16.0)
-        normalizedTanMagnitudeOut = Float.random(in: 4.0...16.0)
-        
-        normalizedHeightFactor = Float.random(in: 0.0...1.0)
-        
-        tempX = -100.0
-        tempY = -100.0
-        defaultY = -100.0
-        holdY = -100.0
-        
     }
     
     public var normalizedTanDirection = Float(0.0)
@@ -127,30 +114,24 @@ public class WeightCurvePoint {
     
     public func getTanHandles(index: Int,
                               count: Int,
-                              frameWidth: Float,
-                              frameHeight: Float,
-                              paddingH: Float,
-                              paddingV: Float) -> TanHandles {
+                              graphFrame: GraphFrame) -> TanHandles {
         let x = getX(index: index,
                      count: count,
-                     frameWidth: frameWidth,
-                     paddingH: paddingH)
+                     frameWidth: graphFrame.width,
+                     paddingH: graphFrame.paddingH)
         let y = getY(index: index,
                      count: count,
                      isManual: isManualHeightEnabled,
-                     frameHeight: frameHeight,
-                     paddingV: paddingV)
+                     frameHeight: graphFrame.height,
+                     paddingV: graphFrame.paddingV)
         let dirX = sinf(normalizedTanDirection)
         let dirY = -cosf(normalizedTanDirection)
-        
-        let width = (frameWidth - paddingH - paddingH)
-        let height = (frameHeight - paddingV - paddingV)
-        
+        let width = (graphFrame.width - graphFrame.paddingH - graphFrame.paddingH)
+        let height = (graphFrame.height - graphFrame.paddingV - graphFrame.paddingV)
         var splineFactorX = Float(1.0)
         if count > 1 {
             splineFactorX = 1.0 / Float(count - 1)
         }
-        
         return TanHandles(inX: x - dirX * normalizedTanMagnitudeIn * width * splineFactorX,
                           inY: y - dirY * normalizedTanMagnitudeIn * height,
                           outX: x + dirX * normalizedTanMagnitudeOut * width * splineFactorX,
@@ -161,12 +142,8 @@ public class WeightCurvePoint {
                                            count: Int,
                                            frameHeight: Float,
                                            paddingV: Float) -> TanHandles {
-        
-        
         let dirY = -cosf(normalizedTanDirection)
-        
         let height = (frameHeight - paddingV - paddingV)
-        
         return TanHandles(inX: 0.0,
                           inY: -(dirY * normalizedTanMagnitudeIn * height),
                           outX: 0.0,

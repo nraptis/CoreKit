@@ -8,7 +8,7 @@
 import Foundation
 
 @frozen public enum NeighborControlPointsResult: UInt8 {
-    case notDirectNeighbor
+    case invalid
     case neighborToTheRight
     case neighborToTheLeft
 }

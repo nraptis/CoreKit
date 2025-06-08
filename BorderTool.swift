@@ -62,8 +62,7 @@ public class BorderTool {
                 } else if sampleLength > lowFiSampleDistance {
                     sampleMedFi(spline: spline, index: index)
                 }
-                proceedBuildWithGoodSample(spline: spline,
-                                           controlIndex: index,
+                proceedBuildWithGoodSample(controlIndex: index,
                                            lastControlIndex: lastIndex,
                                            preferredStepSize: preferredStepSize,
                                            skipFirstPoint: skipFirstPoint,
@@ -72,8 +71,7 @@ public class BorderTool {
         }
     }
     
-    private func proceedBuildWithGoodSample(spline: FancySpline,
-                                            controlIndex: Int,
+    private func proceedBuildWithGoodSample(controlIndex: Int,
                                             lastControlIndex: Int,
                                             preferredStepSize: Float,
                                             skipFirstPoint: Bool,

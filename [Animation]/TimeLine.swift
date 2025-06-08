@@ -76,30 +76,21 @@ public class TimeLine {
         
     }
     
-    public func refreshFrame(frameWidth: Float,
-                       frameHeight: Float,
-                       paddingH: Float,
-                       paddingV: Float) {
-        
-        let minX = paddingH
-        let maxX = frameWidth - paddingH
-        let minY = paddingV
-        let maxY = frameHeight - paddingV
+    public func refreshFrame(timeLineFrame: TimeLineFrame) {
+        let minX = timeLineFrame.paddingH
+        let maxX = timeLineFrame.width - timeLineFrame.paddingH
+        let minY = timeLineFrame.paddingV
+        let maxY = timeLineFrame.height - timeLineFrame.paddingV
         let rangeX = (maxX - minX)
         let rangeY = (maxY - minY)
-        
-        self.frameWidth = frameWidth
-        self.frameHeight = frameHeight
-        
+        self.frameWidth = timeLineFrame.width
+        self.frameHeight = timeLineFrame.height
         self.minX = minX
         self.maxX = maxX
         self.minY = minY
         self.maxY = maxY
-        
         self.rangeX = rangeX
         self.rangeY = rangeY
     }
-    
-    
     
 }

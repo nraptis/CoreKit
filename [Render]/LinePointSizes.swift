@@ -9,8 +9,13 @@ import Foundation
 
 public struct LinePointSizes {
     
-    public nonisolated(unsafe) static var userPointSizeType = RenderPointSizeType.b
-    public nonisolated(unsafe) static var userLineThicknessType = RenderLineThicknessType.c
+    // TODO: This can be B for release
+    
+    //public nonisolated(unsafe) static var userPointSizeType = RenderPointSizeType.b
+    //public nonisolated(unsafe) static var userLineThicknessType = RenderLineThicknessType.b
+    public nonisolated(unsafe) static var userPointSizeType = RenderPointSizeType.a
+    public nonisolated(unsafe) static var userLineThicknessType = RenderLineThicknessType.a
+    
     
     static func getSelectedPointExpansion(lineThicknessType: RenderLineThicknessType,
                                           pointSizeType: RenderPointSizeType,

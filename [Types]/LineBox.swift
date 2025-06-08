@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct LineBox {
+struct LineBox {
     public let x1: Float
     public let y1: Float
     public let x2: Float
@@ -17,7 +17,7 @@ public struct LineBox {
     public let x4: Float
     public let y4: Float
     
-    public static func getLineBox(x1: Float, y1: Float,
+    static func getLineBox(x1: Float, y1: Float,
                                   x2: Float, y2: Float,
                                   normalX: Float, normalY: Float,
                                   thickness: Float) -> LineBox {

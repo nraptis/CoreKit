@@ -9,6 +9,5 @@ import Foundation
 
 @frozen public enum PointSelectionModality: UInt8 {
     case points
-    case tans
     case both
 }

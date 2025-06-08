@@ -9,7 +9,7 @@ import Foundation
 
 public class GuidePoint: ControlPoint {
     
-    public var selectedTanType = TanTypeOrNone.none
+    //public var selectedTanType = TanTypeOrNone.none
     
     public var renderPointSelected = RenderPointSelectedStrategy.ignore
     public var renderTanInSelected = false

@@ -65,10 +65,7 @@ public class TimeLineChannel {
         }
     }
     
-    public func amplify(frameWidth: Float,
-                        frameHeight: Float,
-                        paddingH: Float,
-                        paddingV: Float) {
+    public func amplify() {
         
         for controlPointIndex in 0..<controlPointCount {
             let controlPoint = controlPoints[controlPointIndex]
@@ -134,10 +131,7 @@ public class TimeLineChannel {
         }
     }
     
-    public func dampen(frameWidth: Float,
-                       frameHeight: Float,
-                       paddingH: Float,
-                       paddingV: Float) {
+    public func dampen() {
         
         for controlPointIndex in 0..<controlPointCount {
             let controlPoint = controlPoints[controlPointIndex]
@@ -206,10 +200,7 @@ public class TimeLineChannel {
         }
     }
     
-    public func invertH(frameWidth: Float,
-                        frameHeight: Float,
-                        paddingH: Float,
-                        paddingV: Float) {
+    public func invertH() {
         
         for controlPointIndex in 0..<controlPointCount {
             let controlPoint = controlPoints[controlPointIndex]
@@ -244,10 +235,7 @@ public class TimeLineChannel {
         }
     }
     
-    public func invertV(frameWidth: Float,
-                        frameHeight: Float,
-                        paddingH: Float,
-                        paddingV: Float) {
+    public func invertV() {
         
         for controlPointIndex in 0..<controlPointCount {
             let controlPoint = controlPoints[controlPointIndex]
@@ -292,10 +280,7 @@ public class TimeLineChannel {
         }
     }
     
-    public func flipVertical(frameWidth: Float,
-                             frameHeight: Float,
-                             paddingH: Float,
-                             paddingV: Float) {
+    public func flipVertical() {
         
         for controlPointIndex in 0..<controlPointCount {
             let controlPoint = controlPoints[controlPointIndex]
@@ -326,14 +311,8 @@ public class TimeLineChannel {
         }
     }
     
-    public func flipHorizontal(frameWidth: Float,
-                               frameHeight: Float,
-                               paddingH: Float,
-                               paddingV: Float) {
-        invertH(frameWidth: frameWidth,
-                frameHeight: frameHeight,
-                paddingH: paddingH,
-                paddingV: paddingV)
+    public func flipHorizontal() {
+        invertH()
     }
     
     public func resetDefaultAll() {
@@ -710,11 +689,7 @@ public class TimeLineChannel {
         }
     }
     
-    func applyDefaultType(frameWidth: Float,
-                          frameHeight: Float,
-                          paddingH: Float,
-                          paddingV: Float,
-                          tanFactorTimeLine: Float) {
+    func applyDefaultType(tanFactorTimeLine: Float) {
         
         guard controlPointCount >= 3 else {
             return
@@ -778,94 +753,43 @@ public class TimeLineChannel {
         }
     }
     
-    public func resetCurve(frameWidth: Float,
-                           frameHeight: Float,
-                           paddingH: Float,
-                           paddingV: Float,
-                           tanFactorTimeLine: Float) {
+    public func resetCurve(tanFactorTimeLine: Float) {
         resetDefaultAll()
         defaultType = .curve
-        applyDefaultType(frameWidth: frameWidth,
-                         frameHeight: frameHeight,
-                         paddingH: paddingH,
-                         paddingV: paddingV,
-                         tanFactorTimeLine: tanFactorTimeLine)
+        applyDefaultType(tanFactorTimeLine: tanFactorTimeLine)
     }
     
-    public func resetCurveSmall(frameWidth: Float,
-                                frameHeight: Float,
-                                paddingH: Float,
-                                paddingV: Float,
-                                tanFactorTimeLine: Float) {
+    public func resetCurveSmall(tanFactorTimeLine: Float) {
         resetDefaultAll()
         defaultType = .curveSmall
-        applyDefaultType(frameWidth: frameWidth,
-                         frameHeight: frameHeight,
-                         paddingH: paddingH,
-                         paddingV: paddingV,
-                         tanFactorTimeLine: tanFactorTimeLine)
+        applyDefaultType(tanFactorTimeLine: tanFactorTimeLine)
     }
     
-    public func resetDivot(frameWidth: Float,
-                           frameHeight: Float,
-                           paddingH: Float,
-                           paddingV: Float,
-                           tanFactorTimeLine: Float) {
+    public func resetDivot(tanFactorTimeLine: Float) {
         resetDefaultAll()
         defaultType = .divot
-        applyDefaultType(frameWidth: frameWidth,
-                         frameHeight: frameHeight,
-                         paddingH: paddingH,
-                         paddingV: paddingV,
-                         tanFactorTimeLine: tanFactorTimeLine)
+        applyDefaultType(tanFactorTimeLine: tanFactorTimeLine)
     }
     
-    public func resetDivotSmall(frameWidth: Float,
-                                frameHeight: Float,
-                                paddingH: Float,
-                                paddingV: Float,
-                                tanFactorTimeLine: Float) {
+    public func resetDivotSmall(tanFactorTimeLine: Float) {
         resetDefaultAll()
         defaultType = .divotSmall
-        applyDefaultType(frameWidth: frameWidth,
-                         frameHeight: frameHeight,
-                         paddingH: paddingH,
-                         paddingV: paddingV,
-                         tanFactorTimeLine: tanFactorTimeLine)
+        applyDefaultType(tanFactorTimeLine: tanFactorTimeLine)
     }
     
-    public func resetFlat(frameWidth: Float,
-                          frameHeight: Float,
-                          paddingH: Float,
-                          paddingV: Float,
-                          tanFactorTimeLine: Float) {
+    public func resetFlat(tanFactorTimeLine: Float) {
         resetDefaultAll()
         defaultType = .flat
-        applyDefaultType(frameWidth: frameWidth,
-                         frameHeight: frameHeight,
-                         paddingH: paddingH,
-                         paddingV: paddingV,
-                         tanFactorTimeLine: tanFactorTimeLine)
+        applyDefaultType(tanFactorTimeLine: tanFactorTimeLine)
     }
     
-    public func resetSwan(frameWidth: Float,
-                          frameHeight: Float,
-                          paddingH: Float,
-                          paddingV: Float,
-                          tanFactorTimeLine: Float) {
+    public func resetSwan(tanFactorTimeLine: Float) {
         resetDefaultAll()
         defaultType = .swan
-        applyDefaultType(frameWidth: frameWidth,
-                         frameHeight: frameHeight,
-                         paddingH: paddingH,
-                         paddingV: paddingV,
-                         tanFactorTimeLine: tanFactorTimeLine)
+        applyDefaultType(tanFactorTimeLine: tanFactorTimeLine)
     }
     
-    public func timeLineShiftDown(frameWidth: Float,
-                                  frameHeight: Float,
-                                  paddingH: Float,
-                                  paddingV: Float) {
+    public func timeLineShiftDown() {
         
         for controlPointIndex in 0..<controlPointCount {
             let controlPoint = controlPoints[controlPointIndex]
@@ -877,10 +801,7 @@ public class TimeLineChannel {
         }
     }
     
-    public func timeLineShiftUp(frameWidth: Float,
-                                frameHeight: Float,
-                                paddingH: Float,
-                                paddingV: Float) {
+    public func timeLineShiftUp() {
         for controlPointIndex in 0..<controlPointCount {
             let controlPoint = controlPoints[controlPointIndex]
             controlPoint.normalizedY += 0.05
@@ -975,23 +896,13 @@ public class TimeLineChannel {
         return nil
     }
     
-    public func buildSplineFromCurve(frameWidth: Float,
-                                     frameHeight: Float,
-                                     paddingH: Float,
-                                     paddingV: Float,
+    public func buildSplineFromCurve(timeLineFrame: TimeLineFrame,
                                      tanFactorTimeLine: Float) {
-        applyDefaultType(frameWidth: frameWidth,
-                         frameHeight: frameHeight,
-                         paddingH: paddingH,
-                         paddingV: paddingV,
-                         tanFactorTimeLine: tanFactorTimeLine)
+        applyDefaultType(tanFactorTimeLine: tanFactorTimeLine)
+        refreshSpline(tanFactorTimeLine: tanFactorTimeLine)
     }
     
-    public func refreshSpline(frameWidth: Float,
-                              frameHeight: Float,
-                              paddingH: Float,
-                              paddingV: Float,
-                              tanFactorTimeLine: Float) {
+    public func refreshSpline(tanFactorTimeLine: Float) {
         
         for controlPointIndex in 0..<controlPointCount {
             let controlPoint = controlPoints[controlPointIndex]

@@ -9,9 +9,6 @@ import Foundation
 
 public struct AnimationConstants_Loop {
     
-    
-    
-    
     nonisolated(unsafe) public static let duration = AnimationConstantLane(user_lo: 0.0,
                                                                            user_default: 60.0,
                                                                            user_zero: 50.0,

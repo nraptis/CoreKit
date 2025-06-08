@@ -11,33 +11,20 @@ import Foundation
 
 public extension Jiggle {
     
-    func updateSelectedWeightCurvePointHeightFromGraph(frameWidth: Float,
-                                                              frameHeight: Float,
-                                                              paddingH: Float,
-                                                              paddingV: Float,
-                                                       tanFactorWeightCurve: Float) {
+    func updateSelectedWeightCurvePointHeightFromGraph(tanFactorWeightCurve: Float) {
+        weightCurve.refreshSpline(tanFactorWeightCurve: tanFactorWeightCurve)
         
-        if let selectedWeightCurvePoint = getSelectedWeightCurvePoint() {
-            weightCurve.refreshSpline(frameWidth: frameWidth,
-                                      frameHeight: frameHeight,
-                                      paddingH: paddingH,
-                                      paddingV: paddingV,
-                                      tanFactorWeightCurve: tanFactorWeightCurve)
-        }
     }
     
     func updateSelectedWeightCurvePointTanHandleIn(weightCurvePoint: WeightCurvePoint,
                                                           tanHandleX: Float,
                                                           tanHandleY: Float,
-                                                          frameWidth: Float,
-                                                          frameHeight: Float,
-                                                          paddingH: Float,
-                                                          paddingV: Float,
+                                                   graphFrame: GraphFrame,
                                                           resetType: WeightCurveResetType,
                                                           index: Int,
                                                           numberOfPoints: Int) {
-        let width = (frameWidth - paddingH - paddingH)
-        let height = (frameHeight - paddingV - paddingV)
+        let width = (graphFrame.width - graphFrame.paddingH - graphFrame.paddingH)
+        let height = (graphFrame.height - graphFrame.paddingV - graphFrame.paddingV)
         let numberOfPoitnsf = Float(weightCurve.weightCurvePointCount - 1)
         if width > Math.epsilon && height > Math.epsilon {
             let handleX = (tanHandleX / (width)) * numberOfPoitnsf
@@ -55,15 +42,12 @@ public extension Jiggle {
     func updateSelectedWeightCurvePointTanHandleOut(weightCurvePoint: WeightCurvePoint,
                                                            tanHandleX: Float,
                                                            tanHandleY: Float,
-                                                           frameWidth: Float,
-                                                           frameHeight: Float,
-                                                           paddingH: Float,
-                                                           paddingV: Float,
+                                                    graphFrame: GraphFrame,
                                                            resetType: WeightCurveResetType,
                                                            index: Int,
                                                            numberOfPoints: Int) {
-        let width = (frameWidth - paddingH - paddingH)
-        let height = (frameHeight - paddingV - paddingV)
+        let width = (graphFrame.width - graphFrame.paddingH - graphFrame.paddingH)
+        let height = (graphFrame.height - graphFrame.paddingV - graphFrame.paddingV)
         let numberOfPoitnsf = Float(weightCurve.weightCurvePointCount - 1)
         if width > Math.epsilon && height > Math.epsilon {
             let handleX = (tanHandleX / (width)) * numberOfPoitnsf

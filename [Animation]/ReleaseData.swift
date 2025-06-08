@@ -7,10 +7,10 @@
 
 import Foundation
 
-public struct ReleaseData {
-    public let isValid: Bool
-    public let time: Float
-    public let dirX: Float
-    public let dirY: Float
-    public let magnitude: Float
+struct ReleaseData {
+    let isValid: Bool
+    let time: Float
+    let dirX: Float
+    let dirY: Float
+    let magnitude: Float
 }

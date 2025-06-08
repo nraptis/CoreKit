@@ -19,10 +19,20 @@ extension AnimationController {
                                         allTouchCount: Int,
                                         displayMode: DisplayMode,
                                         touchTargetTouchSource: TouchTargetTouchSource,
+                                        worldScalePrecise: Float,
+                                        worldScaleStandardPrecise: Float,
+                                        worldScaleStandardRegular: Float,
+                                        worldScaleStandard: Float,
+                                        magnifiedBoxDimension: Float,
+                                        distantBoxDimension: Float,
+                                        normalBoxDimension: Float,
+                                        isDarkMode: Bool,
+                                        opacityPercent: Float,
                                         isPrecise: Bool,
                                         isAnySliderActive: Bool,
                                         isContinuousDisableGrabEnabled: Bool,
-                                        isAnimationContinuousAppliedToAll: Bool) {
+                                        isAnimationContinuousAppliedToAll: Bool,
+                                        graphFrame: GraphFrame) {
         
         if checkSliderActiveAndFlushIfNeeded(jiggleViewModel: jiggleViewModel,
                                              jiggleDocument: jiggleDocument,
@@ -46,7 +56,17 @@ extension AnimationController {
                                                    nullifySelectionIfWhiff: false,
                                                    displayMode: displayMode,
                                                    touchTargetTouchSource: touchTargetTouchSource,
-                                                   isPrecise: isPrecise)
+                                                   worldScalePrecise: worldScalePrecise,
+                                                   worldScaleStandardPrecise: worldScaleStandardPrecise,
+                                                   worldScaleStandardRegular: worldScaleStandardRegular,
+                                                   worldScaleStandard: worldScaleStandard,
+                                                   magnifiedBoxDimension: magnifiedBoxDimension,
+                                                   distantBoxDimension: distantBoxDimension,
+                                                   normalBoxDimension: normalBoxDimension,
+                                                   isDarkMode: isDarkMode,
+                                                   opacityPercent: opacityPercent,
+                                                   isPrecise: isPrecise,
+                                                   graphFrame: graphFrame)
             return
         }
         
@@ -70,8 +90,18 @@ extension AnimationController {
                               animationMode: animationMode,
                               displayMode: displayMode,
                               touchTargetTouchSource: touchTargetTouchSource,
+                              worldScalePrecise: worldScalePrecise,
+                              worldScaleStandardPrecise: worldScaleStandardPrecise,
+                              worldScaleStandardRegular: worldScaleStandardRegular,
+                              worldScaleStandard: worldScaleStandard,
+                              magnifiedBoxDimension: magnifiedBoxDimension,
+                              distantBoxDimension: distantBoxDimension,
+                              normalBoxDimension: normalBoxDimension,
+                              isDarkMode: isDarkMode,
+                              opacityPercent: opacityPercent,
                               isPrecise: isPrecise,
-                              isAnimationContinuousAppliedToAll: isAnimationContinuousAppliedToAll)
+                              isAnimationContinuousAppliedToAll: isAnimationContinuousAppliedToAll,
+                              graphFrame: graphFrame)
         
         recordHistoryForTouches(touches: touches)
         
@@ -90,7 +120,17 @@ extension AnimationController {
                                                    nullifySelectionIfWhiff: false,
                                                    displayMode: displayMode,
                                                    touchTargetTouchSource: touchTargetTouchSource,
-                                                   isPrecise: isPrecise)
+                                                   worldScalePrecise: worldScalePrecise,
+                                                   worldScaleStandardPrecise: worldScaleStandardPrecise,
+                                                   worldScaleStandardRegular: worldScaleStandardRegular,
+                                                   worldScaleStandard: worldScaleStandard,
+                                                   magnifiedBoxDimension: magnifiedBoxDimension,
+                                                   distantBoxDimension: distantBoxDimension,
+                                                   normalBoxDimension: normalBoxDimension,
+                                                   isDarkMode: isDarkMode,
+                                                   opacityPercent: opacityPercent,
+                                                   isPrecise: isPrecise,
+                                                   graphFrame: graphFrame)
         default:
             break
         }
@@ -106,10 +146,20 @@ extension AnimationController {
                                         allTouchCount: Int,
                                         displayMode: DisplayMode,
                                         touchTargetTouchSource: TouchTargetTouchSource,
+                                        worldScalePrecise: Float,
+                                        worldScaleStandardPrecise: Float,
+                                        worldScaleStandardRegular: Float,
+                                        worldScaleStandard: Float,
+                                        magnifiedBoxDimension: Float,
+                                        distantBoxDimension: Float,
+                                        normalBoxDimension: Float,
+                                        isDarkMode: Bool,
+                                        opacityPercent: Float,
                                         isPrecise: Bool,
                                         isAnySliderActive: Bool,
                                         isContinuousDisableGrabEnabled: Bool,
-                                        isAnimationContinuousAppliedToAll: Bool) {
+                                        isAnimationContinuousAppliedToAll: Bool,
+                                        graphFrame: GraphFrame) {
         
         if checkSliderActiveAndFlushIfNeeded(jiggleViewModel: jiggleViewModel,
                                              jiggleDocument: jiggleDocument,
@@ -152,8 +202,18 @@ extension AnimationController {
                               animationMode: animationMode,
                               displayMode: displayMode,
                               touchTargetTouchSource: touchTargetTouchSource,
+                              worldScalePrecise: worldScalePrecise,
+                              worldScaleStandardPrecise: worldScaleStandardPrecise,
+                              worldScaleStandardRegular: worldScaleStandardRegular,
+                              worldScaleStandard: worldScaleStandard,
+                              magnifiedBoxDimension: magnifiedBoxDimension,
+                              distantBoxDimension: distantBoxDimension,
+                              normalBoxDimension: normalBoxDimension,
+                              isDarkMode: isDarkMode,
+                              opacityPercent: opacityPercent,
                               isPrecise: isPrecise,
-                              isAnimationContinuousAppliedToAll: isAnimationContinuousAppliedToAll)
+                              isAnimationContinuousAppliedToAll: isAnimationContinuousAppliedToAll,
+                              graphFrame: graphFrame)
         
         recordHistoryForTouches(touches: touches)
         

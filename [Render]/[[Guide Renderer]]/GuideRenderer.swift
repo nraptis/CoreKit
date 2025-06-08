@@ -62,7 +62,6 @@ public class GuideRenderer {
     var creatorMode = CreatorMode.none
     
     var selectedTanType = TanTypeOrNone.none
-    var pointSelectionMode = PointSelectionModality.points
     
     var lineWidthFillBase = Float(8.0)
     var lineWidthStrokeBase = Float(12.0)
@@ -197,7 +196,6 @@ public class GuideRenderer {
                             creatorMode: CreatorMode,
                             weightMode: WeightMode,
                             selectedTanType: TanTypeOrNone,
-                            pointSelectionMode: PointSelectionModality,
                             isBloomMode: Bool,
                             jiggleCenter: Math.Point,
                             jiggleScale: Float,
@@ -221,7 +219,6 @@ public class GuideRenderer {
         self.weightMode = weightMode
         self.creatorMode = creatorMode
         self.selectedTanType = selectedTanType
-        self.pointSelectionMode = pointSelectionMode
         self.isBloomMode = isBloomMode
         isSelected = (isJiggleSelected && isGuideSelected)
         isFrozen = (isJiggleFrozen || isGuideFrozen)

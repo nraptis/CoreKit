@@ -272,7 +272,6 @@ public extension PrecomputedLineSegment {
         directionAngle = precomputedLineSegment.directionAngle
         normalAngle = precomputedLineSegment.normalAngle
     }
-    
 }
 
 public class AnyPrecomputedLineSegment: PrecomputedLineSegment {

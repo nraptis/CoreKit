@@ -27,10 +27,7 @@ public extension Jiggle {
                  forceGuideCommand: Bool,
                  selectedGuideIndex: Int,
                  lineThicknessType: RenderLineThicknessType,
-                 graphWidth: Float,
-                 graphHeight: Float,
-                 graphPaddingH: Float,
-                 graphPaddingV: Float,
+                 graphFrame: GraphFrame,
                  tanFactorWeightCurve: Float,
                  factorWeightCurveAuto: Float,
                  opacityPercent: Float,
@@ -38,10 +35,7 @@ public extension Jiggle {
                  tanFactorJigglePoint: Float) {
         
         execute_part_001(meshCommand: meshCommand,
-                         graphWidth: graphWidth,
-                         graphHeight: graphHeight,
-                         graphPaddingH: graphPaddingH,
-                         graphPaddingV: graphPaddingV,
+                         graphFrame: graphFrame,
                          tanFactorWeightCurve: tanFactorWeightCurve,
                          factorWeightCurveAuto: factorWeightCurveAuto)
         
@@ -137,10 +131,7 @@ public extension Jiggle {
                  guideCommandForOthers: GuideCommand,
                  selectedGuideIndex: Int,
                  lineThicknessType: RenderLineThicknessType,
-                 graphWidth: Float,
-                 graphHeight: Float,
-                 graphPaddingH: Float,
-                 graphPaddingV: Float,
+                 graphFrame: GraphFrame,
                  tanFactorWeightCurve: Float,
                  factorWeightCurveAuto: Float,
                  opacityPercent: Float,
@@ -148,10 +139,7 @@ public extension Jiggle {
                  tanFactorJigglePoint: Float) {
         
         execute_part_001(meshCommand: meshCommand,
-                         graphWidth: graphWidth,
-                         graphHeight: graphHeight,
-                         graphPaddingH: graphPaddingH,
-                         graphPaddingV: graphPaddingV,
+                         graphFrame: graphFrame,
                          tanFactorWeightCurve: tanFactorWeightCurve,
                          factorWeightCurveAuto: factorWeightCurveAuto)
         
@@ -229,10 +217,7 @@ public extension Jiggle {
     }
     
     private func execute_part_001(meshCommand: JiggleMeshCommand,
-                                  graphWidth: Float,
-                                  graphHeight: Float,
-                                  graphPaddingH: Float,
-                                  graphPaddingV: Float,
+                                  graphFrame: GraphFrame,
                                   tanFactorWeightCurve: Float,
                                   factorWeightCurveAuto: Float) {
         
@@ -240,26 +225,17 @@ public extension Jiggle {
         case .none:
             break
         case .forced:
-            refreshWeightCurve(graphWidth: graphWidth,
-                               graphHeight: graphHeight,
-                               graphPaddingH: graphPaddingH,
-                               graphPaddingV: graphPaddingV,
+            refreshWeightCurve(graphFrame: graphFrame,
                                tanFactorWeightCurve: tanFactorWeightCurve,
                                factorWeightCurveAuto: factorWeightCurveAuto)
         case .ifNeeded:
             var checkWeightCurveHash = WeightCurveHash()
-            checkWeightCurveHash.change(frameWidth: graphWidth,
-                                        frameHeight: graphHeight,
-                                        paddingH: graphPaddingH,
-                                        paddingV: graphPaddingV,
+            checkWeightCurveHash.change(graphFrame: graphFrame,
                                         weightCurvePointStart: weightCurvePointStart,
                                         weightCurvePointMiddle: weightCurvePointMiddle,
                                         weightCurvePointEnd: weightCurvePointEnd)
             if checkWeightCurveHash != currentHashWeightCurve {
-                refreshWeightCurve(graphWidth: graphWidth,
-                                   graphHeight: graphHeight,
-                                   graphPaddingH: graphPaddingH,
-                                   graphPaddingV: graphPaddingV,
+                refreshWeightCurve(graphFrame: graphFrame,
                                    tanFactorWeightCurve: tanFactorWeightCurve,
                                    factorWeightCurveAuto: factorWeightCurveAuto)
             }
@@ -520,6 +496,9 @@ public extension Jiggle {
             
         }
         spline.solve(closed: true)
+        
+        isClockwise = spline.isClockwise()
+        
 
         for jigglePointIndex in 0..<jigglePointCount {
             let jigglePoint = jigglePoints[jigglePointIndex]
@@ -739,17 +718,14 @@ public extension Jiggle {
         solidLineBufferRegularBloom.removeAll(keepingCapacity: true)
         solidLineBufferRegularBloom.thickness = LinePointSizes.getLineThicknessStroke(lineThicknessType: lineThicknessType,
                                                                                       isPad: Device.isPad)
-                                                                                      //universeScaleInverse: universeScaleInverse)
         
         solidLineBufferRegularStroke.removeAll(keepingCapacity: true)
         solidLineBufferRegularStroke.thickness = LinePointSizes.getLineThicknessStroke(lineThicknessType: lineThicknessType,
                                                                                        isPad: Device.isPad)
-                                                                                       //universeScaleInverse: universeScaleInverse)
         
         solidLineBufferRegularFill.removeAll(keepingCapacity: true)
         solidLineBufferRegularFill.thickness = LinePointSizes.getLineThicknessFill(lineThicknessType: lineThicknessType,
                                                                                    isPad: Device.isPad)
-                                                                                   //universeScaleInverse: universeScaleInverse)
         
         for outlineJiggleWeightPointIndex in 0..<outlineJiggleWeightPointCount {
             let outlineJiggleWeightPoint = outlineJiggleWeightPoints[outlineJiggleWeightPointIndex]

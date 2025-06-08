@@ -174,6 +174,8 @@ public extension Guide {
         
         spline.solve(closed: true)
         
+        isClockwise = spline.isClockwise()
+        
         for guidePointIndex in 0..<guidePointCount {
             let guidePoint = guidePoints[guidePointIndex]
             guidePoint.attemptAngleFromTansUnknown(inTanX: spline.inTanX[guidePointIndex],

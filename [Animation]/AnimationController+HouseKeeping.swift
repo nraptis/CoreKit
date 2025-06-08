@@ -32,17 +32,6 @@ extension AnimationController {
     
     // [Animation Mode Verify] 12-20-2024
     // Looks good, no problem. I've read each line.
-    func animationTouchesContainsTouch(_ animationTouch: AnimationTouch) -> Bool {
-        for animationTouchIndex in 0..<animationTouchCount {
-            if animationTouches[animationTouchIndex] === animationTouch {
-                return true
-            }
-        }
-        return false
-    }
-    
-    // [Animation Mode Verify] 12-20-2024
-    // Looks good, no problem. I've read each line.
     func animationTouchesFind(touch: UITouch) -> AnimationTouch? {
         let touchObjectIdentifier = ObjectIdentifier(touch)
         return animationTouchesFind(touchID: touchObjectIdentifier)
@@ -139,17 +128,6 @@ extension AnimationController {
         }
         purgatoryAnimationTouches[purgatoryAnimationTouchCount] = animationTouch
         purgatoryAnimationTouchCount += 1
-    }
-    
-    // [Animation Mode Verify] 12-20-2024
-    // Looks good, no problem. I've read each line.
-    func purgatoryAnimationTouchesContainsTouch(_ animationTouch: AnimationTouch) -> Bool {
-        for animationTouchIndex in 0..<purgatoryAnimationTouchCount {
-            if purgatoryAnimationTouches[animationTouchIndex] === animationTouch {
-                return true
-            }
-        }
-        return false
     }
     
     // [Animation Mode Verify] 12-20-2024

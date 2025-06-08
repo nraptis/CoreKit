@@ -13,6 +13,117 @@ public class AnimationWad {
         
     }
     
+    public func updateGrabAttribute(attributeType: GrabAttributeType,
+                                    value: Float) {
+        switch attributeType {
+        case .grabDragPower:
+            grabDragPower = value
+        case .grabSpeed:
+            grabSpeed = value
+        case .grabStiffness:
+            grabStiffness = value
+        case .grabGyroPower:
+            grabGyroPower = value
+        }
+    }
+    
+    public func updateContinuousAttribute(attributeType: ContinuousAttributeType,
+                                          value: Float,
+                                          isSelected: Bool,
+                                          mirrorEnabled: Bool,
+                                          mirrorElementType: MirrorElementType) -> Bool {
+        
+        var value = value
+        if (mirrorEnabled == true) && (isSelected == false) {
+            switch mirrorElementType {
+            case .none:
+                break
+            case .negative:
+                value = -value
+            }
+        }
+        
+        switch attributeType {
+        case .continuousDuration:
+            continuousDuration = value
+            return true
+        case .continuousPower:
+            continuousPower = value
+            return true
+        case .continuousAngle:
+            continuousAngle = value
+            return true
+        case .continuousSwoop:
+            continuousSwoop = value
+            return true
+        case .continuousStartRotation:
+            continuousStartRotation = value
+            return true
+        case .continuousEndRotation:
+            continuousEndRotation = value
+            return true
+        case .continuousStartScale:
+            continuousStartScale = value
+            return true
+        case .continuousEndScale:
+            continuousEndScale = value
+            return true
+        case .continuousWiggle:
+            continuousWiggle = value
+            return true
+        case .continuousFrameOffset:
+            continuousFrameOffset = value
+            return true
+        case .continuousGroup1:
+            return false
+        case .continuousGroup2:
+            return false
+        case .continuousGroup3:
+            return false
+        case .continuousGroup4:
+            return false
+        case .continuousGroup5:
+            return false
+        case .continuousAll:
+            return false
+        }
+    }
+    
+    public func updateLoopAttribute(attributeType: LoopAttributeType,
+                                    value: Float,
+                                    timeLineSwatch: Swatch) -> Bool {
+        switch attributeType {
+        case .timeLineDuration:
+            timeLine.animationDuration = value
+            return true
+        case .timeLineFrameOffset:
+            switch timeLineSwatch {
+            case .x:
+                timeLine.swatchPositionX.frameOffset = value
+                return true
+            case .y:
+                timeLine.swatchPositionY.frameOffset = value
+                return true
+            case .scale:
+                timeLine.swatchScale.frameOffset = value
+                return true
+            case .rotation:
+                timeLine.swatchRotation.frameOffset = value
+                return true
+            }
+        case .timeLineSwatchX:
+            return false
+        case .timeLineSwatchY:
+            return false
+        case .timeLineSwatchScale:
+            return false
+        case .timeLineSwatchRotation:
+            return false
+        case .timeLine:
+            return false
+        }
+    }
+    
     public static let minMeasuredSize = Float(200.0)
     public static let midMeasuredSize = Float(700.0)
     public static let maxMeasuredSize = Float(1200.0)

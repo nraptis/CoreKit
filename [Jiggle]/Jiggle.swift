@@ -11,10 +11,14 @@ import Foundation
 import UIKit
 import Combine
 
-public protocol SelectedJigglePointListeningConforming {
+public protocol SelectedJigglePointListeningConforming: AnyObject {
     func realizeRecentSelectionChange_Jiggle()
     func realizeRecentSelectionChange_JigglePoint()
     func realizeRecentSelectionChange_Guide()
+    
+    var selectedJigglePointTanType: TanType { get set }
+    var selectedJigglePointMultiModeSelectionType: MultiModeSelectionType { get set }
+    
 }
 
 public class Jiggle {
@@ -131,6 +135,8 @@ public class Jiggle {
     public static let triangulationFastFixTime = Float(0.042)
     
     public var isFrozen = false
+    public var isClockwise = true
+    
     
     public var animationWad = AnimationWad()
     
@@ -241,6 +247,7 @@ public class Jiggle {
         animationWad.measuredSize = AnimationWad.midMeasuredSize
         
         isFrozen = false
+        isClockwise = true
         
         currentHashSpline.invalidate()
         currentHashPoly.invalidate()
@@ -343,18 +350,21 @@ public class Jiggle {
     @MainActor public func addJigglePoint(x: Float,
                                    y: Float,
                                    jiggleDocument: SelectedJigglePointListeningConforming,
-                                   ignoreRealize: Bool) {
+                                   ignoreRealize: Bool,
+                                          ignoreSwitch: Bool) {
         let jigglePoint = JigglePartsFactory.shared.withdrawJigglePoint()
         jigglePoint.x = x
         jigglePoint.y = y
         addJigglePoint(newJigglePoint: jigglePoint,
                        jiggleDocument: jiggleDocument,
-                       ignoreRealize: ignoreRealize)
+                       ignoreRealize: ignoreRealize,
+                       ignoreSwitch: ignoreSwitch)
     }
     
     @MainActor public func addJigglePoint(directedWeightPoint: DirectedWeightPoint,
                                    jiggleDocument: SelectedJigglePointListeningConforming,
-                                   ignoreRealize: Bool) {
+                                   ignoreRealize: Bool,
+                                          ignoreSwitch: Bool) {
         let jigglePoint = JigglePartsFactory.shared.withdrawJigglePoint()
         jigglePoint.x = directedWeightPoint.x
         jigglePoint.y = directedWeightPoint.y
@@ -373,21 +383,29 @@ public class Jiggle {
         
         addJigglePoint(newJigglePoint: jigglePoint,
                        jiggleDocument: jiggleDocument,
-                       ignoreRealize: ignoreRealize)
+                       ignoreRealize: ignoreRealize,
+                       ignoreSwitch: ignoreSwitch)
     }
     
     @MainActor public func addJigglePoint(newJigglePoint: JigglePoint,
                                    jiggleDocument: SelectedJigglePointListeningConforming,
-                                   ignoreRealize: Bool) {
+                                   ignoreRealize: Bool,
+                                          ignoreSwitch: Bool) {
         while jigglePoints.count <= jigglePointCount {
             jigglePoints.append(newJigglePoint)
         }
         
-        let newSelectedJigglePointIndex = jigglePointCount
-        switchSelectedJigglePoint(newSelectedJigglePointIndex: newSelectedJigglePointIndex,
-                                  selectedTanType: .none,
-                                  jiggleDocument: jiggleDocument,
-                                  ignoreRealize: ignoreRealize)
+        
+        if !ignoreSwitch {
+            // [SAGG Verified on 06-06-2025]
+            // The multi-modal selection type and tan type strictly enforced, not set elsewhere...
+            let newSelectedJigglePointIndex = jigglePointCount
+            switchSelectedJigglePoint(newSelectedJigglePointIndex: newSelectedJigglePointIndex,
+                                      jiggleDocument: jiggleDocument,
+                                      multiModeSelectionType: .point,
+                                      tanType: nil,
+                                      ignoreRealize: ignoreRealize)
+        }
         
         jigglePoints[jigglePointCount] = newJigglePoint
         jigglePointCount += 1
@@ -434,9 +452,12 @@ public class Jiggle {
         
         jigglePoints[index] = newJigglePoint
         
+        // [SAGG Verified on 06-06-2025]
+        // The multi-modal selection type and tan type strictly enforced, not set elsewhere...
         switchSelectedJigglePoint(newSelectedJigglePointIndex: index,
-                                  selectedTanType: .none,
                                   jiggleDocument: jiggleDocument,
+                                  multiModeSelectionType: .point,
+                                  tanType: nil,
                                   ignoreRealize: ignoreRealize)
         
         jigglePointCount += 1
@@ -465,7 +486,8 @@ public class Jiggle {
             }
             addJigglePoint(newJigglePoint: jigglePoint,
                            jiggleDocument: jiggleDocument,
-                           ignoreRealize: true)
+                           ignoreRealize: true,
+                           ignoreSwitch: true)
         }
         
     }
@@ -473,16 +495,17 @@ public class Jiggle {
     
     
     @MainActor public func switchSelectedJigglePoint(newSelectedJigglePointIndex: Int,
-                                              selectedTanType: TanTypeOrNone,
-                                              jiggleDocument: SelectedJigglePointListeningConforming,
-                                              ignoreRealize: Bool) {
+                                                     jiggleDocument: SelectedJigglePointListeningConforming,
+                                                     multiModeSelectionType: MultiModeSelectionType,
+                                                     tanType: TanType?,
+                                                     ignoreRealize: Bool) {
         
         selectedJigglePointIndex = newSelectedJigglePointIndex
         
-        if newSelectedJigglePointIndex >= 0 && newSelectedJigglePointIndex < jigglePointCount {
-            jigglePoints[newSelectedJigglePointIndex].selectedTanType = selectedTanType
+        jiggleDocument.selectedJigglePointMultiModeSelectionType = multiModeSelectionType
+        if let tanType = tanType {
+            jiggleDocument.selectedJigglePointTanType = tanType
         }
-        
         if !ignoreRealize {
             jiggleDocument.realizeRecentSelectionChange_JigglePoint()
         }
@@ -528,8 +551,9 @@ public class Jiggle {
                 newSelectedJigglePointIndex = jigglePointCount - 1
             }
             switchSelectedJigglePoint(newSelectedJigglePointIndex: newSelectedJigglePointIndex,
-                                      selectedTanType: .none,
                                       jiggleDocument: jiggleDocument,
+                                      multiModeSelectionType: .point,
+                                      tanType: nil,
                                       ignoreRealize: ignoreRealize)
             return true
         }
@@ -913,9 +937,10 @@ public class Jiggle {
                            isJigglesMode: Bool,
                            isPointsMode: Bool,
                            isGuidesMode: Bool,
+                                  isJigglePointTansEnabled: Bool,
+                                  isGuidePointTansEnabled: Bool,
                            isPrecisePointsMode: Bool,
-                           isGuideInsetMarkersEnabled: Bool,
-                           pointSelectionMode: PointSelectionModality,
+                                  
                            stereoSpreadBase: Float,
                            stereoSpreadMax: Float) {
         
@@ -1091,15 +1116,8 @@ public class Jiggle {
                 }
                 
                 if isCapableOfShowingJiggleTans {
-                    switch pointSelectionMode {
-                    case .points:
-                        break
-                    case .tans:
-                        renderInfo.isShowingJigglePointTanHandles = true
-                        if isSelected && !isFrozen {
-                            renderInfo.isShowingJigglePointTanHandlesBloom = true
-                        }
-                    case .both:
+                    
+                    if isJigglePointTansEnabled {
                         renderInfo.isShowingJigglePointTanHandles = true
                         if isSelected && !isFrozen {
                             renderInfo.isShowingJigglePointTanHandlesBloom = true
@@ -1118,16 +1136,7 @@ public class Jiggle {
                 }
                 
                 if isCapableOfShowingGuideTans {
-                    
-                    switch pointSelectionMode {
-                    case .points:
-                        break
-                    case .tans:
-                        renderInfo.isShowingGuidePointTanHandles = true
-                        if isSelected && !isFrozen {
-                            renderInfo.isShowingGuidePointTanHandlesBloom = true
-                        }
-                    case .both:
+                    if isGuidePointTansEnabled {
                         renderInfo.isShowingGuidePointTanHandles = true
                         if isSelected && !isFrozen {
                             renderInfo.isShowingGuidePointTanHandlesBloom = true
@@ -1146,35 +1155,20 @@ public class Jiggle {
         }
     }
     
-    public func refreshWeightCurve(graphWidth: Float,
-                            graphHeight: Float,
-                            graphPaddingH: Float,
-                            graphPaddingV: Float,
-                            tanFactorWeightCurve: Float,
-                            factorWeightCurveAuto: Float) {
+    public func refreshWeightCurve(graphFrame: GraphFrame,
+                                   tanFactorWeightCurve: Float,
+                                   factorWeightCurveAuto: Float) {
         
-        
-        
-        weightCurve.buildSplineFromCurve(frameWidth: graphWidth,
-                                         frameHeight: graphHeight,
-                                         paddingH: graphPaddingH,
-                                         paddingV: graphPaddingV,
+        weightCurve.buildSplineFromCurve(graphFrame: graphFrame,
                                          tanFactorWeightCurve: tanFactorWeightCurve,
                                          tanFactorWeightCurveAuto: factorWeightCurveAuto,
                                          weightCurvePointStart: weightCurvePointStart,
                                          weightCurvePointMiddle: weightCurvePointMiddle,
                                          weightCurvePointEnd: weightCurvePointEnd)
         
-        weightCurve.refreshSpline(frameWidth: graphWidth,
-                                  frameHeight: graphHeight,
-                                  paddingH: graphPaddingH,
-                                  paddingV: graphPaddingV,
-                                  tanFactorWeightCurve: tanFactorWeightCurve)
+        weightCurve.refreshSpline(tanFactorWeightCurve: tanFactorWeightCurve)
         
-        currentHashWeightCurve.change(frameWidth: graphWidth,
-                                      frameHeight: graphHeight,
-                                      paddingH: graphPaddingH,
-                                      paddingV: graphPaddingV,
+        currentHashWeightCurve.change(graphFrame: graphFrame,
                                       weightCurvePointStart: weightCurvePointStart,
                                       weightCurvePointMiddle: weightCurvePointMiddle,
                                       weightCurvePointEnd: weightCurvePointEnd)
@@ -1187,33 +1181,18 @@ public class Jiggle {
     
     @MainActor public func resetWeightGraph(resetType: WeightCurveResetType) {
         weightCurve.resetType = resetType
-        
         weightCurvePointStart.reset()
         weightCurvePointMiddle.reset()
         weightCurvePointEnd.reset()
     }
     
-    @MainActor public func refreshTimeLine(timeLineWidth: Float,
-                                    timeLineHeight: Float,
-                                    timeLinePaddingH: Float,
-                                    timeLinePaddingV: Float,
+    @MainActor public func refreshTimeLine(timeLineFrame: TimeLineFrame,
                                     selectedSwatch: TimeLineSwatch,
                                     tanFactorTimeLine: Float) {
-        animationWad.timeLine.refreshFrame(frameWidth: timeLineWidth,
-                                           frameHeight: timeLineHeight,
-                                           paddingH: timeLinePaddingH,
-                                           paddingV: timeLinePaddingV)
+        animationWad.timeLine.refreshFrame(timeLineFrame: timeLineFrame)
         let selectedChannel = selectedSwatch.selectedChannel
-        selectedChannel.buildSplineFromCurve(frameWidth: timeLineWidth,
-                                             frameHeight: timeLineHeight,
-                                             paddingH: timeLinePaddingH,
-                                             paddingV: timeLinePaddingV,
+        selectedChannel.buildSplineFromCurve(timeLineFrame: timeLineFrame,
                                              tanFactorTimeLine: tanFactorTimeLine)
-        selectedChannel.refreshSpline(frameWidth: timeLineWidth,
-                                      frameHeight: timeLineHeight,
-                                      paddingH: timeLinePaddingH,
-                                      paddingV: timeLinePaddingV,
-                                      tanFactorTimeLine: tanFactorTimeLine)
     }
     
     public func switchSelectedGuideIndex(index: Int,
@@ -1377,7 +1356,7 @@ public class Jiggle {
         return result
     }
     
-    public func closestWeightSegment(_ point: Point) -> ClosestWeightSegmentResult {
+    public func closestWeightSegment(_ point: Point) -> ClosestJiggleWeightSegmentResult {
         var bestDistanceSquared = Float(100_000_000.0)
         var bestWeightSegment: JiggleWeightSegment?
         for outlineJiggleWeightSegmentIndex in 0..<outlineJiggleWeightSegmentCount {
@@ -1389,9 +1368,9 @@ public class Jiggle {
             }
         }
         if let bestWeightSegment = bestWeightSegment {
-            return ClosestWeightSegmentResult.valid(bestWeightSegment, bestDistanceSquared)
+            return ClosestJiggleWeightSegmentResult.valid(bestWeightSegment, bestDistanceSquared)
         } else {
-            return ClosestWeightSegmentResult.none
+            return ClosestJiggleWeightSegmentResult.none
         }
     }
     

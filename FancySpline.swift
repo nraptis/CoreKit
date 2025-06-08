@@ -8,7 +8,35 @@ public class FancySpline {
     
     public init() { }
     
-    
+    public func isClockwise() -> Bool {
+        if count <= 2 {
+            return true
+        }
+        
+        if closed {
+            var area = Float(0.0)
+            var index1 = count - 1
+            var index2 = 0
+            while index2 < count {
+                area += Math.cross(x1: _x[index1], y1: _y[index1],
+                                   x2: _x[index2], y2: _y[index2])
+                index1 = index2
+                index2 += 1
+            }
+            return area > 0.0
+        } else {
+            var area = Float(0.0)
+            var index1 = 0
+            var index2 = 1
+            while index2 < count {
+                area += Math.cross(x1: _x[index1], y1: _y[index1],
+                                   x2: _x[index2], y2: _y[index2])
+                index1 = index2
+                index2 += 1
+            }
+            return area > 0.0
+        }
+    }
     
     public private(set) var capacity = 0
     public private(set) var count = 0

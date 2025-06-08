@@ -7,20 +7,20 @@
 
 import Foundation
 
-public class AutomaticSpline {
+class AutomaticSpline {
     
-    public init() {
+    init() {
         
     }
     
-    public private(set) var capacity = 0
-    public private(set) var count = 0
-    public private(set) var maxPos = Float(0.0)
-    public private(set) var maxIndex = 0
-    public private(set) var closed = false
+    private(set) var capacity = 0
+    private(set) var count = 0
+    private(set) var maxPos = Float(0.0)
+    private(set) var maxIndex = 0
+    private(set) var closed = false
     
-    public var _x = [Float]()
-    public var _y = [Float]()
+    var _x = [Float]()
+    var _y = [Float]()
     
     private var coefXB = [Float]()
     private var coefXC = [Float]()
@@ -29,15 +29,15 @@ public class AutomaticSpline {
     private var coefYC = [Float]()
     private var coefYD = [Float]()
     
-    public var inTanX = [Float]()
-    public var inTanY = [Float]()
-    public var outTanX = [Float]()
-    public var outTanY = [Float]()
+    var inTanX = [Float]()
+    var inTanY = [Float]()
+    var outTanX = [Float]()
+    var outTanY = [Float]()
     
     private var delta = [Float]()
     private var temp = [Float]()
     
-    public func addControlPoint(_ x: Float, _ y: Float) {
+    func addControlPoint(_ x: Float, _ y: Float) {
         if count >= capacity {
             reserveCapacity(minimumCapacity: count + (count >> 1) + 1)
         }
@@ -48,7 +48,7 @@ public class AutomaticSpline {
     
     // Note: You will need to re-solve() after
     //       ever calling this.
-    public func remove(at index: Int) {
+    func remove(at index: Int) {
         if index >= 0 && index < count {
             var loopIndex = 0
             let ceiling = (count - 1)
@@ -66,14 +66,14 @@ public class AutomaticSpline {
         }
     }
     
-    public func updateControlPoint(at index: Int, _ x: Float, _ y: Float) {
+    func updateControlPoint(at index: Int, _ x: Float, _ y: Float) {
         if index >= 0 && index < count {
             _x[index] = x
             _y[index] = y
         }
     }
     
-    public func reserveCapacity(minimumCapacity: Int) {
+    func reserveCapacity(minimumCapacity: Int) {
         if minimumCapacity > capacity {
             
             _x.reserveCapacity(minimumCapacity)
@@ -109,7 +109,7 @@ public class AutomaticSpline {
         }
     }
     
-    public func removeAll(keepingCapacity: Bool) {
+    func removeAll(keepingCapacity: Bool) {
         if keepingCapacity == false {
             _x.removeAll(keepingCapacity: false)
             _y.removeAll(keepingCapacity: false)
@@ -132,7 +132,7 @@ public class AutomaticSpline {
         maxIndex = 0
     }
     
-    public func getX(_ pos: Float) -> Float {
+    func getX(_ pos: Float) -> Float {
         if count <= 0 {
             return 0.0
         } else if count == 1 {
@@ -154,7 +154,7 @@ public class AutomaticSpline {
         }
     }
     
-    public func getX(index: Int, percent: Float) -> Float {
+    func getX(index: Int, percent: Float) -> Float {
         if count <= 0 {
             return 0.0
         } else if count == 1 {
@@ -174,7 +174,7 @@ public class AutomaticSpline {
         }
     }
     
-    public func getY(_ pos: Float) -> Float {
+    func getY(_ pos: Float) -> Float {
         if count <= 0 {
             return 0.0
         } else if count == 1 {
@@ -196,7 +196,7 @@ public class AutomaticSpline {
         }
     }
     
-    public func getY(index: Int, percent: Float) -> Float {
+    func getY(index: Int, percent: Float) -> Float {
         if count <= 0 {
             return 0.0
         } else if count == 1 {
@@ -216,7 +216,7 @@ public class AutomaticSpline {
         }
     }
     
-    public func getTanY(_ pos: Float) -> Float {
+    func getTanY(_ pos: Float) -> Float {
         if count <= 1 {
             return 0.0
         } else {
@@ -242,7 +242,7 @@ public class AutomaticSpline {
         }
     }
     
-    public func getTanX(_ pos: Float) -> Float {
+    func getTanX(_ pos: Float) -> Float {
         if count <= 1 {
             return 0.0
         } else {
@@ -268,7 +268,7 @@ public class AutomaticSpline {
         }
     }
     
-    public func getControlX(_ index: Int) -> Float {
+    func getControlX(_ index: Int) -> Float {
         if count <= 0 {
             return 0.0
         } else if count == 1 {
@@ -288,7 +288,7 @@ public class AutomaticSpline {
         }
     }
     
-    public func getControlY(_ index: Int) -> Float {
+    func getControlY(_ index: Int) -> Float {
         if count <= 0 {
             return 0.0
         } else if count == 1 {
@@ -308,7 +308,7 @@ public class AutomaticSpline {
         }
     }
     
-    public func solve(closed: Bool) {
+    func solve(closed: Bool) {
         self.closed = closed
         if count <= 0 {
             maxPos = 0.0

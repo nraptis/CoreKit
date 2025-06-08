@@ -7,6 +7,7 @@
 
 import Foundation
 
+/*
 @frozen public enum PointSelectionModalityExtended: UInt8 {
     
     case invalid
@@ -17,3 +18,4 @@ import Foundation
     case bothOrPoints
     case bothOrTans
 }
+*/

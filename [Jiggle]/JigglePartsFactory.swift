@@ -52,58 +52,7 @@ public class JigglePartsFactory {
     }
     
     public func depositJiggleContent(_ jiggle: Jiggle) {
-        
-        //jiggle.polyMesh.ring.isBroken = false
-        
         jiggle.resetAll_Unsafe()
-        
-        /*
-        jiggle.jiggleMesh.purge()
-        jiggle.purgeJigglePoints()
-        jiggle.purgeGuides()
-        jiggle.purgeOutlineJiggleWeightPoints()
-        jiggle.purgeOutlineJiggleWeightSegments()
-        
-        jiggle.center.x = 0.0
-        jiggle.center.y = 0.0
-        
-        jiggle.offsetCenter.x = 0.0
-        jiggle.offsetCenter.y = 0.0
-        
-        jiggle.scale = 1.0
-        jiggle.rotation = 0.0
-        
-        jiggle.guideCenter.x = 0.0
-        jiggle.guideCenter.y = 0.0
-        
-        jiggle.deselectAll_Unsafe()
-        
-        jiggle.animationWad.measuredSize = AnimationWad.midMeasuredSize
-        
-        jiggle.isFrozen = false
-        
-        jiggle.currentHashSpline.invalidate()
-        jiggle.currentHashPoly.invalidate()
-        jiggle.currentHashMeshStandard.invalidate()
-        jiggle.currentHashMeshWeights.invalidate()
-        jiggle.currentHashOutline.invalidate()
-        jiggle.currentHashSolidLineBufferStandard.invalidate()
-        jiggle.currentHashSolidLineBufferPrecise.invalidate()
-        jiggle.currentHashWeightCurve.invalidate()
-        jiggle.currentHashTrianglesStandard.invalidate()
-        jiggle.currentHashTrianglesWeights.invalidate()
-        jiggle.currentHashTrianglesSwivel.invalidate()
-        jiggle.currentHashTrianglesViewStandard.invalidate()
-        jiggle.currentHashTrianglesViewStereoscopic.invalidate()
-        
-        jiggle.weightCurvePointStart.reset()
-        jiggle.weightCurvePointMiddle.reset()
-        jiggle.weightCurvePointEnd.reset()
-        
-        jiggle.didUpdate = false
-        */
-        
-        
     }
     
     public func withdrawJiggle(circleSpriteFactory: CircleSpriteFactory,
@@ -151,6 +100,7 @@ public class JigglePartsFactory {
         guide.scale = 1.0
         guide.rotation = 0.0
         guide.isFrozen = false
+        guide.isClockwise = true
         guide.isBroken = false
         
         guide.currentHashSpline.invalidate()
@@ -198,7 +148,7 @@ public class JigglePartsFactory {
         jigglePoint.isManualTanHandleEnabledIn = false
         jigglePoint.isManualTanHandleEnabledOut = false
         jigglePoint.isTanHandleModified = false
-        jigglePoint.selectedTanType = .none
+        //jigglePoint.selectedTanType = .none
         
         jigglePoints[jigglePointCount] = jigglePoint
         jigglePointCount += 1

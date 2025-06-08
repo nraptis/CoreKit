@@ -45,7 +45,6 @@ public class GuidePartsFactory {
         guidePoint.isManualTanHandleEnabledIn = false
         guidePoint.isManualTanHandleEnabledOut = false
         guidePoint.isTanHandleModified = false
-        guidePoint.selectedTanType = .none
         
         guidePoints[guidePointCount] = guidePoint
         guidePointCount += 1
@@ -95,8 +94,6 @@ public class GuidePartsFactory {
     var guideWeightSegmentCount = 0
     public func depositGuideWeightSegment(_ guideWeightSegment: GuideWeightSegment) {
         guideWeightSegment.isIllegal = false
-        guideWeightSegment.isBucketed = false // This may well have been the midding nugget
-        
         while guideWeightSegments.count <= guideWeightSegmentCount {
             guideWeightSegments.append(guideWeightSegment)
         }

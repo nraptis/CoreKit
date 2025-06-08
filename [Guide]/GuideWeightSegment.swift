@@ -10,8 +10,6 @@ import Foundation
 public class GuideWeightSegment: PrecomputedLineSegment {
     
     public var isIllegal = false
-    public var isBucketed = false
-    public var isVisited = false
     
     public var x1: Float = 0.0
     public var y1: Float = 0.0
@@ -38,6 +36,7 @@ public class GuideWeightSegment: PrecomputedLineSegment {
     
     var scanIndex = 0
     
+    /*
     public static func neighborControlPointCheck(pointControlPointIndex: Int,
                                                  polygonControlPointCount: Int,
                                                  segmentControlPointIndex1: Int,
@@ -63,5 +62,6 @@ public class GuideWeightSegment: PrecomputedLineSegment {
         
         return NeighborControlPointsResult.notDirectNeighbor
     }
+    */
     
 }

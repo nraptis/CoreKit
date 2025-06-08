@@ -9,12 +9,11 @@ import Foundation
 
 public class JigglePoint: ControlPoint {
     
-    public var selectedTanType = TanTypeOrNone.none
+    //public var selectedTanType = TanTypeOrNone.none
     
     public var renderPointSelected = RenderPointSelectedStrategy.ignore
     public var renderTanInSelected = false
     public var renderTanOutSelected = false
-    
     public var renderX = Float(0.0)
     public var renderY = Float(0.0)
     public var renderTanInX = Float(0.0)

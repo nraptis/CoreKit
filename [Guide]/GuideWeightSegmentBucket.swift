@@ -19,12 +19,6 @@ public final class GuideWeightSegmentBucket {
         
         var isTagged = false
         
-        var lowX = Float(0.0)
-        var hiX = Float(0.0)
-        
-        var lowY = Float(0.0)
-        var hiY = Float(0.0)
-        
         var gridX = 0
         var gridY = 0
         
@@ -84,45 +78,6 @@ public final class GuideWeightSegmentBucket {
         }
     }
     
-    private static let countH = 42
-    private static let countV = 42
-    
-    private var grid = [[GuideWeightSegmentBucketNode]]()
-    private var gridX: [Float]
-    private var gridY: [Float]
-    
-    public private(set) var guideWeightSegments: [GuideWeightSegment]
-    public private(set) var guideWeightSegmentCount = 0
-    
-    var innerNodes = [GuideWeightSegmentBucketNode]()
-    var innerNodeCount = 0
-    func addInnerNode(_ node: GuideWeightSegmentBucketNode) {
-        while innerNodes.count <= innerNodeCount {
-            innerNodes.append(node)
-        }
-        innerNodes[innerNodeCount] = node
-        innerNodeCount += 1
-    }
-    public func purgeInnerNodes() {
-        innerNodeCount = 0
-    }
-    
-    
-    var outerNodes = [GuideWeightSegmentBucketNode]()
-    var outerNodeCount = 0
-    func addOuterNode(_ node: GuideWeightSegmentBucketNode) {
-        while outerNodes.count <= outerNodeCount {
-            outerNodes.append(node)
-        }
-        outerNodes[outerNodeCount] = node
-        outerNodeCount += 1
-    }
-    public func purgeOuterNodes() {
-        outerNodeCount = 0
-    }
-    
-    
-    
     public init() {
         
         gridX = [Float](repeating: 0.0, count: Self.countH)
@@ -144,6 +99,44 @@ public final class GuideWeightSegmentBucket {
             x += 1
         }
     }
+    
+    private static let countH = 48
+    private static let countV = 48
+    
+    private var grid = [[GuideWeightSegmentBucketNode]]()
+    private var gridX: [Float]
+    private var gridY: [Float]
+    
+    public private(set) var guideWeightSegments: [GuideWeightSegment]
+    public private(set) var guideWeightSegmentCount = 0
+    
+    var innerNodes = [GuideWeightSegmentBucketNode]()
+    var innerNodeCount = 0
+    func addInnerNode(_ node: GuideWeightSegmentBucketNode) {
+        while innerNodes.count <= innerNodeCount {
+            innerNodes.append(node)
+        }
+        innerNodes[innerNodeCount] = node
+        innerNodeCount += 1
+    }
+    public func purgeInnerNodes() {
+        innerNodeCount = 0
+    }
+    
+    var outerNodes = [GuideWeightSegmentBucketNode]()
+    var outerNodeCount = 0
+    func addOuterNode(_ node: GuideWeightSegmentBucketNode) {
+        while outerNodes.count <= outerNodeCount {
+            outerNodes.append(node)
+        }
+        outerNodes[outerNodeCount] = node
+        outerNodeCount += 1
+    }
+    public func purgeOuterNodes() {
+        outerNodeCount = 0
+    }
+    
+    
     
     public func reset() {
         var x = 0
@@ -179,32 +172,6 @@ public final class GuideWeightSegmentBucket {
         guideWeightSegmentCount = 0
     }
     
-    func reset_bucketed(x: Int, y: Int) {
-        if x >= 0 && x < Self.countH && y >= 0 && y < Self.countV {
-            let node = grid[x][y]
-            
-            for guideWeightSegmentIndex in 0..<node.guideWeightSegmentCount {
-                let guideWeightSegment = node.guideWeightSegments[guideWeightSegmentIndex]
-                guideWeightSegment.isBucketed = false
-            }
-        }
-    }
-    
-    func reset_bucketed() {
-        var x = 0
-        var y = 0
-        while x < Self.countH {
-            y = 0
-            while y < Self.countV {
-                reset_bucketed(x: x, y: y)
-                y += 1
-            }
-            x += 1
-        }
-        
-        guideWeightSegmentCount = 0
-    }
-    
     func prepareForPoints_Inner(jiggleMeshPoints: [JiggleMeshPoint],
                                 jiggleMeshPointCount: Int) {
         
@@ -226,45 +193,19 @@ public final class GuideWeightSegmentBucket {
             let jiggleMeshPoint = jiggleMeshPoints[jiggleMeshPointIndex]
             let slotX = upperBoundX(value: jiggleMeshPoint.baseX)
             let slotY = upperBoundY(value: jiggleMeshPoint.baseY)
-            
             if slotX > 0 && slotY > 0 {
-                
                 let node = grid[slotX - 1][slotY - 1]
-                
                 node.addInnerMeshPoint(jiggleMeshPoint)
-                
                 if node.isTagged == false {
                     node.isTagged = true
                     addInnerNode(node)
                 }
                 
             } else {
+                //TODO: This can be removed after test
                 print("[Inner] Bonk! This should not happen! on cell (\(slotX), \(slotY))")
             }
         }
-        
-        print("We have \(innerNodeCount) inner nodes")
-        for index in 0..<innerNodeCount {
-            let node = innerNodes[index]
-            
-            var areTheyAllInside = true
-            
-            for pi in 0..<node.innerMeshPointCount {
-                let p = node.innerMeshPoints[pi]
-                
-                if p.baseX < node.lowX || p.baseX > node.hiX || p.baseY < node.lowY || p.baseY > node.hiY {
-                    areTheyAllInside = false
-                    break
-                }
-            }
-            
-            
-            print("node[\(index), x[\(node.lowX) to \(node.hiX)], y[\(node.lowY) to \(node.hiY)]] => \(node.innerMeshPointCount) inner points, areTheyAllInside = \(areTheyAllInside)")
-            
-            
-            
-        }
-        
     }
     
     func prepareForPoints_Outer(jiggleMeshPoints: [JiggleMeshPoint],
@@ -299,34 +240,10 @@ public final class GuideWeightSegmentBucket {
                 }
                 
             } else {
+                //TODO: This can be removed after test
                 print("[Outer] Bonk! This should not happen! on cell (\(slotX), \(slotY))")
             }
             
-            
-        }
-        
-        
-        print("We have \(outerNodeCount) outer nodes")
-        for index in 0..<outerNodeCount {
-            let node = outerNodes[index]
-            
-            var areTheyAllInside = true
-            
-            for pi in 0..<node.outerMeshPointCount {
-                let p = node.outerMeshPoints[pi]
-                
-                if p.baseX < node.lowX || p.baseX > node.hiX || p.baseY < node.lowY || p.baseY > node.hiY {
-                    
-                    print("Because point \(p.baseX), \(p.baseY) is outside the node with bounds x[\(node.lowX) to \(node.hiX)], y[\(node.lowY) to \(node.hiY)], not inside")
-                    
-                    
-                    areTheyAllInside = false
-                    break
-                }
-            }
-            
-            
-            print("node[\(index), x[\(node.lowX) to \(node.hiX)], y[\(node.lowY) to \(node.hiY)]] => \(node.outerMeshPointCount) outer points, areTheyAllInside = \(areTheyAllInside)")
             
         }
     }
@@ -389,19 +306,6 @@ public final class GuideWeightSegmentBucket {
             y += 1
         }
         
-        x = 1
-        while x < Self.countH {
-            y = 1
-            while y < Self.countV {
-                grid[x - 1][y - 1].lowX = gridX[x - 1]
-                grid[x - 1][y - 1].hiX = gridX[x]
-                grid[x - 1][y - 1].lowY = gridY[y - 1]
-                grid[x - 1][y - 1].hiY = gridY[y]
-                y += 1
-            }
-            x += 1
-        }
-        
         for guideWeightSegmentIndex in 0..<guideWeightSegmentCount {
             let guideWeightSegment = guideWeightSegments[guideWeightSegmentIndex]
             
@@ -434,59 +338,6 @@ public final class GuideWeightSegmentBucket {
         }
     }
     
-    /*
-     public func query(minX: Float, maxX: Float, minY: Float, maxY: Float) {
-     
-     guideWeightSegmentCount = 0
-     
-     let lowerBoundX = lowerBoundX(value: minX)
-     var upperBoundX = upperBoundX(value: maxX)
-     let lowerBoundY = lowerBoundY(value: minY)
-     var upperBoundY = upperBoundY(value: maxY)
-     
-     if upperBoundX >= Self.countH {
-     upperBoundX = Self.countH - 1
-     }
-     
-     
-     var x = 0
-     var y = 0
-     
-     x = lowerBoundX
-     while x <= upperBoundX {
-     y = lowerBoundY
-     while y <= upperBoundY {
-     for guideWeightSegmentIndex in 0..<grid[x][y].guideWeightSegmentCount {
-     grid[x][y].guideWeightSegments[guideWeightSegmentIndex].isBucketed = false
-     }
-     y += 1
-     }
-     x += 1
-     }
-     
-     x = lowerBoundX
-     while x <= upperBoundX {
-     y = lowerBoundY
-     while y <= upperBoundY {
-     for guideWeightSegmentIndex in 0..<grid[x][y].guideWeightSegmentCount {
-     let guideWeightSegment = grid[x][y].guideWeightSegments[guideWeightSegmentIndex]
-     if guideWeightSegment.isBucketed == false {
-     guideWeightSegment.isBucketed = true
-     
-     while guideWeightSegments.count <= guideWeightSegmentCount {
-     guideWeightSegments.append(guideWeightSegment)
-     }
-     guideWeightSegments[guideWeightSegmentCount] = guideWeightSegment
-     guideWeightSegmentCount += 1
-     }
-     }
-     y += 1
-     }
-     x += 1
-     }
-     }
-     */
-    
     private func lowerBoundX(value: Float) -> Int {
         var start = 0
         var end = Self.countH
@@ -512,7 +363,14 @@ public final class GuideWeightSegmentBucket {
                 end = mid
             }
         }
-        return min(start, Self.countH - 1)
+        
+        let result = start
+        let maximum = Self.countH - 1
+        if result > maximum {
+            return maximum
+        } else {
+            return result
+        }
     }
     
     private func lowerBoundY(value: Float) -> Int {
@@ -541,7 +399,14 @@ public final class GuideWeightSegmentBucket {
                 end = mid
             }
         }
-        return min(start, Self.countV - 1)
+        
+        let result = start
+        let maximum = Self.countV - 1
+        if result > maximum {
+            return maximum
+        } else {
+            return result
+        }
     }
     
     func blendOuterWithWeightCenter() {
@@ -552,9 +417,9 @@ public final class GuideWeightSegmentBucket {
                 
                 let totalDistance = jiggleMeshPoint.distanceWeightCenter + jiggleMeshPoint.distanceOuter
                 if totalDistance > Math.epsilon {
-                    jiggleMeshPoint.percentOuter = (1.0 - (jiggleMeshPoint.distanceWeightCenter / totalDistance))
+                    jiggleMeshPoint.bleed = (1.0 - (jiggleMeshPoint.distanceWeightCenter / totalDistance))
                 } else {
-                    jiggleMeshPoint.percentOuter = 1.0
+                    jiggleMeshPoint.bleed = 1.0
                 }
             }
         }
@@ -568,9 +433,9 @@ public final class GuideWeightSegmentBucket {
                 
                 let totalDistance = jiggleMeshPoint.distanceInner + jiggleMeshPoint.distanceOuter
                 if totalDistance > Math.epsilon {
-                    jiggleMeshPoint.percentOuter = (1.0 - (jiggleMeshPoint.distanceInner / totalDistance))
+                    jiggleMeshPoint.bleed = (1.0 - (jiggleMeshPoint.distanceInner / totalDistance))
                 } else {
-                    jiggleMeshPoint.percentOuter = 1.0
+                    jiggleMeshPoint.bleed = 1.0
                 }
             }
         }
@@ -605,8 +470,6 @@ public final class GuideWeightSegmentBucket {
         var findIndex = -1
         var circleIndex = 0
         while circleIndex < CircleGridShift.count {
-        
-            
             let levelCount = CircleGridShift.counts[circleIndex]
             for level in 0..<levelCount {
                 let shiftX = CircleGridShift.shiftX[circleIndex][level]
@@ -617,7 +480,6 @@ public final class GuideWeightSegmentBucket {
                     let inner_node = grid[check_x][check_y]
                     for guideWeightSegmentIndex in 0..<inner_node.guideWeightSegmentCount {
                         let guideWeightSegment = inner_node.guideWeightSegments[guideWeightSegmentIndex]
-                        
                         if guideWeightSegment.scanIndex != scanIndex {
                             guideWeightSegment.scanIndex = scanIndex
                             addGuideWeightSegment(guideWeightSegment: guideWeightSegment)
@@ -636,8 +498,6 @@ public final class GuideWeightSegmentBucket {
             
         }
         
-        print("Started Search party With \(guideWeightSegmentCount)")
-        
         if findIndex != -1 {
             var ceiling = circleIndex + Self.GO_DEEPER
             if ceiling > CircleGridShift.count {
@@ -654,7 +514,6 @@ public final class GuideWeightSegmentBucket {
                         let inner_node = grid[check_x][check_y]
                         for guideWeightSegmentIndex in 0..<inner_node.guideWeightSegmentCount {
                             let guideWeightSegment = inner_node.guideWeightSegments[guideWeightSegmentIndex]
-                            
                             if guideWeightSegment.scanIndex != scanIndex {
                                 guideWeightSegment.scanIndex = scanIndex
                                 addGuideWeightSegment(guideWeightSegment: guideWeightSegment)
@@ -665,9 +524,6 @@ public final class GuideWeightSegmentBucket {
                 circleIndex += 1
             }
         }
-        
-        print("Ended Search party With \(guideWeightSegmentCount)")
-        
     }
     
     func calculateOuterDistance(fallbackSegments: [GuideWeightSegment],
@@ -683,8 +539,6 @@ public final class GuideWeightSegmentBucket {
             scanIndex += 1
             
             if guideWeightSegmentCount >= Self.REQUIRED_SEGMENTS {
-                //print("We succeeded an outer mesh point, lol")
-                
                 for pointIndex in 0..<node.outerMeshPointCount {
                     let jiggleMeshPoint = node.outerMeshPoints[pointIndex]
                     jiggleMeshPoint.calculateOuterDistance(guideWeightSegments: guideWeightSegments,
@@ -714,8 +568,6 @@ public final class GuideWeightSegmentBucket {
             scanIndex += 1
             
             if guideWeightSegmentCount >= Self.REQUIRED_SEGMENTS {
-                //print("We succeeded an inner mesh point, lol")
-                
                 for pointIndex in 0..<node.innerMeshPointCount {
                     let jiggleMeshPoint = node.innerMeshPoints[pointIndex]
                     jiggleMeshPoint.calculateInnerDistance(guideWeightSegments: guideWeightSegments,
@@ -732,20 +584,7 @@ public final class GuideWeightSegmentBucket {
         }
     }
     
-    /*
-     for bucketGuideWeightSegmentsIndex in 0..<guideWeightSegmentBucket.guideWeightSegmentCount {
-     let guideWeightSegment = guideWeightSegmentBucket.guideWeightSegments[bucketGuideWeightSegmentsIndex]
-     let distanceSquared = guideWeightSegment.distanceSquaredToClosestPoint(examineJiggleMeshPoint.baseX,
-     examineJiggleMeshPoint.baseY)
-     if distanceSquared < bestDistanceSquared {
-     bestDistanceSquared = distanceSquared
-     }
-     }
-     */
-    
-    
     func addGuideWeightSegment(guideWeightSegment: GuideWeightSegment) {
-        guideWeightSegment.isBucketed = true
         while guideWeightSegments.count <= guideWeightSegmentCount {
             guideWeightSegments.append(guideWeightSegment)
         }
@@ -755,58 +594,6 @@ public final class GuideWeightSegmentBucket {
     
     func purgeGuideWeightSegments() {
         guideWeightSegmentCount = 0
-    }
-    
-    
-    func crossValidateOuterInner(otherBucker: GuideWeightSegmentBucket) {
-        
-        var setOuter = Set<JiggleMeshPoint>()
-        for nodeIndex in 0..<outerNodeCount {
-            let node = outerNodes[nodeIndex]
-            for pointIndex in 0..<node.outerMeshPointCount {
-                let jiggleMeshPoint = node.outerMeshPoints[pointIndex]
-                if setOuter.contains(jiggleMeshPoint) {
-                    print("[CROSS_VALIDT_FAILURR] => Dupe Outer")
-                    return
-                }
-                setOuter.insert(jiggleMeshPoint)
-            }
-        }
-        
-        var setInner = Set<JiggleMeshPoint>()
-        for nodeIndex in 0..<otherBucker.innerNodeCount {
-            let node = otherBucker.innerNodes[nodeIndex]
-            for pointIndex in 0..<node.innerMeshPointCount {
-                let jiggleMeshPoint = node.innerMeshPoints[pointIndex]
-                if setInner.contains(jiggleMeshPoint) {
-                    print("[CROSS_VALIDT_FAILURR] => Duper Inner")
-                    return
-                }
-                setInner.insert(jiggleMeshPoint)
-            }
-        }
-        
-        if setOuter.count != setInner.count {
-            print("[CROSS_VALIDT_FAILURR] => Count MisMatch")
-            return
-        }
-        
-        for po in setOuter {
-            if !setInner.contains(po) {
-                print("[CROSS_VALIDT_FAILURR] => point MisMatch, In Outer, not in Inner")
-                return
-            }
-        }
-        
-        for po in setInner {
-            if !setOuter.contains(po) {
-                print("[CROSS_VALIDT_FAILURR] => point MisMatch, In Inner, not in Outer")
-                return
-            }
-        }
-        
-        print("[CROSS_VALID_SUCCESS!!!]")
-        
     }
     
     

@@ -13,8 +13,18 @@ extension AnimationController {
                                           animationMode: AnimatonMode,
                                           displayMode: DisplayMode,
                                           touchTargetTouchSource: TouchTargetTouchSource,
+                                          worldScalePrecise: Float,
+                                          worldScaleStandardPrecise: Float,
+                                          worldScaleStandardRegular: Float,
+                                          worldScaleStandard: Float,
+                                          magnifiedBoxDimension: Float,
+                                          distantBoxDimension: Float,
+                                          normalBoxDimension: Float,
+                                          isDarkMode: Bool,
+                                          opacityPercent: Float,
                                           isPrecise: Bool,
-                                          isAnimationContinuousAppliedToAll: Bool) {
+                                          isAnimationContinuousAppliedToAll: Bool,
+                                          graphFrame: GraphFrame) {
         
         switch animationMode {
         case .unknown:
@@ -35,9 +45,19 @@ extension AnimationController {
                 case .unassigned:
                     _ = _attemptLinkingTouchToJiggle_Grab(animationTouch: animationTouch,
                                                           jiggleDocument: jiggleDocument,
-                                                          displayMode: displayMode,
                                                           touchTargetTouchSource: touchTargetTouchSource,
-                                                          isPrecise: isPrecise)
+                                                          worldScalePrecise: worldScalePrecise,
+                                                          worldScaleStandardPrecise: worldScaleStandardPrecise,
+                                                          worldScaleStandardRegular: worldScaleStandardRegular,
+                                                          worldScaleStandard: worldScaleStandard,
+                                                          magnifiedBoxDimension: magnifiedBoxDimension,
+                                                          distantBoxDimension: distantBoxDimension,
+                                                          normalBoxDimension: normalBoxDimension,
+                                                          isDarkMode: isDarkMode,
+                                                          opacityPercent: opacityPercent,
+                                                          displayMode: displayMode,
+                                                          isPrecise: isPrecise,
+                                                          graphFrame: graphFrame)
                 default:
                     break
                 }
@@ -59,9 +79,18 @@ extension AnimationController {
                                                                 jiggleDocument: jiggleDocument,
                                                                 displayMode: displayMode,
                                                                 touchTargetTouchSource: touchTargetTouchSource,
+                                                                worldScalePrecise: worldScalePrecise,
+                                                                worldScaleStandardPrecise: worldScaleStandardPrecise,
+                                                                worldScaleStandardRegular: worldScaleStandardRegular,
+                                                                worldScaleStandard: worldScaleStandard,
+                                                                magnifiedBoxDimension: magnifiedBoxDimension,
+                                                                distantBoxDimension: distantBoxDimension,
+                                                                normalBoxDimension: normalBoxDimension,
+                                                                isDarkMode: isDarkMode,
+                                                                opacityPercent: opacityPercent,
                                                                 isPrecise: isPrecise,
-                                                                isAnimationContinuousAppliedToAll: isAnimationContinuousAppliedToAll)
-                    
+                                                                isAnimationContinuousAppliedToAll: isAnimationContinuousAppliedToAll,
+                                                                graphFrame: graphFrame)
                 default:
                     break
                 }
@@ -75,15 +104,31 @@ extension AnimationController {
     
     @MainActor private func _attemptLinkingTouchToJiggle_Grab(animationTouch: AnimationTouch,
                                                               jiggleDocument: AnimationControllerJiggleDocument,
-                                                              displayMode: DisplayMode,
                                                               touchTargetTouchSource: TouchTargetTouchSource,
-                                                              isPrecise: Bool) -> Bool {
+                                                              worldScalePrecise: Float,
+                                                              worldScaleStandardPrecise: Float,
+                                                              worldScaleStandardRegular: Float,
+                                                              worldScaleStandard: Float,
+                                                              magnifiedBoxDimension: Float,
+                                                              distantBoxDimension: Float,
+                                                              normalBoxDimension: Float,
+                                                              isDarkMode: Bool,
+                                                              opacityPercent: Float,
+                                                              displayMode: DisplayMode,
+                                                              isPrecise: Bool,
+                                                              graphFrame: GraphFrame) -> Bool {
         
         let selectJiggleCommand = SelectJiggleCommand(isJiggleCenterFirstPriority: false,
                                                       isFrozenIncluded: true)
         let selectJiggleResponse = jiggleDocument.getJiggleToSelect(points: [animationTouch.point],
                                                                     command: selectJiggleCommand,
-                                                                    touchTargetTouchSource: touchTargetTouchSource)
+                                                                    touchTargetTouchSource: touchTargetTouchSource,
+                                                                    worldScalePrecise: worldScalePrecise,
+                                                                    worldScaleStandardPrecise: worldScaleStandardPrecise,
+                                                                    worldScaleStandardRegular: worldScaleStandardRegular,
+                                                                    magnifiedBoxDimension: magnifiedBoxDimension,
+                                                                    distantBoxDimension: distantBoxDimension,
+                                                                    normalBoxDimension: normalBoxDimension)
         switch selectJiggleResponse {
         case .invalid:
             return false
@@ -92,8 +137,13 @@ extension AnimationController {
             if let jiggle = jiggleDocument.getJiggleAnyObject(jiggleIndex) {
                 animationTouch.linkToResidency(residency: .jiggleGrab(jiggle))
                 jiggleDocument.switchSelectedJiggle(newSelectedJiggleIndex: jiggleIndex,
+                                                    worldScaleStandard: worldScaleStandard,
+                                                    worldScalePrecise: worldScalePrecise,
+                                                    isDarkMode: isDarkMode,
+                                                    opacityPercent: opacityPercent,
                                                     displayMode: displayMode,
-                                                    isPrecise: isPrecise)
+                                                    isPrecise: isPrecise,
+                                                    graphFrame: graphFrame)
                 return true
             } else {
                 return false
@@ -105,14 +155,30 @@ extension AnimationController {
                                                                     jiggleDocument: AnimationControllerJiggleDocument,
                                                                     displayMode: DisplayMode,
                                                                     touchTargetTouchSource: TouchTargetTouchSource,
+                                                                    worldScalePrecise: Float,
+                                                                    worldScaleStandardPrecise: Float,
+                                                                    worldScaleStandardRegular: Float,
+                                                                    worldScaleStandard: Float,
+                                                                    magnifiedBoxDimension: Float,
+                                                                    distantBoxDimension: Float,
+                                                                    normalBoxDimension: Float,
+                                                                    isDarkMode: Bool,
+                                                                    opacityPercent: Float,
                                                                     isPrecise: Bool,
-                                                                    isAnimationContinuousAppliedToAll: Bool) -> Bool {
+                                                                    isAnimationContinuousAppliedToAll: Bool,
+                                                                    graphFrame: GraphFrame) -> Bool {
         
         let selectJiggleCommand = SelectJiggleCommand(isJiggleCenterFirstPriority: false,
                                                       isFrozenIncluded: true)
         let selectJiggleResponse = jiggleDocument.getJiggleToSelect(points: [animationTouch.point],
                                                                     command: selectJiggleCommand,
-                                                                    touchTargetTouchSource: touchTargetTouchSource)
+                                                                    touchTargetTouchSource: touchTargetTouchSource,
+                                                                    worldScalePrecise: worldScalePrecise,
+                                                                    worldScaleStandardPrecise: worldScaleStandardPrecise,
+                                                                    worldScaleStandardRegular: worldScaleStandardRegular,
+                                                                    magnifiedBoxDimension: magnifiedBoxDimension,
+                                                                    distantBoxDimension: distantBoxDimension,
+                                                                    normalBoxDimension: normalBoxDimension)
         
         switch selectJiggleResponse {
         case .invalid:
@@ -142,8 +208,13 @@ extension AnimationController {
                 
                 animationTouch.linkToResidency(residency: .jiggleContinuous(jiggleToSelect))
                 jiggleDocument.switchSelectedJiggle(newSelectedJiggleIndex: jiggleIndex,
+                                                    worldScaleStandard: worldScaleStandard,
+                                                    worldScalePrecise: worldScalePrecise,
+                                                    isDarkMode: isDarkMode,
+                                                    opacityPercent: opacityPercent,
                                                     displayMode: displayMode,
-                                                    isPrecise: isPrecise)
+                                                    isPrecise: isPrecise,
+                                                    graphFrame: graphFrame)
                 return true
                 
                 

@@ -14,32 +14,49 @@ public protocol AnimationControllerJiggleDocument: AnyObject {
     @MainActor var animationContinuousRotationPublisher: PassthroughSubject<Void, Never> { get }
     @MainActor var animationContinuousSyncAllPublisher: PassthroughSubject<Void, Never> { get }
     @MainActor func switchSelectedJiggle(newSelectedJiggleIndex: Int,
+                                         worldScaleStandard: Float,
+                                         worldScalePrecise: Float,
+                                         isDarkMode: Bool,
+                                         opacityPercent: Float,
                                          displayMode: DisplayMode,
-                                         isPrecise: Bool)
+                                         isPrecise: Bool,
+                                         graphFrame: GraphFrame)
+    
     
     func getJiggleAnyObject(_ index: Int) -> AnyObject?
     
     func getJiggleToSelect(points: [Math.Point],
                            command: SelectJiggleCommand,
-                           touchTargetTouchSource: TouchTargetTouchSource) -> SelectJiggleResponse
+                           touchTargetTouchSource: TouchTargetTouchSource,
+                           worldScalePrecise: Float,
+                           worldScaleStandardPrecise: Float,
+                           worldScaleStandardRegular: Float,
+                           magnifiedBoxDimension: Float,
+                           distantBoxDimension: Float,
+                           normalBoxDimension: Float) -> SelectJiggleResponse
     
     @MainActor func attemptSelectJiggle(points: [Math.Point],
                                         command: SelectJiggleCommand,
                                         nullifySelectionIfWhiff: Bool,
                                         displayMode: DisplayMode,
                                         touchTargetTouchSource: TouchTargetTouchSource,
-                                        isPrecise: Bool) -> Bool
-    
+                                        worldScalePrecise: Float,
+                                        worldScaleStandardPrecise: Float,
+                                        worldScaleStandardRegular: Float,
+                                        worldScaleStandard: Float,
+                                        magnifiedBoxDimension: Float,
+                                        distantBoxDimension: Float,
+                                        normalBoxDimension: Float,
+                                        isDarkMode: Bool,
+                                        opacityPercent: Float,
+                                        isPrecise: Bool,
+                                        graphFrame: GraphFrame) -> Bool
 }
 
 public protocol AnimationControllerJiggleViewModel: AnyObject {
     @MainActor func continuousRealizeJiggleDidStartGrab(jiggle: Jiggle)
     @MainActor func continuousRealizeJiggleDidUpdateGrab(jiggle: Jiggle)
     @MainActor func continuousRealizeJiggleDidStopGrab(jiggle: Jiggle)
-}
-
-public protocol AnimationControllerJiggle: AnyObject {
-    var animationWad: AnimationWad { get }
 }
 
 public class AnimationController {

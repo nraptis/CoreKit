@@ -40,6 +40,7 @@ public class JiggleWeightSegment: PrecomputedLineSegment {
     public var directionAngle = Float(0.0)
     public var normalAngle = Float(0.0)
     
+    /*
     public static func neighborControlPointCheck(pointControlPointIndex: Int,
                                                  polygonControlPointCount: Int,
                                                  segmentControlPointIndex1: Int,
@@ -65,5 +66,6 @@ public class JiggleWeightSegment: PrecomputedLineSegment {
         
         return NeighborControlPointsResult.notDirectNeighbor
     }
+    */
     
 }

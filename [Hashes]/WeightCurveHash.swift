@@ -23,18 +23,15 @@ public struct WeightCurveHash: Equatable {
     public var weightCurvePointMiddle = WeightCurvePointHash()
     public var weightCurvePointEnd = WeightCurvePointHash()
     
-    public mutating func change(frameWidth: Float,
-                                frameHeight: Float,
-                                paddingH: Float,
-                                paddingV: Float,
+    public mutating func change(graphFrame: GraphFrame,
                                 weightCurvePointStart: WeightCurvePoint,
                                 weightCurvePointMiddle: WeightCurvePoint,
                                 weightCurvePointEnd: WeightCurvePoint) {
         
-        self.frameWidth = frameWidth
-        self.frameHeight = frameHeight
-        self.paddingH = paddingH
-        self.paddingV = paddingV
+        self.frameWidth = graphFrame.width
+        self.frameHeight = graphFrame.height
+        self.paddingH = graphFrame.paddingH
+        self.paddingV = graphFrame.paddingV
         
         self.weightCurvePointStart.change(normalizedTanDirection: weightCurvePointStart.normalizedTanDirection,
                                                  normalizedTanMagnitudeIn: weightCurvePointStart.normalizedTanMagnitudeIn,

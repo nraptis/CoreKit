@@ -37,30 +37,27 @@ public class WeightCurve {
         
     }
     
-    public func buildSplineFromCurve(frameWidth: Float,
-                                     frameHeight: Float,
-                                     paddingH: Float,
-                                     paddingV: Float,
+    public func buildSplineFromCurve(graphFrame: GraphFrame,
                                      tanFactorWeightCurve: Float,
                                      tanFactorWeightCurveAuto: Float,
                                      weightCurvePointStart: WeightCurvePoint,
                                      weightCurvePointMiddle: WeightCurvePoint,
                                      weightCurvePointEnd: WeightCurvePoint) {
         
-        self.paddingH = paddingH
-        self.paddingV = paddingV
+        self.paddingH = graphFrame.paddingH
+        self.paddingV = graphFrame.paddingV
         
         resetWeightCurvePoints()
         
         let minX = paddingH
-        let maxX = frameWidth - paddingH
-        let minY = paddingV
-        let maxY = frameHeight - paddingV
+        let maxX = graphFrame.width - graphFrame.paddingH
+        let minY = graphFrame.paddingV
+        let maxY = graphFrame.height - graphFrame.paddingV
         let rangeX = (maxX - minX)
         let rangeY = (maxY - minY)
         
-        self.frameWidth = frameWidth
-        self.frameHeight = frameHeight
+        self.frameWidth = graphFrame.width
+        self.frameHeight = graphFrame.height
         
         self.minX = minX
         self.maxX = maxX
@@ -70,7 +67,6 @@ public class WeightCurve {
         self.rangeX = rangeX
         self.rangeY = rangeY
         
-
         addWeightCurvePoint(weightCurvePointStart)
         addWeightCurvePoint(weightCurvePointMiddle)
         addWeightCurvePoint(weightCurvePointEnd)
@@ -105,7 +101,9 @@ public class WeightCurve {
             _interpolateHeights()
         }
         
-        _pickleRotationAll(tanFactorWeightCurve: tanFactorWeightCurve, tanFactorWeightCurveAuto: tanFactorWeightCurveAuto)
+        _pickleRotationAll(tanFactorWeightCurve: tanFactorWeightCurve,
+                           tanFactorWeightCurveAuto: tanFactorWeightCurveAuto)
+        
     }
     
     private func _pickleRotationAll(tanFactorWeightCurve: Float, tanFactorWeightCurveAuto: Float) {
@@ -588,11 +586,7 @@ public class WeightCurve {
         return percentY
     }
     
-    public func refreshSpline(frameWidth: Float,
-                       frameHeight: Float,
-                       paddingH: Float,
-                       paddingV: Float,
-                       tanFactorWeightCurve: Float) {
+    public func refreshSpline(tanFactorWeightCurve: Float) {
         
         for weightCurvePointIndex in 0..<weightCurvePointCount {
             let weightCurvePoint = weightCurvePoints[weightCurvePointIndex]

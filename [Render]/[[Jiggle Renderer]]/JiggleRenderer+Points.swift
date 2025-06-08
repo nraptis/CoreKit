@@ -15,12 +15,7 @@ extension JiggleRenderer {
         let creatorModeFormat: PointsCreatorModeFormat
         switch creatorMode {
         case .none:
-            switch pointSelectionMode {
-            case .tans:
-                creatorModeFormat = .alternative
-            default:
-                creatorModeFormat = .regular
-            }
+            creatorModeFormat = .regular
         case .makeJiggle:
             creatorModeFormat = .invalid
         case .drawJiggle:

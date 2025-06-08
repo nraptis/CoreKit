@@ -9,8 +9,11 @@
 
 import Foundation
 
-public protocol SelectedGuidePointListeningConforming {
+public protocol SelectedGuidePointListeningConforming: AnyObject {
     func realizeRecentSelectionChange_GuidePoint()
+    
+    var selectedGuidePointTanType: TanType { get set }
+    var selectedGuidePointMultiModeSelectionType: MultiModeSelectionType { get set }
 }
 
 public class Guide {
@@ -78,6 +81,7 @@ public class Guide {
     public var currentHashSolidLineBufferPrecise = SolidLineBufferGuideHash()
     
     public var isFrozen = false
+    public var isClockwise = true
     public var isCandidate = false
     
     public var renderSelected = false
@@ -167,20 +171,20 @@ public class Guide {
     public var guidePoints = [GuidePoint]()
     public var guidePointCount = 0
     @MainActor public func addGuidePoint(x: Float,
-                                                y: Float,
-                                                jiggleDocument: some SelectedGuidePointListeningConforming,
-                                                ignoreRealize: Bool) {
+                                         y: Float,
+                                         jiggleDocument: some SelectedGuidePointListeningConforming,
+                                         ignoreRealize: Bool) {
         let guidePoint = GuidePartsFactory.shared.withdrawGuidePoint()
         guidePoint.x = x
         guidePoint.y = y
         addGuidePoint(guidePoint: guidePoint,
-                             jiggleDocument: jiggleDocument,
-                             ignoreRealize: ignoreRealize)
+                      jiggleDocument: jiggleDocument,
+                      ignoreRealize: ignoreRealize)
     }
     
     @MainActor public func addGuidePoint(directedWeightPoint: DirectedWeightPoint,
-                                                jiggleDocument: some SelectedGuidePointListeningConforming,
-                                                ignoreRealize: Bool) {
+                                         jiggleDocument: some SelectedGuidePointListeningConforming,
+                                         ignoreRealize: Bool) {
         let guidePoint = GuidePartsFactory.shared.withdrawGuidePoint()
         guidePoint.x = directedWeightPoint.x
         guidePoint.y = directedWeightPoint.y
@@ -199,21 +203,24 @@ public class Guide {
         }
         
         addGuidePoint(guidePoint: guidePoint,
-                             jiggleDocument: jiggleDocument,
-                             ignoreRealize: ignoreRealize)
+                      jiggleDocument: jiggleDocument,
+                      ignoreRealize: ignoreRealize)
     }
     
     @MainActor public func addGuidePoint(guidePoint: GuidePoint,
-                                                jiggleDocument: some SelectedGuidePointListeningConforming,
-                                                ignoreRealize: Bool) {
+                                         jiggleDocument: some SelectedGuidePointListeningConforming,
+                                         ignoreRealize: Bool) {
         while guidePoints.count <= guidePointCount {
             guidePoints.append(guidePoint)
         }
+        // [SAGG Verified on 06-06-2025]
+        // The multi-modal selection type and tan type strictly enforced, not set elsewhere...
         let newSelectedGuidePointIndex = guidePointCount
         switchSelectedGuidePoint(newSelectedGuidePointIndex: newSelectedGuidePointIndex,
-                                        selectedTanType: .none,
-                                        jiggleDocument: jiggleDocument,
-                                        ignoreRealize: ignoreRealize)
+                                 jiggleDocument: jiggleDocument,
+                                 multiModeSelectionType: .point,
+                                 tanType: nil,
+                                 ignoreRealize: ignoreRealize)
         
         guidePoints[guidePointCount] = guidePoint
         guidePointCount += 1
@@ -247,14 +254,18 @@ public class Guide {
         }
     }
     
+    //
+    //
+    
     @MainActor public func switchSelectedGuidePoint(newSelectedGuidePointIndex: Int,
-                                                           selectedTanType: TanTypeOrNone,
-                                                           jiggleDocument: some SelectedGuidePointListeningConforming,
-                                                           ignoreRealize: Bool) {
+                                                    jiggleDocument: some SelectedGuidePointListeningConforming,
+                                                    multiModeSelectionType: MultiModeSelectionType,
+                                                    tanType: TanType?,
+                                                    ignoreRealize: Bool) {
         selectedGuidePointIndex = newSelectedGuidePointIndex
-        if newSelectedGuidePointIndex >= 0 &&
-            newSelectedGuidePointIndex < guidePointCount {
-            guidePoints[newSelectedGuidePointIndex].selectedTanType = selectedTanType
+        jiggleDocument.selectedGuidePointMultiModeSelectionType = multiModeSelectionType
+        if let tanType = tanType {
+            jiggleDocument.selectedGuidePointTanType = tanType
         }
         if !ignoreRealize {
             jiggleDocument.realizeRecentSelectionChange_GuidePoint()
@@ -262,38 +273,42 @@ public class Guide {
     }
     
     @MainActor public func insertGuidePoint(x: Float,
-                                                   y: Float,
-                                                   index: Int,
-                                                   jiggleDocument: some SelectedGuidePointListeningConforming,
-                                                   ignoreRealize: Bool) -> GuidePoint {
+                                            y: Float,
+                                            index: Int,
+                                            jiggleDocument: some SelectedGuidePointListeningConforming,
+                                            ignoreRealize: Bool,
+                                            ignoreSwitch: Bool) -> GuidePoint {
         let guidePoint = GuidePartsFactory.shared.withdrawGuidePoint()
         guidePoint.x = x
         guidePoint.y = y
         insertGuidePoint(newGuidePoint: guidePoint,
-                                index: index,
-                                jiggleDocument: jiggleDocument,
-                                ignoreRealize: ignoreRealize)
+                         index: index,
+                         jiggleDocument: jiggleDocument,
+                         ignoreRealize: ignoreRealize,
+                         ignoreSwitch: ignoreSwitch)
         return guidePoint
     }
     
     @MainActor public func insertGuidePoint(data: ControlPointData,
-                                                   
-                                                   index: Int,
-                                                   jiggleDocument: some SelectedGuidePointListeningConforming,
-                                                   ignoreRealize: Bool) -> GuidePoint {
+                                            index: Int,
+                                            jiggleDocument: some SelectedGuidePointListeningConforming,
+                                            ignoreRealize: Bool,
+                                            ignoreSwitch: Bool) -> GuidePoint {
         let guidePoint = GuidePartsFactory.shared.withdrawGuidePoint()
         guidePoint.setData(data)
         insertGuidePoint(newGuidePoint: guidePoint,
-                                index: index,
-                                jiggleDocument: jiggleDocument,
-                                ignoreRealize: ignoreRealize)
+                         index: index,
+                         jiggleDocument: jiggleDocument,
+                         ignoreRealize: ignoreRealize,
+                         ignoreSwitch: ignoreSwitch)
         return guidePoint
     }
     
     @MainActor public func insertGuidePoint(newGuidePoint: GuidePoint,
-                                                   index: Int,
-                                                   jiggleDocument: some SelectedGuidePointListeningConforming,
-                                                   ignoreRealize: Bool) {
+                                            index: Int,
+                                            jiggleDocument: some SelectedGuidePointListeningConforming,
+                                            ignoreRealize: Bool,
+                                            ignoreSwitch: Bool) {
         while guidePoints.count <= guidePointCount {
             guidePoints.append(newGuidePoint)
         }
@@ -306,20 +321,26 @@ public class Guide {
         guidePoints[index] = newGuidePoint
         guidePointCount += 1
         
-        switchSelectedGuidePoint(newSelectedGuidePointIndex: index,
-                                        selectedTanType: .none,
-                                        jiggleDocument: jiggleDocument,
-                                        ignoreRealize: ignoreRealize)
+        if !ignoreSwitch {
+            // [SAGG Verified on 06-06-2025]
+            // The multi-modal selection type and tan type strictly enforced, not set elsewhere...
+            switchSelectedGuidePoint(newSelectedGuidePointIndex: index,
+                                     jiggleDocument: jiggleDocument,
+                                     multiModeSelectionType: .point,
+                                     tanType: nil,
+                                     ignoreRealize: ignoreRealize)
+        }
+        
     }
     
     @MainActor public func deleteGuidePoint(guidePoint: GuidePoint,
-                                                   jiggleDocument: some SelectedGuidePointListeningConforming,
-                                                   ignoreRealize: Bool) -> Bool {
+                                            jiggleDocument: some SelectedGuidePointListeningConforming,
+                                            ignoreRealize: Bool) -> Bool {
         for checkIndex in 0..<guidePointCount {
             if guidePoints[checkIndex] === guidePoint {
                 if deleteGuidePoint(index: checkIndex,
-                                           jiggleDocument: jiggleDocument,
-                                           ignoreRealize: ignoreRealize) {
+                                    jiggleDocument: jiggleDocument,
+                                    ignoreRealize: ignoreRealize) {
                     return true
                 }
             }
@@ -338,8 +359,8 @@ public class Guide {
     @discardableResult
     @MainActor
     public func deleteGuidePoint(index: Int,
-                                        jiggleDocument: some SelectedGuidePointListeningConforming,
-                                        ignoreRealize: Bool) -> Bool {
+                                 jiggleDocument: some SelectedGuidePointListeningConforming,
+                                 ignoreRealize: Bool) -> Bool {
         if index >= 0 && index < guidePointCount {
             let guidePoint = guidePoints[index]
             GuidePartsFactory.shared.depositGuidePoint(guidePoint)
@@ -355,10 +376,15 @@ public class Guide {
             if newSelectedGuidePointIndex >= guidePointCount {
                 newSelectedGuidePointIndex = guidePointCount - 1
             }
+            
+            // [SAGG Verified on 06-06-2025]
+            // The multi-modal selection type and tan type strictly enforced, not set elsewhere...
+            
             switchSelectedGuidePoint(newSelectedGuidePointIndex: newSelectedGuidePointIndex,
-                                            selectedTanType: .none,
-                                            jiggleDocument: jiggleDocument,
-                                            ignoreRealize: ignoreRealize)
+                                     jiggleDocument: jiggleDocument,
+                                     multiModeSelectionType: .point,
+                                     tanType: nil,
+                                     ignoreRealize: ignoreRealize)
             return true
         }
         return false
@@ -557,6 +583,24 @@ public class Guide {
         }
         return Point(x: center.x,
                      y: center.y)
+    }
+    
+    public func closestWeightSegment(_ point: Point) -> ClosestGuideWeightSegmentResult {
+        var bestDistanceSquared = Float(100_000_000.0)
+        var bestWeightSegment: GuideWeightSegment?
+        for outlineGuideWeightSegmentIndex in 0..<outlineGuideWeightSegmentCount {
+            let outlineGuideWeightSegment = outlineGuideWeightSegments[outlineGuideWeightSegmentIndex]
+            let distanceSquared = outlineGuideWeightSegment.distanceSquaredToPoint(point)
+            if distanceSquared < bestDistanceSquared {
+                bestWeightSegment = outlineGuideWeightSegment
+                bestDistanceSquared = distanceSquared
+            }
+        }
+        if let bestWeightSegment = bestWeightSegment {
+            return ClosestGuideWeightSegmentResult.valid(bestWeightSegment, bestDistanceSquared)
+        } else {
+            return ClosestGuideWeightSegmentResult.none
+        }
     }
     
 }
