@@ -14,16 +14,22 @@ public class AnimationWad {
     }
     
     public func updateGrabAttribute(attributeType: GrabAttributeType,
-                                    value: Float) {
+                                    value: Float) -> Bool {
         switch attributeType {
+        case .all:
+            return false
         case .grabDragPower:
             grabDragPower = value
+            return true
         case .grabSpeed:
             grabSpeed = value
+            return true
         case .grabStiffness:
             grabStiffness = value
+            return true
         case .grabGyroPower:
             grabGyroPower = value
+            return true
         }
     }
     

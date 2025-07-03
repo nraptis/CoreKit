@@ -34,10 +34,9 @@ public class HistoryStateRotateOrFlipGuide: HistoryState {
                                                weightModeType: .dontCare, // Good
                                                graphType: .forceLeave, // Good
                                                guidesType: .forceEnter, // Good
-                                               jigglePointTanType: .dontCare, // TODO TODO TODO TODO
-                                               guidePointTanType: .dontCare, // TODO TODO TODO TODO
+                                               jigglePointTanType: .dontCare, // Good
+                                               guidePointTanType: .dontCare, // Good
                                                phoneExpandedTopType: .dontCare, // Good
-                                                // Good
                                                timeLineType: .dontCare, // Good
                                                animationLoopType: .dontCare, // Good
                                                animationContinuousType: .dontCare, // Good

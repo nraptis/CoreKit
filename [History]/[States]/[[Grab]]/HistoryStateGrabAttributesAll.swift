@@ -30,23 +30,22 @@ public class HistoryStateGrabAttributeAll: HistoryState {
         } else {
             grabAttributeType = .grabDragPower
         }
-        let topMenuType = grabAttributeType.getTopMenuType()
-        let result = HistoryWorldConfiguration(documentMode: .view,
-                                               editModeType: .dontCare,
-                                               weightModeType: .dontCare,
-                                               graphType: .dontCare,
-                                               guidesType: .forceEnter,
-                                               jigglePointTanType: .dontCare, // TODO TODO TODO TODO
-                                               guidePointTanType: .dontCare, // TODO TODO TODO TODO
-                                               phoneExpandedTopType: topMenuType,
-                                               
-                                               timeLineType: .dontCare,
-                                               animationLoopType: .forceLeave,
-                                               animationContinuousType: .forceLeave,
-                                               animationLoopsPageType: .dontCare,
-                                               animationTimeLinePageType: .dontCare,
-                                               animationContinuousPageType: .dontCare,
-                                               timeLineSwatchType: .dontCare)
+        let topMenuType = HistoryStateGrabAttributeOne.getTopMenuType(grabAttributeType: grabAttributeType)
+        let result = HistoryWorldConfiguration(documentMode: .view, // Good
+                                               editModeType: .dontCare, // Good
+                                               weightModeType: .dontCare, // Good
+                                               graphType: .dontCare, // Good
+                                               guidesType: .forceEnter, // Good
+                                               jigglePointTanType: .dontCare, // Good
+                                               guidePointTanType: .dontCare, // Good
+                                               phoneExpandedTopType: topMenuType, // Good
+                                               timeLineType: .dontCare, // Good
+                                               animationLoopType: .forceLeave, // Good
+                                               animationContinuousType: .forceLeave, // Good
+                                               animationLoopsPageType: .dontCare, // Good
+                                               animationTimeLinePageType: .dontCare, // Good
+                                               animationContinuousPageType: .dontCare, // Good
+                                               timeLineSwatchType: .dontCare)  // Good
         return result
     }
     

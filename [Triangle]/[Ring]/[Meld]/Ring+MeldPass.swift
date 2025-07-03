@@ -14,7 +14,8 @@ extension Ring {
     // the contentions and things... Better to be accurate than redundant
     
     //@Precondition: calculateProbePointMeldContentionCounts returned true
-    func meldPass(ignoreButtressCenters: Bool) -> Bool {
+    //func meldPass(ignoreButtressCenters: Bool) -> Bool {
+    func meldPass() -> Bool {
         
         var result = false
         
@@ -35,9 +36,7 @@ extension Ring {
                     if ringProbePoint.meldContentionCount == meldContentionCount {
                         purgeRingMelds()
                         if attemptToGeneratePossibleMeldsAndMelds(ringProbePointIndex: ringProbePointIndex,
-                                                                  numberOfPointsToMeld: meldContentionCount + 1,
-                                                                  ignoreButtressCenters: ignoreButtressCenters,
-                                                                  ignoreMelded: true) {
+                                                                  numberOfPointsToMeld: meldContentionCount + 1) {
                             if let bestRingMeld = getBestRingMeld() {
                                 if meldProbePoints(ringMeld: bestRingMeld) {
                                     

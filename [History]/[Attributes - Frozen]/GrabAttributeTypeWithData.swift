@@ -8,6 +8,7 @@
 import Foundation
 
 @frozen public enum GrabAttributeTypeWithData {
+    case all(GrabAttributeDataUserAll)
     case grabDragPower(Float)
     case grabSpeed(Float)
     case grabStiffness(Float)

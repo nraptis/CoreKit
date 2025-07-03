@@ -10,9 +10,7 @@ import Foundation
 extension Ring {
     
     func attemptToGeneratePossibleMeldsAndMelds(ringProbePointIndex: Int,
-                                                numberOfPointsToMeld: Int,
-                                                ignoreButtressCenters: Bool,
-                                                ignoreMelded: Bool) -> Bool {
+                                                numberOfPointsToMeld: Int) -> Bool {
         
         purgePossibleMelds()
         
@@ -25,7 +23,7 @@ extension Ring {
         
         if numberOfPointsToMeld >= ringProbePointCount { return false }
         
-        if ignoreButtressCenters {
+        
             var index = ringProbePointIndex
             var loopIndex = 0
             while loopIndex < numberOfPointsToMeld {
@@ -42,11 +40,10 @@ extension Ring {
             
             index = ringProbePointIndex
             loopIndex = 0
-        }
+
         
-        if ignoreMelded {
-            var index = ringProbePointIndex
-            var loopIndex = 0
+            index = ringProbePointIndex
+            loopIndex = 0
             while loopIndex < numberOfPointsToMeld {
                 let ringProbePoint = ringProbePoints[index]
                 if ringProbePoint.isMelded {
@@ -58,10 +55,9 @@ extension Ring {
                 }
                 loopIndex += 1
             }
-        }
         
-        var index = ringProbePointIndex
-        var loopIndex = 0
+        index = ringProbePointIndex
+        loopIndex = 0
         meldProbePointCount = 0
         while loopIndex < numberOfPointsToMeld {
             let ringProbePoint = ringProbePoints[index]

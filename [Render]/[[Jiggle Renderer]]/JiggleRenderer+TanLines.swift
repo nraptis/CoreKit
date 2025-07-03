@@ -45,29 +45,29 @@ extension JiggleRenderer {
         guard renderInfo.isShowingJigglePointTanHandles else { return }
         
         if isJiggleFrozen {
-            color_tan_lines_unselected_stroke = RTJ.strokeDis(isDarkMode: isDarkMode)
-            color_tan_lines_unselected_fill = RTJ.fillDis(isDarkMode: isDarkMode)
+            color_tan_lines_unselected_stroke = RTJ.strokeDis(isDarkModeEnabled: isDarkModeEnabled)
+            color_tan_lines_unselected_fill = RTJ.fillDis(isDarkModeEnabled: isDarkModeEnabled)
             return
         }
         
         switch tansCreatorModeFormat {
         case .regular, .invalid:
             if isJiggleSelected {
-                color_tan_lines_unselected_stroke = RTJ.strokeRegSel(isDarkMode: isDarkMode)
-                color_tan_lines_unselected_fill = RTJ.fillRegSelMod(isDarkMode: isDarkMode)
-                color_tan_lines_selected_stroke = RTJ.strokeRegSel(isDarkMode: isDarkMode)
-                color_tan_lines_selected_fill = RTJ.fillGrb(isDarkMode: isDarkMode)
+                color_tan_lines_unselected_stroke = RTJ.strokeRegSel(isDarkModeEnabled: isDarkModeEnabled)
+                color_tan_lines_unselected_fill = RTJ.fillRegSelMod(isDarkModeEnabled: isDarkModeEnabled)
+                color_tan_lines_selected_stroke = RTJ.strokeRegSel(isDarkModeEnabled: isDarkModeEnabled)
+                color_tan_lines_selected_fill = RTJ.fillGrb(isDarkModeEnabled: isDarkModeEnabled)
             } else {
-                color_tan_lines_unselected_stroke = RTJ.strokeRegUns(isDarkMode: isDarkMode)
-                color_tan_lines_unselected_fill = RTJ.fillRegUnsMod(isDarkMode: isDarkMode)
+                color_tan_lines_unselected_stroke = RTJ.strokeRegUns(isDarkModeEnabled: isDarkModeEnabled)
+                color_tan_lines_unselected_fill = RTJ.fillRegUnsMod(isDarkModeEnabled: isDarkModeEnabled)
             }
         case .alternative:
             if isJiggleSelected {
-                color_tan_lines_unselected_stroke = RTJ.strokeAltSel(isDarkMode: isDarkMode)
-                color_tan_lines_unselected_fill = RTJ.fillAltSelMod(isDarkMode: isDarkMode)
+                color_tan_lines_unselected_stroke = RTJ.strokeAltSel(isDarkModeEnabled: isDarkModeEnabled)
+                color_tan_lines_unselected_fill = RTJ.fillAltSelMod(isDarkModeEnabled: isDarkModeEnabled)
             } else {
-                color_tan_lines_unselected_stroke = RTJ.strokeAltUns(isDarkMode: isDarkMode)
-                color_tan_lines_unselected_fill = RTJ.fillAltUnsMod(isDarkMode: isDarkMode)
+                color_tan_lines_unselected_stroke = RTJ.strokeAltUns(isDarkModeEnabled: isDarkModeEnabled)
+                color_tan_lines_unselected_fill = RTJ.fillAltUnsMod(isDarkModeEnabled: isDarkModeEnabled)
             }
         }
     }

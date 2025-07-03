@@ -16,7 +16,7 @@ public protocol AnimationControllerJiggleDocument: AnyObject {
     @MainActor func switchSelectedJiggle(newSelectedJiggleIndex: Int,
                                          worldScaleStandard: Float,
                                          worldScalePrecise: Float,
-                                         isDarkMode: Bool,
+                                         isDarkModeEnabled: Bool,
                                          opacityPercent: Float,
                                          displayMode: DisplayMode,
                                          isPrecise: Bool,
@@ -47,7 +47,7 @@ public protocol AnimationControllerJiggleDocument: AnyObject {
                                         magnifiedBoxDimension: Float,
                                         distantBoxDimension: Float,
                                         normalBoxDimension: Float,
-                                        isDarkMode: Bool,
+                                        isDarkModeEnabled: Bool,
                                         opacityPercent: Float,
                                         isPrecise: Bool,
                                         graphFrame: GraphFrame) -> Bool

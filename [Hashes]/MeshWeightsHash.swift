@@ -19,17 +19,17 @@ public struct MeshWeightsHash: Equatable {
     var guideOutlineHashes = [OutlineHashGuide]()
     var guideCenterX = Float(-100_000.0)
     var guideCenterY = Float(-100_000.0)
-    var isDarkMode = false
+    var isDarkModeEnabled = false
     public mutating func change(polyHash: PolyHash,
                          guideOutlineHashes: [OutlineHashGuide],
                          guideCenterX: Float,
                          guideCenterY: Float,
-                         isDarkMode: Bool) {
+                         isDarkModeEnabled: Bool) {
         self.polyHash = polyHash
         self.guideOutlineHashes = guideOutlineHashes
         self.guideCenterX = guideCenterX
         self.guideCenterY = guideCenterY
-        self.isDarkMode = isDarkMode
+        self.isDarkModeEnabled = isDarkModeEnabled
     }
     
     public mutating func invalidate() {

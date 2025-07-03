@@ -14,84 +14,84 @@ public struct RTJ {
     nonisolated(unsafe) public static let L = RenderThemeJiggleLight()
     
     // Bloom
-    public static func bloom(isDarkMode: Bool) -> RGBA {
-        isDarkMode ? D.bloom : L.bloom
+    public static func bloom(isDarkModeEnabled: Bool) -> RGBA {
+        isDarkModeEnabled ? D.bloom : L.bloom
     }
     
     // Center Marker
-    public static func centerMarkerUnselectedActive(isDarkMode: Bool) -> RGBA {
-        isDarkMode ? D.centerMarkerUnselectedActive : L.centerMarkerUnselectedActive
+    public static func centerMarkerUnselectedActive(isDarkModeEnabled: Bool) -> RGBA {
+        isDarkModeEnabled ? D.centerMarkerUnselectedActive : L.centerMarkerUnselectedActive
     }
     
     // Stroke Colors
-    public static func strokeRegSel(isDarkMode: Bool) -> RGBA {
-        isDarkMode ? D.strokeRegSel : L.strokeRegSel
+    public static func strokeRegSel(isDarkModeEnabled: Bool) -> RGBA {
+        isDarkModeEnabled ? D.strokeRegSel : L.strokeRegSel
     }
     
-    public static func strokeRegUns(isDarkMode: Bool) -> RGBA {
-        isDarkMode ? D.strokeRegUns : L.strokeRegUns
+    public static func strokeRegUns(isDarkModeEnabled: Bool) -> RGBA {
+        isDarkModeEnabled ? D.strokeRegUns : L.strokeRegUns
     }
     
-    public static func strokeAltSel(isDarkMode: Bool) -> RGBA {
-        isDarkMode ? D.strokeAltSel : L.strokeAltSel
+    public static func strokeAltSel(isDarkModeEnabled: Bool) -> RGBA {
+        isDarkModeEnabled ? D.strokeAltSel : L.strokeAltSel
     }
     
-    public static func strokeAltUns(isDarkMode: Bool) -> RGBA {
-        isDarkMode ? D.strokeAltUns : L.strokeAltUns
+    public static func strokeAltUns(isDarkModeEnabled: Bool) -> RGBA {
+        isDarkModeEnabled ? D.strokeAltUns : L.strokeAltUns
     }
     
-    public static func strokeDis(isDarkMode: Bool) -> RGBA {
-        isDarkMode ? D.strokeDis : L.strokeDis
+    public static func strokeDis(isDarkModeEnabled: Bool) -> RGBA {
+        isDarkModeEnabled ? D.strokeDis : L.strokeDis
     }
     
     // Fill Colors
-    public static func fillRegSelUnm(isDarkMode: Bool) -> RGBA {
-        isDarkMode ? D.fillRegSelUnm : L.fillRegSelUnm
+    public static func fillRegSelUnm(isDarkModeEnabled: Bool) -> RGBA {
+        isDarkModeEnabled ? D.fillRegSelUnm : L.fillRegSelUnm
     }
     
-    public static func fillRegSelMod(isDarkMode: Bool) -> RGBA {
-        isDarkMode ? D.fillRegSelMod : L.fillRegSelMod
+    public static func fillRegSelMod(isDarkModeEnabled: Bool) -> RGBA {
+        isDarkModeEnabled ? D.fillRegSelMod : L.fillRegSelMod
     }
     
-    public static func fillRegUnsUnm(isDarkMode: Bool) -> RGBA {
-        isDarkMode ? D.fillRegUnsUnm : L.fillRegUnsUnm
+    public static func fillRegUnsUnm(isDarkModeEnabled: Bool) -> RGBA {
+        isDarkModeEnabled ? D.fillRegUnsUnm : L.fillRegUnsUnm
     }
     
-    public static func fillRegUnsMod(isDarkMode: Bool) -> RGBA {
-        isDarkMode ? D.fillRegUnsMod : L.fillRegUnsMod
+    public static func fillRegUnsMod(isDarkModeEnabled: Bool) -> RGBA {
+        isDarkModeEnabled ? D.fillRegUnsMod : L.fillRegUnsMod
     }
     
-    public static func fillAltSelUnm(isDarkMode: Bool) -> RGBA {
-        isDarkMode ? D.fillAltSelUnm : L.fillAltSelUnm
+    public static func fillAltSelUnm(isDarkModeEnabled: Bool) -> RGBA {
+        isDarkModeEnabled ? D.fillAltSelUnm : L.fillAltSelUnm
     }
     
-    public static func fillAltSelMod(isDarkMode: Bool) -> RGBA {
-        isDarkMode ? D.fillAltSelMod : L.fillAltSelMod
+    public static func fillAltSelMod(isDarkModeEnabled: Bool) -> RGBA {
+        isDarkModeEnabled ? D.fillAltSelMod : L.fillAltSelMod
     }
     
-    public static func fillAltUnsUnm(isDarkMode: Bool) -> RGBA {
-        isDarkMode ? D.fillAltUnsUnm : L.fillAltUnsUnm
+    public static func fillAltUnsUnm(isDarkModeEnabled: Bool) -> RGBA {
+        isDarkModeEnabled ? D.fillAltUnsUnm : L.fillAltUnsUnm
     }
     
-    public static func fillAltUnsMod(isDarkMode: Bool) -> RGBA {
-        isDarkMode ? D.fillAltUnsMod : L.fillAltUnsMod
+    public static func fillAltUnsMod(isDarkModeEnabled: Bool) -> RGBA {
+        isDarkModeEnabled ? D.fillAltUnsMod : L.fillAltUnsMod
     }
     
-    public static func fillDis(isDarkMode: Bool) -> RGBA {
-        isDarkMode ? D.fillDis : L.fillDis
+    public static func fillDis(isDarkModeEnabled: Bool) -> RGBA {
+        isDarkModeEnabled ? D.fillDis : L.fillDis
     }
     
-    public static func fillGrb(isDarkMode: Bool) -> RGBA {
-        isDarkMode ? D.fillGrb : L.fillGrb
+    public static func fillGrb(isDarkModeEnabled: Bool) -> RGBA {
+        isDarkModeEnabled ? D.fillGrb : L.fillGrb
     }
     
     // Tan Point Colors
-    public static func tanPointFillSel(isDarkMode: Bool) -> RGBA {
-        isDarkMode ? D.tanPointFillSel : L.tanPointFillSel
+    public static func tanPointFillSel(isDarkModeEnabled: Bool) -> RGBA {
+        isDarkModeEnabled ? D.tanPointFillSel : L.tanPointFillSel
     }
     
-    public static func tanPointFillUns(isDarkMode: Bool) -> RGBA {
-        isDarkMode ? D.tanPointFillUns : L.tanPointFillUns
+    public static func tanPointFillUns(isDarkModeEnabled: Bool) -> RGBA {
+        isDarkModeEnabled ? D.tanPointFillUns : L.tanPointFillUns
     }
     
     static let _jiggleFillDarkFrozen = UIColor(named: "jiggle_fill_dark_frozen") ?? UIColor()

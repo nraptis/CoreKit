@@ -11,7 +11,7 @@ public extension JiggleMesh {
     
     func refreshTriangleBufferEditStandard(isSelected: Bool, 
                                            isFrozen: Bool,
-                                           isDarkMode: Bool,
+                                           isDarkModeEnabled: Bool,
                                            opacityPercent: Float) {
         editBufferStandardRegular.reset()
         for indexIndex in 0..<indexCount {
@@ -39,7 +39,7 @@ public extension JiggleMesh {
         var blue: Float
         
         if isFrozen {
-            if isDarkMode {
+            if isDarkModeEnabled {
                 red = RTJ.jiggleFillDarkFrozen.red
                 green = RTJ.jiggleFillDarkFrozen.green
                 blue = RTJ.jiggleFillDarkFrozen.blue
@@ -49,7 +49,7 @@ public extension JiggleMesh {
                 blue = RTJ.jiggleFillLightFrozen.blue
             }
         } else {
-            if isDarkMode {
+            if isDarkModeEnabled {
                 red = RTJ.jiggleFillDark0.red
                 green = RTJ.jiggleFillDark0.green
                 blue = RTJ.jiggleFillDark0.blue
@@ -86,7 +86,7 @@ public extension JiggleMesh {
     
     func refreshTriangleBufferEditWeights(isSelected: Bool,
                                           isFrozen: Bool,
-                                          isDarkMode: Bool,
+                                          isDarkModeEnabled: Bool,
                                           sortedGuideCount: Int,
                                           opacityPercent: Float) {
         
@@ -116,7 +116,7 @@ public extension JiggleMesh {
         let ceiling = (sortedGuideCount + 1)
         
         if isFrozen {
-            if isDarkMode {
+            if isDarkModeEnabled {
                 for jiggleMeshPointIndex in 0..<jiggleMeshPointCount {
                     let jiggleMeshPoint = jiggleMeshPoints[jiggleMeshPointIndex]
                     let red = RTJ.jiggleFillDarkFrozen.red
@@ -148,7 +148,7 @@ public extension JiggleMesh {
                 }
             }
         } else {
-            if isDarkMode {
+            if isDarkModeEnabled {
                 for jiggleMeshPointIndex in 0..<jiggleMeshPointCount {
                     let jiggleMeshPoint = jiggleMeshPoints[jiggleMeshPointIndex]
                     let red = RTJ.getFillRedDark(level: jiggleMeshPoint.depth,
@@ -235,7 +235,7 @@ public extension JiggleMesh {
         }
     }
     
-    func refreshTriangleBuffersSwivel(isDarkMode: Bool,
+    func refreshTriangleBuffersSwivel(isDarkModeEnabled: Bool,
                                       sortedGuideCount: Int) {
         
         swivelBuffer.reset()
@@ -256,7 +256,7 @@ public extension JiggleMesh {
             swivelBloomBuffer.add(vertex: vertex)
         }
         
-        if isDarkMode {
+        if isDarkModeEnabled {
             for jiggleMeshPointIndex in 0..<jiggleMeshPointCount {
                 let jiggleMeshPoint = jiggleMeshPoints[jiggleMeshPointIndex]
                 let red = RTJ.getFillRedDark(level: jiggleMeshPoint.depth,

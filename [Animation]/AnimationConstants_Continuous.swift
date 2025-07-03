@@ -23,17 +23,17 @@ public struct AnimationConstants_Continuous {
                                                                         value_lo: 0.0,
                                                                         value_hi: Math.pi2)
     
-    nonisolated(unsafe) public static let swoop = AnimationConstantLane(user_lo: -100.0,
+    nonisolated(unsafe) public static let swoop = AnimationConstantLane(user_lo: -90.0,
                                                                         user_default: 0.0,
                                                                         user_zero: 0.0,
-                                                                        user_hi: 100.0,
+                                                                        user_hi: 90.0,
                                                                         value_lo: 0.0,
                                                                         value_hi: 1.0)
     
-    nonisolated(unsafe) public static let wiggle = AnimationConstantLane(user_lo: -100.0,
+    nonisolated(unsafe) public static let wiggle = AnimationConstantLane(user_lo: -50.0,
                                                                          user_default: 0.0,
                                                                          user_zero: 0.0,
-                                                                         user_hi: 100.0,
+                                                                         user_hi: 50.0,
                                                                          value_lo: -1.0,
                                                                          value_hi: 1.0)
     
@@ -65,17 +65,17 @@ public struct AnimationConstants_Continuous {
                                                                               value_lo: 0.0,
                                                                               value_hi: 1.0)
     
-    nonisolated(unsafe) public static let startRotation = AnimationConstantLane(user_lo: -90.0,
+    nonisolated(unsafe) public static let startRotation = AnimationConstantLane(user_lo: -180.0,
                                                                               user_default: 0.0,
                                                                               user_zero: 0.0,
-                                                                              user_hi: 90.0,
+                                                                              user_hi: 180.0,
                                                                               value_lo: 0.0,
                                                                               value_hi: 1.0)
     
-    nonisolated(unsafe) public static let endRotation = AnimationConstantLane(user_lo: -90.0,
+    nonisolated(unsafe) public static let endRotation = AnimationConstantLane(user_lo: -180.0,
                                                                               user_default: 0.0,
                                                                               user_zero: 0.0,
-                                                                              user_hi: 90.0,
+                                                                              user_hi: 180.0,
                                                                               value_lo: 0.0,
                                                                               value_hi: 1.0)
     

@@ -51,49 +51,49 @@ extension JiggleRenderer {
         guard renderInfo.isShowingJigglePoints else { return }
         
         if isJiggleFrozen {
-            color_points_unmodified_unselected_stroke = RTJ.strokeDis(isDarkMode: isDarkMode)
-            color_points_unmodified_unselected_fill = RTJ.fillDis(isDarkMode: isDarkMode)
-            color_points_modified_unselected_stroke = RTJ.strokeDis(isDarkMode: isDarkMode)
-            color_points_modified_unselected_fill = RTJ.fillDis(isDarkMode: isDarkMode)
+            color_points_unmodified_unselected_stroke = RTJ.strokeDis(isDarkModeEnabled: isDarkModeEnabled)
+            color_points_unmodified_unselected_fill = RTJ.fillDis(isDarkModeEnabled: isDarkModeEnabled)
+            color_points_modified_unselected_stroke = RTJ.strokeDis(isDarkModeEnabled: isDarkModeEnabled)
+            color_points_modified_unselected_fill = RTJ.fillDis(isDarkModeEnabled: isDarkModeEnabled)
             return
         }
         
         switch pointsCreatorModeFormat {
         case .regular, .invalid:
             if isJiggleSelected {
-                color_points_unmodified_unselected_stroke = RTJ.strokeRegSel(isDarkMode: isDarkMode)
-                color_points_unmodified_unselected_fill = RTJ.fillRegSelUnm(isDarkMode: isDarkMode)
-                color_points_modified_unselected_stroke = RTJ.strokeRegSel(isDarkMode: isDarkMode)
-                color_points_modified_unselected_fill = RTJ.fillRegSelMod(isDarkMode: isDarkMode)
-                color_points_selected_stroke = RTJ.strokeRegSel(isDarkMode: isDarkMode)
-                color_points_selected_fill = RTJ.fillGrb(isDarkMode: isDarkMode)
+                color_points_unmodified_unselected_stroke = RTJ.strokeRegSel(isDarkModeEnabled: isDarkModeEnabled)
+                color_points_unmodified_unselected_fill = RTJ.fillRegSelUnm(isDarkModeEnabled: isDarkModeEnabled)
+                color_points_modified_unselected_stroke = RTJ.strokeRegSel(isDarkModeEnabled: isDarkModeEnabled)
+                color_points_modified_unselected_fill = RTJ.fillRegSelMod(isDarkModeEnabled: isDarkModeEnabled)
+                color_points_selected_stroke = RTJ.strokeRegSel(isDarkModeEnabled: isDarkModeEnabled)
+                color_points_selected_fill = RTJ.fillGrb(isDarkModeEnabled: isDarkModeEnabled)
                 
-                color_points_unmodified_tanselected_fill = RTJ.fillRegSelUnm(isDarkMode: isDarkMode)
-                color_points_modified_tanselected_fill = RTJ.fillRegSelMod(isDarkMode: isDarkMode)
+                color_points_unmodified_tanselected_fill = RTJ.fillRegSelUnm(isDarkModeEnabled: isDarkModeEnabled)
+                color_points_modified_tanselected_fill = RTJ.fillRegSelMod(isDarkModeEnabled: isDarkModeEnabled)
                 
                 
             } else {
-                color_points_unmodified_unselected_stroke = RTJ.strokeRegUns(isDarkMode: isDarkMode)
-                color_points_unmodified_unselected_fill = RTJ.fillRegUnsUnm(isDarkMode: isDarkMode)
-                color_points_modified_unselected_stroke = RTJ.strokeRegUns(isDarkMode: isDarkMode)
-                color_points_modified_unselected_fill = RTJ.fillRegUnsMod(isDarkMode: isDarkMode)
+                color_points_unmodified_unselected_stroke = RTJ.strokeRegUns(isDarkModeEnabled: isDarkModeEnabled)
+                color_points_unmodified_unselected_fill = RTJ.fillRegUnsUnm(isDarkModeEnabled: isDarkModeEnabled)
+                color_points_modified_unselected_stroke = RTJ.strokeRegUns(isDarkModeEnabled: isDarkModeEnabled)
+                color_points_modified_unselected_fill = RTJ.fillRegUnsMod(isDarkModeEnabled: isDarkModeEnabled)
             }
         case .alternative:
             if isJiggleSelected {
-                color_points_unmodified_unselected_stroke = RTJ.strokeAltSel(isDarkMode: isDarkMode)
-                color_points_unmodified_unselected_fill = RTJ.fillAltSelUnm(isDarkMode: isDarkMode)
-                color_points_modified_unselected_stroke = RTJ.strokeAltSel(isDarkMode: isDarkMode)
-                color_points_modified_unselected_fill = RTJ.fillAltSelMod(isDarkMode: isDarkMode)
-                color_points_selected_stroke = RTJ.strokeRegSel(isDarkMode: isDarkMode)
-                color_points_selected_fill = RTJ.fillGrb(isDarkMode: isDarkMode)
+                color_points_unmodified_unselected_stroke = RTJ.strokeAltSel(isDarkModeEnabled: isDarkModeEnabled)
+                color_points_unmodified_unselected_fill = RTJ.fillAltSelUnm(isDarkModeEnabled: isDarkModeEnabled)
+                color_points_modified_unselected_stroke = RTJ.strokeAltSel(isDarkModeEnabled: isDarkModeEnabled)
+                color_points_modified_unselected_fill = RTJ.fillAltSelMod(isDarkModeEnabled: isDarkModeEnabled)
+                color_points_selected_stroke = RTJ.strokeRegSel(isDarkModeEnabled: isDarkModeEnabled)
+                color_points_selected_fill = RTJ.fillGrb(isDarkModeEnabled: isDarkModeEnabled)
                 
-                color_points_unmodified_tanselected_fill = RTJ.fillRegSelUnm(isDarkMode: isDarkMode)
-                color_points_modified_tanselected_fill = RTJ.fillRegSelMod(isDarkMode: isDarkMode)
+                color_points_unmodified_tanselected_fill = RTJ.fillRegSelUnm(isDarkModeEnabled: isDarkModeEnabled)
+                color_points_modified_tanselected_fill = RTJ.fillRegSelMod(isDarkModeEnabled: isDarkModeEnabled)
             } else {
-                color_points_unmodified_unselected_stroke = RTJ.strokeAltUns(isDarkMode: isDarkMode)
-                color_points_unmodified_unselected_fill = RTJ.fillAltUnsUnm(isDarkMode: isDarkMode)
-                color_points_modified_unselected_stroke = RTJ.strokeAltUns(isDarkMode: isDarkMode)
-                color_points_modified_unselected_fill = RTJ.fillAltUnsMod(isDarkMode: isDarkMode)
+                color_points_unmodified_unselected_stroke = RTJ.strokeAltUns(isDarkModeEnabled: isDarkModeEnabled)
+                color_points_unmodified_unselected_fill = RTJ.fillAltUnsUnm(isDarkModeEnabled: isDarkModeEnabled)
+                color_points_modified_unselected_stroke = RTJ.strokeAltUns(isDarkModeEnabled: isDarkModeEnabled)
+                color_points_modified_unselected_fill = RTJ.fillAltUnsMod(isDarkModeEnabled: isDarkModeEnabled)
             }
         }
     }

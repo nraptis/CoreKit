@@ -35,10 +35,9 @@ public class HistoryStateMoveJigglePointTanHandle: HistoryState {
                                                weightModeType: .dontCare, // Good
                                                graphType: .dontCare, // Good
                                                guidesType: .forceLeave, // Good
-                                               jigglePointTanType: .dontCare, // TODO TODO TODO TODO
-                                               guidePointTanType: .dontCare, // TODO TODO TODO TODO
+                                               jigglePointTanType: .forceEnter, // Good
+                                               guidePointTanType: .dontCare, // Good
                                                phoneExpandedTopType: .dontCare, // Good
-                                                // Good
                                                timeLineType: .dontCare, // Good
                                                animationLoopType: .dontCare, // Good
                                                animationContinuousType: .dontCare, // Good

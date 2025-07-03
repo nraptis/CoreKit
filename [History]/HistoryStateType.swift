@@ -12,6 +12,7 @@ import Foundation
     case unknown
 
     case createJiggle
+    case createMultipleJiggles
     case transformJiggle
     case rotateOrFlipJiggle
     case moveJiggleCenter
@@ -19,9 +20,10 @@ import Foundation
     case deleteJiggle
 
     case createGuide
+    case createMultipleGuides
     case transformGuide
     case rotateOrFlipGuide
-    case generateTopography
+    case replaceAllGuides
     case deleteGuide
 
     case createJigglePoint
@@ -45,6 +47,7 @@ import Foundation
     case moveWeightGraphPosition
     case moveWeightGraphTangent
     case resetWeightGraph
+    case replaceWeightGraph
 
     case grabAttributeOne
     case grabAttributeAll

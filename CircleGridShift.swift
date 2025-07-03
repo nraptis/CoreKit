@@ -7,8 +7,7 @@
 
 import Foundation
 
-public struct CircleGridShift: Equatable {
-    
+public struct CircleGridShift {
     
     public private(set) nonisolated(unsafe) static var shiftX = [[Int]]()
     public private(set) nonisolated(unsafe) static var shiftY = [[Int]]()

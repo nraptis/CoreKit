@@ -157,7 +157,7 @@ extension Ring {
             return false
         }
         
-        if meldPass(ignoreButtressCenters: true) {
+        if meldPass() {
             // we will bobble it back to the relax process, otherwise repeat...
             if calculateProbePointsWithIllegalGeometry() {
                 if attemptMeldAndRelaxStartingWithRelax(callDepth: &callDepth) {
@@ -168,29 +168,7 @@ extension Ring {
             _ = attemptMeldAndRelaxStartingWithMeld(callDepth: &callDepth)
             return true
         }
-        
-        
-        // We almost certainly want this; Why did it go bad before? Hmm... Good enough?
-        
-        //TODO: WARNING: HARSH: RE-ENABLED
-        //if TOOL_MARKUP_2_ENABLED == false {
-        /*
-            if meldPass(ignoreButtressCenters: false) {
-                // we will bobble it back to the relax process, otherwise repeat...
-                
-                if calculateProbePointsWithIllegalGeometry() {
-                    if attemptMeldAndRelaxStartingWithRelax(callDepth: &callDepth) {
-                        return true
-                    }
-                }
-                
-                _ = attemptMeldAndRelaxStartingWithMeld(callDepth: &callDepth)
-                return true
-            }
-        */
-        //}
-        
-        
+
         return false
     }
     

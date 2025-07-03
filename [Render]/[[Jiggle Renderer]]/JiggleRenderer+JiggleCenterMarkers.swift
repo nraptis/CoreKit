@@ -47,8 +47,8 @@ extension JiggleRenderer {
         guard renderInfo.isShowingCenterMarker else { return }
         
         if isJiggleFrozen {
-            color_jiggle_center_stroke = RTJ.strokeDis(isDarkMode: isDarkMode)
-            color_jiggle_center_fill = RTJ.fillDis(isDarkMode: isDarkMode)
+            color_jiggle_center_stroke = RTJ.strokeDis(isDarkModeEnabled: isDarkModeEnabled)
+            color_jiggle_center_fill = RTJ.fillDis(isDarkModeEnabled: isDarkModeEnabled)
             return
         }
         
@@ -57,31 +57,31 @@ extension JiggleRenderer {
             if isJiggleSelected {
                 switch editMode {
                 case .jiggles:
-                    color_jiggle_center_stroke = RTJ.strokeRegSel(isDarkMode: isDarkMode)
-                    color_jiggle_center_fill = RTJ.fillGrb(isDarkMode: isDarkMode)
+                    color_jiggle_center_stroke = RTJ.strokeRegSel(isDarkModeEnabled: isDarkModeEnabled)
+                    color_jiggle_center_fill = RTJ.fillGrb(isDarkModeEnabled: isDarkModeEnabled)
                 case .points:
-                    color_jiggle_center_stroke = RTJ.strokeRegSel(isDarkMode: isDarkMode)
-                    color_jiggle_center_fill = RTJ.fillRegSelUnm(isDarkMode: isDarkMode)
+                    color_jiggle_center_stroke = RTJ.strokeRegSel(isDarkModeEnabled: isDarkModeEnabled)
+                    color_jiggle_center_fill = RTJ.fillRegSelUnm(isDarkModeEnabled: isDarkModeEnabled)
                 }
             } else {
-                color_jiggle_center_stroke = RTJ.strokeRegUns(isDarkMode: isDarkMode)
-                color_jiggle_center_fill = RTJ.fillRegUnsUnm(isDarkMode: isDarkMode)
+                color_jiggle_center_stroke = RTJ.strokeRegUns(isDarkModeEnabled: isDarkModeEnabled)
+                color_jiggle_center_fill = RTJ.fillRegUnsUnm(isDarkModeEnabled: isDarkModeEnabled)
             }
         case .alternative:
             if isJiggleSelected {
-                color_jiggle_center_stroke = RTJ.strokeAltSel(isDarkMode: isDarkMode)
-                color_jiggle_center_fill = RTJ.fillAltSelUnm(isDarkMode: isDarkMode)
+                color_jiggle_center_stroke = RTJ.strokeAltSel(isDarkModeEnabled: isDarkModeEnabled)
+                color_jiggle_center_fill = RTJ.fillAltSelUnm(isDarkModeEnabled: isDarkModeEnabled)
             } else {
-                color_jiggle_center_stroke = RTJ.strokeAltUns(isDarkMode: isDarkMode)
-                color_jiggle_center_fill = RTJ.fillAltUnsUnm(isDarkMode: isDarkMode)
+                color_jiggle_center_stroke = RTJ.strokeAltUns(isDarkModeEnabled: isDarkModeEnabled)
+                color_jiggle_center_fill = RTJ.fillAltUnsUnm(isDarkModeEnabled: isDarkModeEnabled)
             }
         case .jiggleCenter:
             if isJiggleSelected {
-                color_jiggle_center_stroke = RTJ.strokeRegSel(isDarkMode: isDarkMode)
-                color_jiggle_center_fill = RTJ.fillGrb(isDarkMode: isDarkMode)
+                color_jiggle_center_stroke = RTJ.strokeRegSel(isDarkModeEnabled: isDarkModeEnabled)
+                color_jiggle_center_fill = RTJ.fillGrb(isDarkModeEnabled: isDarkModeEnabled)
             } else {
-                color_jiggle_center_stroke = RTJ.strokeRegUns(isDarkMode: isDarkMode)
-                color_jiggle_center_fill = RTJ.centerMarkerUnselectedActive(isDarkMode: isDarkMode)
+                color_jiggle_center_stroke = RTJ.strokeRegUns(isDarkModeEnabled: isDarkModeEnabled)
+                color_jiggle_center_fill = RTJ.centerMarkerUnselectedActive(isDarkModeEnabled: isDarkModeEnabled)
             }
         }
     }

@@ -53,4 +53,10 @@ public class CircleSpriteFactory {
         circle_sprite[22].loadScaled(graphics: graphics, name: "circle_22", extension: "png")
     }
     
+    public func dispose() {
+        for sprite in circle_sprite {
+            sprite.dispose()
+        }
+    }
+    
 }

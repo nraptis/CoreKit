@@ -16,7 +16,7 @@ public extension Guide {
                  worldScalePrecise: Float,
                  creatorMode: CreatorMode,
                  weightMode: WeightMode,
-                 isDarkMode: Bool,
+                 isDarkModeEnabled: Bool,
                  isJiggleSelected: Bool,
                  isJiggleFrozen: Bool,
                  jiggleCenter: Point,
@@ -67,7 +67,7 @@ public extension Guide {
                                                 isJiggleSelected: isJiggleSelected,
                                                 isJiggleFrozen: isJiggleFrozen,
                                                 isGuideFrozen: isGuideFrozen,
-                                                isDarkMode: isDarkMode,
+                                                isDarkModeEnabled: isDarkModeEnabled,
                                                 weightDepthIndex: weightDepthIndex,
                                                 guideCount: guideCount,
                                                 jiggleCenterX: jiggleCenter.x,
@@ -84,7 +84,7 @@ public extension Guide {
                                             isGuideSelected: isGuideSelected,
                                             isJiggleFrozen: isJiggleFrozen,
                                             isGuideFrozen: isGuideFrozen,
-                                            isDarkMode: isDarkMode,
+                                            isDarkModeEnabled: isDarkModeEnabled,
                                             jiggleCenter: jiggleCenter,
                                             jiggleScale: jiggleScale,
                                             jiggleRotation: jiggleRotation,
@@ -108,7 +108,7 @@ public extension Guide {
                                                isJiggleSelected: isJiggleSelected,
                                                isJiggleFrozen: isJiggleFrozen,
                                                isGuideFrozen: isGuideFrozen,
-                                               isDarkMode: isDarkMode,
+                                               isDarkModeEnabled: isDarkModeEnabled,
                                                weightDepthIndex: weightDepthIndex,
                                                guideCount: guideCount,
                                                jiggleCenterX: jiggleCenter.x,
@@ -125,7 +125,7 @@ public extension Guide {
                                            isGuideSelected: isGuideSelected,
                                            isJiggleFrozen: isJiggleFrozen,
                                            isGuideFrozen: isGuideFrozen,
-                                           isDarkMode: isDarkMode,
+                                           isDarkModeEnabled: isDarkModeEnabled,
                                            jiggleCenter: jiggleCenter,
                                            jiggleScale: jiggleScale,
                                            jiggleRotation: jiggleRotation,
@@ -194,9 +194,11 @@ public extension Guide {
         for borderIndex in 0..<borderTool.borderCount {
             let x = borderTool.borderX[borderIndex]
             let y = borderTool.borderY[borderIndex]
+            let controlIndex = borderTool.borderIndex[borderIndex]
             let guideWeightPoint = GuidePartsFactory.shared.withdrawGuideWeightPoint()
             guideWeightPoint.x = x
             guideWeightPoint.y = y
+            guideWeightPoint.controlIndex = controlIndex
             addGuideWeightPoint(guideWeightPoint)
         }
         
@@ -286,6 +288,7 @@ public extension Guide {
             
             outlineGuideWeightPoint.x = point.x
             outlineGuideWeightPoint.y = point.y
+            outlineGuideWeightPoint.controlIndex = guideWeightPoint.controlIndex
             addOutlineGuideWeightPoint(outlineGuideWeightPoint)
         }
         
@@ -295,14 +298,18 @@ public extension Guide {
         while guideWeightPointIndex2 < outlineGuideWeightPointCount {
             let guideWeightPoint1 = outlineGuideWeightPoints[guideWeightPointIndex1]
             let guideWeightPoint2 = outlineGuideWeightPoints[guideWeightPointIndex2]
-            let outguideWeightSegment = GuidePartsFactory.shared.withdrawGuideWeightSegment()
-            outguideWeightSegment.x1 = guideWeightPoint1.x
-            outguideWeightSegment.y1 = guideWeightPoint1.y
-            outguideWeightSegment.x2 = guideWeightPoint2.x
-            outguideWeightSegment.y2 = guideWeightPoint2.y
-            outguideWeightSegment.precompute()
+            let guideWeightSegment = GuidePartsFactory.shared.withdrawGuideWeightSegment()
+            guideWeightSegment.x1 = guideWeightPoint1.x
+            guideWeightSegment.y1 = guideWeightPoint1.y
+            guideWeightSegment.x2 = guideWeightPoint2.x
+            guideWeightSegment.y2 = guideWeightPoint2.y
             
-            addOutlineGuideWeightSegment(outguideWeightSegment)
+            guideWeightSegment.controlIndex1 = guideWeightPoint1.controlIndex
+            guideWeightSegment.controlIndex2 = guideWeightPoint2.controlIndex
+            
+            guideWeightSegment.precompute()
+            
+            addOutlineGuideWeightSegment(guideWeightSegment)
             
             guideWeightPointIndex1 = guideWeightPointIndex2
             guideWeightPointIndex2 += 1
@@ -327,7 +334,7 @@ public extension Guide {
                                          isGuideSelected: Bool,
                                          isJiggleFrozen: Bool,
                                          isGuideFrozen: Bool,
-                                         isDarkMode: Bool,
+                                         isDarkModeEnabled: Bool,
                                          jiggleCenter: Point,
                                          jiggleScale: Float,
                                          jiggleRotation: Float,
@@ -338,8 +345,8 @@ public extension Guide {
                                          lineThicknessFill: Float) {
         
         if isJiggleFrozen || isGuideFrozen {
-            solidLineBufferRegularStroke.rgba = RTJ.strokeDis(isDarkMode: isDarkMode)
-            solidLineBufferRegularFill.rgba = RTJ.fillDis(isDarkMode: isDarkMode)
+            solidLineBufferRegularStroke.rgba = RTJ.strokeDis(isDarkModeEnabled: isDarkModeEnabled)
+            solidLineBufferRegularFill.rgba = RTJ.fillDis(isDarkModeEnabled: isDarkModeEnabled)
         } else {
             
             let isSelected = (isJiggleSelected && isGuideSelected)
@@ -374,43 +381,43 @@ public extension Guide {
                 creatorModeFormat = .alternative
             }
             
-            solidLineBufferRegularBloom.rgba = RTJ.bloom(isDarkMode: isDarkMode)
+            solidLineBufferRegularBloom.rgba = RTJ.bloom(isDarkModeEnabled: isDarkModeEnabled)
             
             switch creatorModeFormat {
             case .regular:
                 if isJiggleSelected {
-                    solidLineBufferRegularStroke.rgba = RTJ.strokeRegSel(isDarkMode: isDarkMode)
+                    solidLineBufferRegularStroke.rgba = RTJ.strokeRegSel(isDarkModeEnabled: isDarkModeEnabled)
                     if isGuideSelected {
                         switch weightMode {
                         case .guides:
-                            solidLineBufferRegularFill.rgba = RTJ.fillGrb(isDarkMode: isDarkMode)
+                            solidLineBufferRegularFill.rgba = RTJ.fillGrb(isDarkModeEnabled: isDarkModeEnabled)
                         case .points:
                             solidLineBufferRegularFill.rgba = RTG.fillRegSelUnm(index: weightDepthIndex,
-                                                                                isDarkMode: isDarkMode)
+                                                                                isDarkModeEnabled: isDarkModeEnabled)
                         }
                     } else {
                         solidLineBufferRegularFill.rgba = RTG.fillRegSelUnm(index: weightDepthIndex,
-                                                                            isDarkMode: isDarkMode)
+                                                                            isDarkModeEnabled: isDarkModeEnabled)
                     }
                 } else {
-                    solidLineBufferRegularStroke.rgba = RTJ.strokeRegUns(isDarkMode: isDarkMode)
+                    solidLineBufferRegularStroke.rgba = RTJ.strokeRegUns(isDarkModeEnabled: isDarkModeEnabled)
                     solidLineBufferRegularFill.rgba = RTG.fillRegUnsUnm(index: weightDepthIndex,
-                                                                        isDarkMode: isDarkMode)
+                                                                        isDarkModeEnabled: isDarkModeEnabled)
                 }
                 
             case .alternative:
                 if isJiggleSelected {
-                    solidLineBufferRegularStroke.rgba = RTJ.strokeAltSel(isDarkMode: isDarkMode)
-                    solidLineBufferRegularFill.rgba = RTJ.fillAltSelUnm(isDarkMode: isDarkMode)
+                    solidLineBufferRegularStroke.rgba = RTJ.strokeAltSel(isDarkModeEnabled: isDarkModeEnabled)
+                    solidLineBufferRegularFill.rgba = RTJ.fillAltSelUnm(isDarkModeEnabled: isDarkModeEnabled)
                 } else {
-                    solidLineBufferRegularStroke.rgba = RTJ.strokeAltUns(isDarkMode: isDarkMode)
-                    solidLineBufferRegularFill.rgba = RTJ.fillAltUnsUnm(isDarkMode: isDarkMode)
+                    solidLineBufferRegularStroke.rgba = RTJ.strokeAltUns(isDarkModeEnabled: isDarkModeEnabled)
+                    solidLineBufferRegularFill.rgba = RTJ.fillAltUnsUnm(isDarkModeEnabled: isDarkModeEnabled)
                 }
             }
         }
         
         
-        //solidLineBloomBuffer.rgba = RTJ.bloom(isDarkMode: isDarkMode)
+        //solidLineBloomBuffer.rgba = RTJ.bloom(isDarkModeEnabled: isDarkModeEnabled)
         
         solidLineBufferRegularBloom.removeAll(keepingCapacity: true)
         solidLineBufferRegularBloom.thickness = lineThicknessStroke
@@ -448,7 +455,7 @@ public extension Guide {
                                                   isJiggleSelected: isJiggleSelected,
                                                   isJiggleFrozen: isJiggleFrozen,
                                                   isGuideFrozen: isGuideFrozen,
-                                                  isDarkMode: isDarkMode,
+                                                  isDarkModeEnabled: isDarkModeEnabled,
                                                   weightDepthIndex: weightDepthIndex,
                                                   guideCount: guideCount,
                                                   jiggleCenterX: jiggleCenter.x,
@@ -465,7 +472,7 @@ public extension Guide {
                                         isGuideSelected: Bool,
                                         isJiggleFrozen: Bool,
                                         isGuideFrozen: Bool,
-                                        isDarkMode: Bool,
+                                        isDarkModeEnabled: Bool,
                                         jiggleCenter: Point,
                                         jiggleScale: Float,
                                         jiggleRotation: Float,
@@ -516,7 +523,7 @@ public extension Guide {
                                                  isJiggleSelected: isJiggleSelected,
                                                  isJiggleFrozen: isJiggleFrozen,
                                                  isGuideFrozen: isGuideFrozen,
-                                                 isDarkMode: isDarkMode,
+                                                 isDarkModeEnabled: isDarkModeEnabled,
                                                  weightDepthIndex: weightDepthIndex,
                                                  guideCount: guideCount,
                                                  jiggleCenterX: jiggleCenter.x,

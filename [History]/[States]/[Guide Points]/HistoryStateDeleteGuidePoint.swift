@@ -27,16 +27,14 @@ public class HistoryStateDeleteGuidePoint: HistoryState {
     }
     
     public override func getWorldConfiguration(currentInterfaceConfiguration: any InterfaceConfigurationConforming, isUndo: Bool) -> HistoryWorldConfiguration {
-
         let result = HistoryWorldConfiguration(documentMode: .edit, // Good
                                                editModeType: .dontCare, // Good
                                                weightModeType: .forceEnter(.points), // Good
                                                graphType: .forceLeave, // Good
                                                guidesType: .forceEnter, // Good
-                                               jigglePointTanType: .dontCare, // TODO TODO TODO TODO
-                                               guidePointTanType: .dontCare, // TODO TODO TODO TODO
+                                               jigglePointTanType: .dontCare, // Good
+                                               guidePointTanType: .forceLeave, // Good
                                                phoneExpandedTopType: .dontCare, // Good
-                                                // Good
                                                timeLineType: .dontCare, // Good
                                                animationLoopType: .dontCare, // Good
                                                animationContinuousType: .dontCare, // Good

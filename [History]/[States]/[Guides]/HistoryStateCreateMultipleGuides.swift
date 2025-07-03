@@ -1,45 +1,36 @@
 //
-//  HistoryStateMoveGuidePointTanHandle.swift
-//  Yo Mamma Be Ugly
+//  HistoryStateCreateMultipleGuides.swift
+//  CoreKit
 //
-//  Created by Nick Raptis on 11/21/24.
+//  Created by Nicholas Raptis on 6/10/25.
 //
 
 import Foundation
 
-public class HistoryStateMoveGuidePointTanHandle: HistoryState {
+public class HistoryStateCreateMultipleGuides: HistoryState {
+    
     public let jiggleIndex: Int
     public let guideIndex: Int
-    public let guidePointIndex: Int
-    public let tanType: TanType
-    public let startData: ControlPointData
-    public let endData: ControlPointData
+    public let datas: [Data]
     public init(jiggleIndex: Int,
                 guideIndex: Int,
-                guidePointIndex: Int,
-                tanType: TanType,
-                startData: ControlPointData,
-                endData: ControlPointData,
+                datas: [Data],
                 interfaceConfiguration: any InterfaceConfigurationConforming) {
+        self.datas = datas
         self.jiggleIndex = jiggleIndex
         self.guideIndex = guideIndex
-        self.guidePointIndex = guidePointIndex
-        self.tanType = tanType
-        self.startData = startData
-        self.endData = endData
-        super.init(historyStateType: .moveGuidePointTanHandle,
+        super.init(historyStateType: .createMultipleGuides,
                    interfaceConfiguration: interfaceConfiguration)
     }
     
     public override func getWorldConfiguration(currentInterfaceConfiguration: any InterfaceConfigurationConforming, isUndo: Bool) -> HistoryWorldConfiguration {
-
         let result = HistoryWorldConfiguration(documentMode: .edit, // Good
                                                editModeType: .dontCare, // Good
-                                               weightModeType: .forceEnter(.points), // Good
+                                               weightModeType: .forceEnter(.guides), // Good
                                                graphType: .forceLeave, // Good
                                                guidesType: .forceEnter, // Good
                                                jigglePointTanType: .dontCare, // Good
-                                               guidePointTanType: .forceEnter, // Good
+                                               guidePointTanType: .dontCare, // Good
                                                phoneExpandedTopType: .dontCare, // Good
                                                timeLineType: .dontCare, // Good
                                                animationLoopType: .dontCare, // Good

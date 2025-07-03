@@ -22,6 +22,42 @@ public class Guide {
         
     }
     
+    public func handleTransferBetweenJiggles(previousJiggleScale: Float, previousJiggleRotation: Float,
+                                             previousGuideScale: Float, previousGuideRotation: Float,
+                                             newJiggleScale: Float, newJiggleRotation: Float) {
+        
+        for guidePointIndex in 0..<guidePointCount {
+            
+            let guidePoint = guidePoints[guidePointIndex]
+            var guidePointPoint = guidePoint.point
+            guidePointPoint = Math.transformPoint(point: guidePointPoint,
+                                                  scale: previousGuideScale,
+                                                  rotation: previousGuideRotation)
+            guidePointPoint = Math.transformPoint(point: guidePointPoint,
+                                                  scale: previousJiggleScale,
+                                                  rotation: previousJiggleRotation)
+            guidePointPoint = Math.untransformPoint(point: guidePointPoint,
+                                                    scale: newJiggleScale,
+                                                    rotation: newJiggleRotation)
+            guidePoint.x = guidePointPoint.x
+            guidePoint.y = guidePointPoint.y
+            
+            /*
+            transformPointScaleAndRotationOnly
+            
+            func transformPointScaleAndRotationOnly(point: Point) -> Point {
+                Math.transformPoint(point: point, scale: scale, rotation: rotation)
+            }
+            func untransformPointScaleAndRotationOnly(point: Point) -> Point {
+                Math.untransformPoint(point: point, scale: scale, rotation: rotation)
+            }
+            */
+        }
+        
+        scale = 1.0
+        rotation = 0.0
+    }
+    
     public func dispose() {
         
         guidePoints.removeAll(keepingCapacity: false)
@@ -47,6 +83,8 @@ public class Guide {
         
         tempIntegers.removeAll(keepingCapacity: false)
         tempIntegerCount = 0
+        
+        renderer = nil
     }
     
     public static let maxPointCount = 256

@@ -18,7 +18,7 @@ public struct SolidLineBufferJiggleHash: Equatable {
     var outlineHash = OutlineHashExtended()
     var isJiggleSelected = false
     var isJiggleFrozen = false
-    var isDarkMode = false
+    var isDarkModeEnabled = false
     var isGuidesMode = false
     var creatorMode = CreatorMode.none
     var editMode = EditMode.jiggles
@@ -34,7 +34,7 @@ public struct SolidLineBufferJiggleHash: Equatable {
                          rotation: Float,
                          isJiggleSelected: Bool,
                          isJiggleFrozen: Bool,
-                         isDarkMode: Bool,
+                         isDarkModeEnabled: Bool,
                          lineThicknessType: RenderLineThicknessType) {
         
         self.creatorMode = creatorMode
@@ -51,7 +51,7 @@ public struct SolidLineBufferJiggleHash: Equatable {
         
         self.isJiggleSelected = isJiggleSelected
         self.isJiggleFrozen = isJiggleFrozen
-        self.isDarkMode = isDarkMode
+        self.isDarkModeEnabled = isDarkModeEnabled
         
     }
     

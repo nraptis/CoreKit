@@ -20,7 +20,7 @@ public struct SolidLineBufferGuideHash: Equatable {
     var isJiggleSelected = false
     var isJiggleFrozen = false
     var isGuideFrozen = false
-    var isDarkMode = false
+    var isDarkModeEnabled = false
     var weightDepthIndex = -1
     var guideCount = -1
     var creatorMode = CreatorMode.none
@@ -38,7 +38,7 @@ public struct SolidLineBufferGuideHash: Equatable {
                          isJiggleSelected: Bool,
                          isJiggleFrozen: Bool,
                          isGuideFrozen: Bool,
-                         isDarkMode: Bool,
+                         isDarkModeEnabled: Bool,
                          weightDepthIndex: Int,
                          guideCount: Int,
                          jiggleCenterX: Float,
@@ -63,7 +63,7 @@ public struct SolidLineBufferGuideHash: Equatable {
         self.isGuideSelected = isGuideSelected
         self.isJiggleFrozen = isJiggleFrozen
         self.isGuideFrozen = isGuideFrozen
-        self.isDarkMode = isDarkMode
+        self.isDarkModeEnabled = isDarkModeEnabled
         self.weightDepthIndex = weightDepthIndex
         self.guideCount = guideCount
         self.creatorMode = creatorMode

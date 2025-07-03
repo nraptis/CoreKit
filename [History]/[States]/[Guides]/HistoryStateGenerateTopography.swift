@@ -1,5 +1,5 @@
 //
-//  HistoryStateGenerateTopography.swift
+//  HistoryStateReplaceAllGuides.swift
 //  HistoryKit
 //
 //  Created by Nicholas Raptis on 5/17/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public class HistoryStateGenerateTopography: HistoryState {
+public class HistoryStateReplaceAllGuides: HistoryState {
     
     public let startDatas: [Data]
     public let endDatas: [Data]
@@ -28,7 +28,7 @@ public class HistoryStateGenerateTopography: HistoryState {
         self.endDatas = endDatas
         self.startWeightCenter = startWeightCenter
         self.endWeightCenter = endWeightCenter
-        super.init(historyStateType: .generateTopography,
+        super.init(historyStateType: .replaceAllGuides,
                    interfaceConfiguration: interfaceConfiguration)
     }
     
@@ -38,10 +38,9 @@ public class HistoryStateGenerateTopography: HistoryState {
                                                weightModeType: .dontCare, // Good
                                                graphType: .forceLeave, // Good
                                                guidesType: .forceEnter, // Good
-                                               jigglePointTanType: .dontCare, // TODO TODO TODO TODO
-                                               guidePointTanType: .dontCare, // TODO TODO TODO TODO
+                                               jigglePointTanType: .dontCare, // Good
+                                               guidePointTanType: .dontCare, // Good
                                                phoneExpandedTopType: .dontCare, // Good
-                                                // Good
                                                timeLineType: .dontCare, // Good
                                                animationLoopType: .dontCare, // Good
                                                animationContinuousType: .dontCare, // Good

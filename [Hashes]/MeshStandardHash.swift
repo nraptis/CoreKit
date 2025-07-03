@@ -16,11 +16,11 @@ public struct MeshStandardHash: Equatable {
     }
     
     public var polyHash = PolyHash()
-    public var isDarkMode = false
+    public var isDarkModeEnabled = false
     public mutating func change(polyHash: PolyHash,
-                         isDarkMode: Bool) {
+                         isDarkModeEnabled: Bool) {
         self.polyHash = polyHash
-        self.isDarkMode = isDarkMode
+        self.isDarkModeEnabled = isDarkModeEnabled
     }
     
     public mutating func invalidate() {

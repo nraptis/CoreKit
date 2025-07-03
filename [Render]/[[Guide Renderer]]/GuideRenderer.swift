@@ -45,7 +45,7 @@ public class GuideRenderer {
     var isGuideFrozen = false
     public var isFrozen = false
     
-    var isDarkMode = false
+    var isDarkModeEnabled = false
     var isStereoscopicMode = false
     var isBloomMode = false
     
@@ -214,7 +214,7 @@ public class GuideRenderer {
         self.isGuideSelected = isGuideSelected
         self.isJiggleFrozen = isJiggleFrozen
         self.isGuideFrozen = isGuideFrozen
-        self.isDarkMode = renderInfo.isShowingDarkMode
+        self.isDarkModeEnabled = renderInfo.isShowingDarkMode
         self.isStereoscopicMode = renderInfo.isShowingMeshViewStereoscopic
         self.weightMode = weightMode
         self.creatorMode = creatorMode
@@ -230,7 +230,7 @@ public class GuideRenderer {
         pre_prepareTanLines(renderInfo: renderInfo)
         pre_prepareTanPoints(renderInfo: renderInfo)
         
-        color_bloom = RTJ.bloom(isDarkMode: isDarkMode)
+        color_bloom = RTJ.bloom(isDarkModeEnabled: isDarkModeEnabled)
         
         // Anything we can compute once, we will do outside of the 2 renderings...
         if renderInfo.isShowingGuidePoints {

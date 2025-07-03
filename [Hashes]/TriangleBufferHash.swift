@@ -18,13 +18,13 @@ public struct TriangleBufferHash: Equatable {
     public var polyHash = PolyHash()
     var isSelected = false
     var isFrozen = false
-    public var isDarkMode = false
+    public var isDarkModeEnabled = false
     
     var transformHash = TransformHash()
     public mutating func change(polyHash: PolyHash,
                          isSelected: Bool,
                          isFrozen: Bool,
-                         isDarkMode: Bool,
+                         isDarkModeEnabled: Bool,
                          centerX: Float,
                          centerY: Float,
                          scale: Float,
@@ -32,7 +32,7 @@ public struct TriangleBufferHash: Equatable {
         self.polyHash = polyHash
         self.isSelected = isSelected
         self.isFrozen = isFrozen
-        self.isDarkMode = isDarkMode
+        self.isDarkModeEnabled = isDarkModeEnabled
         transformHash.change(centerX: centerX,
                              centerY: centerY,
                              scale: scale,
@@ -53,7 +53,7 @@ public struct TriangleBufferWeightsHash: Equatable {
     var polyHash = PolyHash()
     var isSelected = false
     var isFrozen = false
-    var isDarkMode = false
+    var isDarkModeEnabled = false
     var transformHash = TransformHash()
     
     var guideOutlineHashes = [OutlineHashGuide]()
@@ -63,7 +63,7 @@ public struct TriangleBufferWeightsHash: Equatable {
     public mutating func change(polyHash: PolyHash,
                          isSelected: Bool,
                          isFrozen: Bool,
-                         isDarkMode: Bool,
+                         isDarkModeEnabled: Bool,
                          centerX: Float,
                          centerY: Float,
                          scale: Float,
@@ -74,7 +74,7 @@ public struct TriangleBufferWeightsHash: Equatable {
         self.polyHash = polyHash
         self.isSelected = isSelected
         self.isFrozen = isFrozen
-        self.isDarkMode = isDarkMode
+        self.isDarkModeEnabled = isDarkModeEnabled
         self.guideOutlineHashes = guideOutlineHashes
         self.guideCenterX = guideCenterX
         self.guideCenterY = guideCenterY

@@ -7,8 +7,9 @@
 
 import Foundation
 
+// This is used just by "double guide points", so it's not in tan mode...
+
 public class HistoryStateReplaceGuidePointAll: HistoryState {
-    
     public let jiggleIndex: Int
     public let guideIndex: Int
     public let startDatas: [ControlPointData]
@@ -38,10 +39,9 @@ public class HistoryStateReplaceGuidePointAll: HistoryState {
                                                weightModeType: .forceEnter(.points), // Good
                                                graphType: .forceLeave, // Good
                                                guidesType: .forceEnter, // Good
-                                               jigglePointTanType: .dontCare, // TODO TODO TODO TODO
-                                               guidePointTanType: .dontCare, // TODO TODO TODO TODO
+                                               jigglePointTanType: .dontCare, // Good
+                                               guidePointTanType: .forceLeave, // Good
                                                phoneExpandedTopType: .dontCare, // Good
-                                                // Good
                                                timeLineType: .dontCare, // Good
                                                animationLoopType: .dontCare, // Good
                                                animationContinuousType: .dontCare, // Good

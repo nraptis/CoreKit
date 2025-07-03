@@ -7,6 +7,7 @@
 
 import Foundation
 
+// This is used for "reset all tans" -- very much a tan action...
 public class HistoryStateUpdateGuidePointAll: HistoryState {
     
     public let jiggleIndex: Int
@@ -43,10 +44,9 @@ public class HistoryStateUpdateGuidePointAll: HistoryState {
                                                weightModeType: .forceEnter(.points), // Good
                                                graphType: .forceLeave, // Good
                                                guidesType: .forceEnter, // Good
-                                               jigglePointTanType: .dontCare, // TODO TODO TODO TODO
-                                               guidePointTanType: .dontCare, // TODO TODO TODO TODO
+                                               jigglePointTanType: .dontCare, // Good
+                                               guidePointTanType: .forceEnter, // Good
                                                phoneExpandedTopType: .dontCare, // Good
-                                                // Good
                                                timeLineType: .dontCare, // Good
                                                animationLoopType: .dontCare, // Good
                                                animationContinuousType: .dontCare, // Good

@@ -28,6 +28,7 @@ public extension HistoryController {
     //
     
     func snapShotLoopAttributeOne(attributeType: LoopAttributeType,
+                                  isTanMode: Bool,
                                            selectedJiggle: Jiggle?,
                                            jiggles: [Jiggle],
                                            jiggleCount: Int,
@@ -66,7 +67,8 @@ public extension HistoryController {
                    let snapShotLoopOneData = SnapShotLoopOneData(selectedJiggleIndex: selectedJiggleIndex,
                                                                              selectedJiggleAttribute: selectedJiggleAttribute,
                                                                              mirrorEnabled: mirrorEnabled,
-                                                                 mirrorElementType: mirrorElementType)
+                                                                 mirrorElementType: mirrorElementType,
+                                                                 isTanMode: isTanMode)
                    
                    snapShotLoopMode = .appliedToSelected(snapShotLoopOneData)
                    snapShotLoopInterfaceElement = interfaceElement
@@ -89,6 +91,7 @@ public extension HistoryController {
        }
        
        func snapShotLoopAttributeAll(attributeType: LoopAttributeType,
+                                     isTanMode: Bool,
                                             selectedJiggle: Jiggle?,
                                             jiggles: [Jiggle],
                                             jiggleCount: Int,
@@ -148,7 +151,8 @@ public extension HistoryController {
                                                         otherJiggleIndices: otherJiggleIndices,
                                                         otherJiggleAttributes: otherJiggleAttributes,
                                                         mirrorEnabled: mirrorEnabled,
-                                                        mirrorElementType: mirrorElementType)
+                                                        mirrorElementType: mirrorElementType,
+                                                                 isTanMode: isTanMode)
                    
                    
                    snapShotLoopMode = .appliedToAll(snapShotLoopAllData)

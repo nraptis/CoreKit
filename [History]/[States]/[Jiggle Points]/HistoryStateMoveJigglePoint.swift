@@ -13,21 +13,15 @@ public class HistoryStateMoveJigglePoint: HistoryState {
     public let controlPointIndex: Int
     public let startPoint: Math.Point
     public let endPoint: Math.Point
-    //public let multiModeSelectionType: MultiModeSelectionType
-    //public let tanType: TanType
     public init(jiggleIndex: Int,
                 controlPointIndex: Int,
                 startPoint: Math.Point,
                 endPoint: Math.Point,
-                //multiModeSelectionType: MultiModeSelectionType,
-                //tanType: TanType,
                 interfaceConfiguration: any InterfaceConfigurationConforming) {
         self.jiggleIndex = jiggleIndex
         self.controlPointIndex = controlPointIndex
         self.startPoint = startPoint
         self.endPoint = endPoint
-        //self.multiModeSelectionType = multiModeSelectionType
-        //self.tanType = tanType
         super.init(historyStateType: .moveJigglePoint,
                    interfaceConfiguration: interfaceConfiguration)
     }
@@ -39,10 +33,9 @@ public class HistoryStateMoveJigglePoint: HistoryState {
                                                weightModeType: .dontCare, // Good
                                                graphType: .dontCare, // Good
                                                guidesType: .forceLeave, // Good
-                                               jigglePointTanType: .dontCare, // TODO TODO TODO TODO
-                                               guidePointTanType: .dontCare, // TODO TODO TODO TODO
+                                               jigglePointTanType: .dontCare, // Good
+                                               guidePointTanType: .dontCare, // Good
                                                phoneExpandedTopType: .dontCare, // Good
-                                                // Good
                                                timeLineType: .dontCare, // Good
                                                animationLoopType: .dontCare, // Good
                                                animationContinuousType: .dontCare, // Good
@@ -52,4 +45,5 @@ public class HistoryStateMoveJigglePoint: HistoryState {
                                                timeLineSwatchType: .dontCare) // Good
         return result
     }
+    
 }

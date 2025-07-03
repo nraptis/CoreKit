@@ -8,6 +8,9 @@
 import Foundation
 
 public protocol InterfaceConfigurationConforming {
+    
+    var toolMenuPage: ToolMenuPage { get set }
+    
     var isVideoRecordModeEnabled: Bool { get set }
     var isVideoExportModeEnabled: Bool { get set }
     var isGraphModeEnabled: Bool { get set }
@@ -39,10 +42,6 @@ public protocol InterfaceConfigurationConforming {
     var isExpandedTop: Bool { get set }
     var isExpandedBottom: Bool { get set }
     
-    mutating func prepare(disableCreatorModes: Bool)
+    mutating func calculateMenuPage()
     
-    mutating func ensureConsistency(disableCreatorModes: Bool)
-    mutating func calculateHeightCategories()
-    
-    func isRightOf(_ configuration: any InterfaceConfigurationConforming) -> Bool
 }

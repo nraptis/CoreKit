@@ -57,6 +57,8 @@ public class Jiggle {
         
         outlineJiggleWeightSegments.removeAll(keepingCapacity: false)
         outlineJiggleWeightSegmentCount = 0
+        
+        renderer = nil
     }
     
     static let selectionPriorityGuideRollOverCeiling = 64
@@ -348,9 +350,9 @@ public class Jiggle {
     public var jigglePoints = [JigglePoint]()
     public var jigglePointCount = 0
     @MainActor public func addJigglePoint(x: Float,
-                                   y: Float,
-                                   jiggleDocument: SelectedJigglePointListeningConforming,
-                                   ignoreRealize: Bool,
+                                          y: Float,
+                                          jiggleDocument: SelectedJigglePointListeningConforming,
+                                          ignoreRealize: Bool,
                                           ignoreSwitch: Bool) {
         let jigglePoint = JigglePartsFactory.shared.withdrawJigglePoint()
         jigglePoint.x = x
@@ -362,8 +364,8 @@ public class Jiggle {
     }
     
     @MainActor public func addJigglePoint(directedWeightPoint: DirectedWeightPoint,
-                                   jiggleDocument: SelectedJigglePointListeningConforming,
-                                   ignoreRealize: Bool,
+                                          jiggleDocument: SelectedJigglePointListeningConforming,
+                                          ignoreRealize: Bool,
                                           ignoreSwitch: Bool) {
         let jigglePoint = JigglePartsFactory.shared.withdrawJigglePoint()
         jigglePoint.x = directedWeightPoint.x
@@ -388,8 +390,8 @@ public class Jiggle {
     }
     
     @MainActor public func addJigglePoint(newJigglePoint: JigglePoint,
-                                   jiggleDocument: SelectedJigglePointListeningConforming,
-                                   ignoreRealize: Bool,
+                                          jiggleDocument: SelectedJigglePointListeningConforming,
+                                          ignoreRealize: Bool,
                                           ignoreSwitch: Bool) {
         while jigglePoints.count <= jigglePointCount {
             jigglePoints.append(newJigglePoint)
@@ -412,10 +414,10 @@ public class Jiggle {
     }
     
     @MainActor public func insertJigglePoint(x: Float,
-                                      y: Float,
-                                      index: Int,
-                                      jiggleDocument: SelectedJigglePointListeningConforming,
-                                      ignoreRealize: Bool) {
+                                             y: Float,
+                                             index: Int,
+                                             jiggleDocument: SelectedJigglePointListeningConforming,
+                                             ignoreRealize: Bool) {
         let jigglePoint = JigglePartsFactory.shared.withdrawJigglePoint()
         jigglePoint.x = x
         jigglePoint.y = y
@@ -426,9 +428,9 @@ public class Jiggle {
     }
     
     @MainActor public func insertJigglePoint(data: ControlPointData,
-                                      index: Int,
-                                      jiggleDocument: SelectedJigglePointListeningConforming,
-                                      ignoreRealize: Bool) {
+                                             index: Int,
+                                             jiggleDocument: SelectedJigglePointListeningConforming,
+                                             ignoreRealize: Bool) {
         let jigglePoint = JigglePartsFactory.shared.withdrawJigglePoint()
         jigglePoint.setData(data)
         insertJigglePoint(newJigglePoint: jigglePoint,
@@ -438,9 +440,9 @@ public class Jiggle {
     }
     
     @MainActor public func insertJigglePoint(newJigglePoint: JigglePoint,
-                                      index: Int,
-                                      jiggleDocument: SelectedJigglePointListeningConforming,
-                                      ignoreRealize: Bool) {
+                                             index: Int,
+                                             jiggleDocument: SelectedJigglePointListeningConforming,
+                                             ignoreRealize: Bool) {
         while jigglePoints.count <= jigglePointCount {
             jigglePoints.append(newJigglePoint)
         }
@@ -464,7 +466,7 @@ public class Jiggle {
     }
     
     @MainActor public func replaceJigglePoints(datas: [ControlPointData],
-                                   jiggleDocument: SelectedJigglePointListeningConforming) {
+                                               jiggleDocument: SelectedJigglePointListeningConforming) {
         
         purgeJigglePoints()
         
@@ -519,8 +521,8 @@ public class Jiggle {
     }
     
     @MainActor public func deleteJigglePoint(jigglePoint: JigglePoint,
-                                      jiggleDocument: SelectedJigglePointListeningConforming,
-                                      ignoreRealize: Bool) -> Bool {
+                                             jiggleDocument: SelectedJigglePointListeningConforming,
+                                             ignoreRealize: Bool) -> Bool {
         for checkIndex in 0..<jigglePointCount {
             if jigglePoints[checkIndex] === jigglePoint {
                 if deleteJigglePoint(index: checkIndex,
@@ -534,8 +536,8 @@ public class Jiggle {
     }
     
     @discardableResult @MainActor public func deleteJigglePoint(index: Int,
-                                                         jiggleDocument: SelectedJigglePointListeningConforming,
-                                                         ignoreRealize: Bool) -> Bool {
+                                                                jiggleDocument: SelectedJigglePointListeningConforming,
+                                                                ignoreRealize: Bool) -> Bool {
         if index >= 0 && index < jigglePointCount {
             let jigglePoint = jigglePoints[index]
             JigglePartsFactory.shared.depositJigglePoint(jigglePoint)
@@ -605,8 +607,8 @@ public class Jiggle {
     }
     
     @MainActor public func addGuideNotFromLoad(_ guide: Guide,
-                                        jiggleDocument: SelectedJigglePointListeningConforming,
-                                        ignoreRealize: Bool) {
+                                               jiggleDocument: SelectedJigglePointListeningConforming,
+                                               ignoreRealize: Bool) {
         let newSelectedGuideIndex = guideCount
         addGuide(guide)
         switchSelectedGuideIndex(index: newSelectedGuideIndex,
@@ -624,9 +626,9 @@ public class Jiggle {
     }
     
     @MainActor public func insertGuide(_ newGuide: Guide,
-                                at index: Int,
-                                jiggleDocument: SelectedJigglePointListeningConforming,
-                                ignoreRealize: Bool) {
+                                       at index: Int,
+                                       jiggleDocument: SelectedJigglePointListeningConforming,
+                                       ignoreRealize: Bool) {
         while guides.count <= guideCount {
             guides.append(newGuide)
         }
@@ -693,9 +695,9 @@ public class Jiggle {
     }
     
     @MainActor public func deleteGuide(_ guide: Guide,
-                                jiggleIndex: Int,
-                                jiggleDocument: SelectedJigglePointListeningConforming,
-                                ignoreRealize: Bool) -> Bool {
+                                       jiggleIndex: Int,
+                                       jiggleDocument: SelectedJigglePointListeningConforming,
+                                       ignoreRealize: Bool) -> Bool {
         for checkIndex in 0..<guideCount {
             if guides[checkIndex] === guide {
                 deleteGuide(checkIndex,
@@ -709,9 +711,9 @@ public class Jiggle {
     }
     
     @discardableResult @MainActor public func deleteGuide(_ index: Int,
-                                                   jiggleIndex: Int,
-                                                   jiggleDocument: SelectedJigglePointListeningConforming,
-                                                   ignoreRealize: Bool) -> Bool {
+                                                          jiggleIndex: Int,
+                                                          jiggleDocument: SelectedJigglePointListeningConforming,
+                                                          ignoreRealize: Bool) -> Bool {
         
         if index >= 0 && index < guideCount {
             let guide = guides[index]
@@ -868,8 +870,8 @@ public class Jiggle {
     }
     
     @MainActor public func updateVideoFrame(isStereoscopicEnabled: Bool,
-                                     stereoSpreadBase: Float,
-                                     stereoSpreadMax: Float) {
+                                            stereoSpreadBase: Float,
+                                            stereoSpreadMax: Float) {
         
         let measurePercentLinear = AnimationWad.getMeasurePercentLinear(measuredSize: animationWad.measuredSize)
         
@@ -927,22 +929,22 @@ public class Jiggle {
     }
     
     @MainActor public func update(deltaTime: Float,
-                           documentMode: DocumentMode,
-                           displayMode: DisplayMode,
-                           weightMode: WeightMode,
-                           creatorMode: CreatorMode,
-                           isSelected: Bool,
-                           isStereoscopicEnabled: Bool,
-                           isViewMode: Bool,
-                           isJigglesMode: Bool,
-                           isPointsMode: Bool,
-                           isGuidesMode: Bool,
+                                  documentMode: DocumentMode,
+                                  displayMode: DisplayMode,
+                                  weightMode: WeightMode,
+                                  creatorMode: CreatorMode,
+                                  isSelected: Bool,
+                                  isStereoscopicEnabled: Bool,
+                                  isViewMode: Bool,
+                                  isJigglesMode: Bool,
+                                  isPointsMode: Bool,
+                                  isGuidesMode: Bool,
                                   isJigglePointTansEnabled: Bool,
                                   isGuidePointTansEnabled: Bool,
-                           isPrecisePointsMode: Bool,
+                                  isPrecisePointsMode: Bool,
                                   
-                           stereoSpreadBase: Float,
-                           stereoSpreadMax: Float) {
+                                  stereoSpreadBase: Float,
+                                  stereoSpreadMax: Float) {
         
         guideCenterSpinnerRotation += deltaTime * 1.25
         if guideCenterSpinnerRotation >= Math.pi2 {
@@ -1025,7 +1027,7 @@ public class Jiggle {
                     renderInfo.isShowingGuideBorderRingsBloom = _isShowingGuideBorderRingsBloom
                     renderInfo.isShowingWeightCenterMarker = true
                     renderInfo.isShowingWeightCenterMarkerBloom = _isShowingWeightCenterMarkerBloom
-                    renderInfo.isShowingDarkMode = currentHashTrianglesWeights.isDarkMode
+                    renderInfo.isShowingDarkMode = currentHashTrianglesWeights.isDarkModeEnabled
                     renderInfo.isShowingGuidePoints = _isShowingGuidePoints
                     renderInfo.isShowingGuidePointsBloom = _isShowingGuidePointsBloom
                 } else {
@@ -1033,7 +1035,7 @@ public class Jiggle {
                     renderInfo.isShowingJiggleBorderRings = true
                     renderInfo.isShowingJiggleBorderRingsBloom = _isShowingJiggleBorderRingsBloom
                     renderInfo.isShowingCenterMarker = true
-                    renderInfo.isShowingDarkMode = currentHashTrianglesStandard.isDarkMode
+                    renderInfo.isShowingDarkMode = currentHashTrianglesStandard.isDarkModeEnabled
                     renderInfo.isShowingCenterMarkerBloom = _isShowingCenterMarkerBloom
                 }
             } else if isPointsMode {
@@ -1047,7 +1049,7 @@ public class Jiggle {
                     renderInfo.isShowingWeightCenterMarkerBloom = _isShowingWeightCenterMarkerBloom
                     renderInfo.isShowingGuidePoints = _isShowingGuidePoints
                     renderInfo.isShowingGuidePointsBloom = _isShowingGuidePointsBloom
-                    renderInfo.isShowingDarkMode = currentHashTrianglesWeights.isDarkMode
+                    renderInfo.isShowingDarkMode = currentHashTrianglesWeights.isDarkModeEnabled
                 } else {
                     renderInfo.isShowingMeshEditStandard = true
                     renderInfo.isShowingJiggleBorderRings = true
@@ -1056,14 +1058,14 @@ public class Jiggle {
                     renderInfo.isShowingJigglePointsBloom = _isShowingJigglePointsBloom
                     renderInfo.isShowingCenterMarker = true
                     renderInfo.isShowingCenterMarkerBloom = _isShowingCenterMarkerBloom
-                    renderInfo.isShowingDarkMode = currentHashTrianglesStandard.isDarkMode
+                    renderInfo.isShowingDarkMode = currentHashTrianglesStandard.isDarkModeEnabled
                 }
             } else if isGuidesMode {
                 if (isReadyEditWeights == false && isReadyEditStandard == true) {
                     renderInfo.isShowingMeshEditStandard = true
                     renderInfo.isShowingJiggleBorderRings = true
                     renderInfo.isShowingJiggleBorderRingsBloom = _isShowingJiggleBorderRingsBloom
-                    renderInfo.isShowingDarkMode = currentHashTrianglesStandard.isDarkMode
+                    renderInfo.isShowingDarkMode = currentHashTrianglesStandard.isDarkModeEnabled
                 } else {
                     renderInfo.isShowingMeshEditWeights = true
                     renderInfo.isShowingJiggleBorderRings = true
@@ -1072,7 +1074,7 @@ public class Jiggle {
                     renderInfo.isShowingGuideBorderRingsBloom = _isShowingGuideBorderRingsBloom
                     renderInfo.isShowingWeightCenterMarker = true
                     renderInfo.isShowingWeightCenterMarkerBloom = _isShowingWeightCenterMarkerBloom
-                    renderInfo.isShowingDarkMode = currentHashTrianglesWeights.isDarkMode
+                    renderInfo.isShowingDarkMode = currentHashTrianglesWeights.isDarkModeEnabled
                     renderInfo.isShowingGuidePoints = _isShowingGuidePoints
                     renderInfo.isShowingGuidePointsBloom = _isShowingGuidePointsBloom
                 }
@@ -1089,18 +1091,18 @@ public class Jiggle {
                 if isStereoscopicEnabled {
                     if (isReadyViewStereoscopic == false && isReadyViewStandard == true) {
                         renderInfo.isShowingMeshViewStandard = true
-                        renderInfo.isShowingDarkMode = currentHashTrianglesViewStandard.isDarkMode
+                        renderInfo.isShowingDarkMode = currentHashTrianglesViewStandard.isDarkModeEnabled
                     } else {
                         renderInfo.isShowingMeshViewStereoscopic = true
-                        renderInfo.isShowingDarkMode = currentHashTrianglesViewStereoscopic.isDarkMode
+                        renderInfo.isShowingDarkMode = currentHashTrianglesViewStereoscopic.isDarkModeEnabled
                     }
                 } else {
                     if (isReadyViewStereoscopic == true && isReadyViewStandard == false) {
                         renderInfo.isShowingMeshViewStereoscopic = true
-                        renderInfo.isShowingDarkMode = currentHashTrianglesViewStereoscopic.isDarkMode
+                        renderInfo.isShowingDarkMode = currentHashTrianglesViewStereoscopic.isDarkModeEnabled
                     } else {
                         renderInfo.isShowingMeshViewStandard = true
-                        renderInfo.isShowingDarkMode = currentHashTrianglesViewStandard.isDarkMode
+                        renderInfo.isShowingDarkMode = currentHashTrianglesViewStandard.isDarkModeEnabled
                     }
                 }
             }
@@ -1147,9 +1149,9 @@ public class Jiggle {
         } else {
             if isPointsMode || isJigglesMode || isGuidesMode {
                 if renderInfo.isShowingMeshEditStandard {
-                    renderInfo.isShowingDarkMode = currentHashTrianglesStandard.isDarkMode
+                    renderInfo.isShowingDarkMode = currentHashTrianglesStandard.isDarkModeEnabled
                 } else {
-                    renderInfo.isShowingDarkMode = currentHashTrianglesWeights.isDarkMode
+                    renderInfo.isShowingDarkMode = currentHashTrianglesWeights.isDarkModeEnabled
                 }
             }
         }
@@ -1187,8 +1189,8 @@ public class Jiggle {
     }
     
     @MainActor public func refreshTimeLine(timeLineFrame: TimeLineFrame,
-                                    selectedSwatch: TimeLineSwatch,
-                                    tanFactorTimeLine: Float) {
+                                           selectedSwatch: TimeLineSwatch,
+                                           tanFactorTimeLine: Float) {
         animationWad.timeLine.refreshFrame(timeLineFrame: timeLineFrame)
         let selectedChannel = selectedSwatch.selectedChannel
         selectedChannel.buildSplineFromCurve(timeLineFrame: timeLineFrame,
@@ -1209,16 +1211,16 @@ public class Jiggle {
     }
     
     public func switchSelectedGuideIndexIndexToDefault(isSelected: Bool,
-                                                 jiggleDocument: SelectedJigglePointListeningConforming,
-                                                 ignoreRealize: Bool) {
+                                                       jiggleDocument: SelectedJigglePointListeningConforming,
+                                                       ignoreRealize: Bool) {
         if guideCount > 0 {
             switchSelectedGuideIndex(index: guideCount - 1,
-                                           jiggleDocument: jiggleDocument,
-                                           ignoreRealize: ignoreRealize)
+                                     jiggleDocument: jiggleDocument,
+                                     ignoreRealize: ignoreRealize)
         } else {
             switchSelectedGuideIndex(index: -1,
-                                           jiggleDocument: jiggleDocument,
-                                           ignoreRealize: ignoreRealize)
+                                     jiggleDocument: jiggleDocument,
+                                     ignoreRealize: ignoreRealize)
         }
     }
     
@@ -1284,19 +1286,19 @@ public class Jiggle {
         while jiggleWeightPointIndex2 < outlineJiggleWeightPointCount {
             let jiggleWeightPoint1 = outlineJiggleWeightPoints[jiggleWeightPointIndex1]
             let jiggleWeightPoint2 = outlineJiggleWeightPoints[jiggleWeightPointIndex2]
-            let outjiggleWeightSegment = JigglePartsFactory.shared.withdrawJiggleWeightSegment()
+            let jiggleWeightSegment = JigglePartsFactory.shared.withdrawJiggleWeightSegment()
             
-            outjiggleWeightSegment.x1 = jiggleWeightPoint1.x
-            outjiggleWeightSegment.y1 = jiggleWeightPoint1.y
-            outjiggleWeightSegment.x2 = jiggleWeightPoint2.x
-            outjiggleWeightSegment.y2 = jiggleWeightPoint2.y
+            jiggleWeightSegment.x1 = jiggleWeightPoint1.x
+            jiggleWeightSegment.y1 = jiggleWeightPoint1.y
+            jiggleWeightSegment.x2 = jiggleWeightPoint2.x
+            jiggleWeightSegment.y2 = jiggleWeightPoint2.y
             
-            outjiggleWeightSegment.controlIndex1 = jiggleWeightPoint1.controlIndex
-            outjiggleWeightSegment.controlIndex2 = jiggleWeightPoint2.controlIndex
+            jiggleWeightSegment.controlIndex1 = jiggleWeightPoint1.controlIndex
+            jiggleWeightSegment.controlIndex2 = jiggleWeightPoint2.controlIndex
             
-            outjiggleWeightSegment.precompute()
+            jiggleWeightSegment.precompute()
             
-            addOutlineJiggleWeightSegment(outjiggleWeightSegment)
+            addOutlineJiggleWeightSegment(jiggleWeightSegment)
             
             jiggleWeightPointIndex1 = jiggleWeightPointIndex2
             jiggleWeightPointIndex2 += 1

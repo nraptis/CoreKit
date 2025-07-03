@@ -36,10 +36,9 @@ public class HistoryStateMoveWeightGraphPosition: HistoryState {
                                                weightModeType: .dontCare, // Good
                                                graphType: .forceEnter, // Good
                                                guidesType: .forceEnter, // Good
-                                               jigglePointTanType: .dontCare, // TODO TODO TODO TODO
-                                               guidePointTanType: .dontCare, // TODO TODO TODO TODO
+                                               jigglePointTanType: .dontCare, // Good
+                                               guidePointTanType: .dontCare, // Good
                                                phoneExpandedTopType: .forceEnter, // Good
-                                                // Good
                                                timeLineType: .dontCare, // Good
                                                animationLoopType: .dontCare, // Good
                                                animationContinuousType: .dontCare, // Good

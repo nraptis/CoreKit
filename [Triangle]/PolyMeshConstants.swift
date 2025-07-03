@@ -9,14 +9,12 @@ import Foundation
 
 public struct PolyMeshConstants {
     
-    //TODO: This is changed for faster rwender..
     static let SCALE = Float(0.85)
     //static let SCALE = Float(2.0)
     
     static let POSH_SCALE = Float(1.20)
     
     // This STAYS 14.
-    //static let splineThresholdDistance = Float(14.0) * SCALE
     public static let splineThresholdDistance = Float(14.0) * SCALE
     
     public static let borderPreferredStepSize = Float(8.0)

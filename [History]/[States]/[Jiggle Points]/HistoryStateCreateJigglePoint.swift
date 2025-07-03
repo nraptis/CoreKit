@@ -24,16 +24,14 @@ public class HistoryStateCreateJigglePoint: HistoryState {
     }
     
     public override func getWorldConfiguration(currentInterfaceConfiguration: any InterfaceConfigurationConforming, isUndo: Bool) -> HistoryWorldConfiguration {
-
         let result = HistoryWorldConfiguration(documentMode: .edit, // Good
                                                editModeType: .forceEnter(.points), // Good
                                                weightModeType: .dontCare, // Good
                                                graphType: .dontCare, // Good
                                                guidesType: .forceLeave, // Good
-                                               jigglePointTanType: .dontCare, // TODO TODO TODO TODO
-                                               guidePointTanType: .dontCare, // TODO TODO TODO TODO
+                                               jigglePointTanType: .forceLeave, // Good
+                                               guidePointTanType: .dontCare, // Good
                                                phoneExpandedTopType: .dontCare, // Good
-                                                // Good
                                                timeLineType: .dontCare, // Good
                                                animationLoopType: .dontCare, // Good
                                                animationContinuousType: .dontCare, // Good
@@ -43,4 +41,5 @@ public class HistoryStateCreateJigglePoint: HistoryState {
                                                timeLineSwatchType: .dontCare) // Good
         return result
     }
+    
 }

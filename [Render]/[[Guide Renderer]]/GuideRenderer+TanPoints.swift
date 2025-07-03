@@ -16,31 +16,31 @@ extension GuideRenderer {
         guard renderInfo.isShowingGuidePointTanHandles else { return }
         
         if isFrozen {
-            color_tan_points_unselected_stroke = RTJ.strokeDis(isDarkMode: isDarkMode)
-            color_tan_points_unselected_fill = RTJ.fillDis(isDarkMode: isDarkMode)
+            color_tan_points_unselected_stroke = RTJ.strokeDis(isDarkModeEnabled: isDarkModeEnabled)
+            color_tan_points_unselected_fill = RTJ.fillDis(isDarkModeEnabled: isDarkModeEnabled)
             return
         }
         
         switch tansCreatorModeFormat {
         case .regular, .invalid:
             if isJiggleSelected {
-                color_tan_points_unselected_stroke = RTJ.strokeRegSel(isDarkMode: isDarkMode)
+                color_tan_points_unselected_stroke = RTJ.strokeRegSel(isDarkModeEnabled: isDarkModeEnabled)
                 color_tan_points_unselected_fill = RTG.tanPointFillSel(index: weightDepthIndex,
-                                                                       isDarkMode: isDarkMode)
-                color_tan_points_selected_stroke = RTJ.strokeRegSel(isDarkMode: isDarkMode)
-                color_tan_points_selected_fill = RTJ.fillGrb(isDarkMode: isDarkMode)
+                                                                       isDarkModeEnabled: isDarkModeEnabled)
+                color_tan_points_selected_stroke = RTJ.strokeRegSel(isDarkModeEnabled: isDarkModeEnabled)
+                color_tan_points_selected_fill = RTJ.fillGrb(isDarkModeEnabled: isDarkModeEnabled)
             } else {
-                color_tan_points_unselected_stroke = RTJ.strokeRegUns(isDarkMode: isDarkMode)
+                color_tan_points_unselected_stroke = RTJ.strokeRegUns(isDarkModeEnabled: isDarkModeEnabled)
                 color_tan_points_unselected_fill = RTG.tanPointFillUns(index: weightDepthIndex,
-                                                                       isDarkMode: isDarkMode)
+                                                                       isDarkModeEnabled: isDarkModeEnabled)
             }
         case .alternative:
             if isJiggleSelected {
-                color_tan_points_unselected_stroke = RTJ.strokeAltSel(isDarkMode: isDarkMode)
-                color_tan_points_unselected_fill = RTJ.fillAltSelUnm(isDarkMode: isDarkMode)
+                color_tan_points_unselected_stroke = RTJ.strokeAltSel(isDarkModeEnabled: isDarkModeEnabled)
+                color_tan_points_unselected_fill = RTJ.fillAltSelUnm(isDarkModeEnabled: isDarkModeEnabled)
             } else {
-                color_tan_points_unselected_stroke = RTJ.strokeAltUns(isDarkMode: isDarkMode)
-                color_tan_points_unselected_fill = RTJ.fillAltUnsUnm(isDarkMode: isDarkMode)
+                color_tan_points_unselected_stroke = RTJ.strokeAltUns(isDarkModeEnabled: isDarkModeEnabled)
+                color_tan_points_unselected_fill = RTJ.fillAltUnsUnm(isDarkModeEnabled: isDarkModeEnabled)
             }
         }
     }

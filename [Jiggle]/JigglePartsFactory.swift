@@ -16,6 +16,19 @@ public class JigglePartsFactory {
     }
     
     @MainActor public func dispose() {
+        
+        for jiggleIndex in 0..<jiggleCount {
+            let jiggle = jiggles[jiggleIndex]
+            jiggle.dispose()
+        }
+        jiggles.removeAll(keepingCapacity: false)
+        jiggleCount = 0
+        
+        
+        for guideIndex in 0..<guideCount {
+            let guide = guides[guideIndex]
+            guide.dispose()
+        }
         guides.removeAll(keepingCapacity: false)
         guideCount = 0
         

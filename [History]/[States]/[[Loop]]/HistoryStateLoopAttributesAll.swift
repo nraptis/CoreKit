@@ -15,15 +15,18 @@ public class HistoryStateLoopAttributeAll: HistoryState {
     public let startAttributes: [LoopAttribute]
     public let endAttributes: [LoopAttribute]
     public let selectedTimeLineSwatch: Swatch
+    public let pageType: HistoryWorldConfiguration.ThreePageType
     public init(jiggleIndex: Int,
                 startAttributes: [LoopAttribute],
                 endAttributes: [LoopAttribute],
                 selectedTimeLineSwatch: Swatch,
-                interfaceConfiguration: any InterfaceConfigurationConforming) {
+                interfaceConfiguration: any InterfaceConfigurationConforming,
+                pageType: HistoryWorldConfiguration.ThreePageType) {
         self.jiggleIndex = jiggleIndex
         self.startAttributes = startAttributes
         self.endAttributes = endAttributes
         self.selectedTimeLineSwatch = selectedTimeLineSwatch
+        self.pageType = pageType
         super.init(historyStateType: .loopAttributeAll,
                    interfaceConfiguration: interfaceConfiguration)
     }
@@ -35,26 +38,30 @@ public class HistoryStateLoopAttributeAll: HistoryState {
         } else {
             loopAttributeType = LoopAttributeType.timeLineDuration
         }
-        let pageType = loopAttributeType.getPageType()
-        let topMenuType = loopAttributeType.getTopMenuType()
-        let timeLineType = loopAttributeType.getTimeLineType()
-        let result = HistoryWorldConfiguration(documentMode: .view,
-                                               editModeType: .dontCare,
-                                               weightModeType: .dontCare,
-                                               graphType: .dontCare,
-                                               guidesType: .dontCare,
-                                               jigglePointTanType: .dontCare, // TODO TODO TODO TODO
-                                               guidePointTanType: .dontCare, // TODO TODO TODO TODO
-                                               phoneExpandedTopType: topMenuType,
-                                               
-                                               timeLineType: timeLineType,
-                                               animationLoopType: .forceEnter,
-                                               animationContinuousType: .forceLeave,
-                                               animationLoopsPageType: pageType,
-                                               animationTimeLinePageType: .dontCare,
-                                               animationContinuousPageType: .dontCare,
-                                               timeLineSwatchType: .exact(selectedTimeLineSwatch))
-        return result
+        
+        let timeLineType = HistoryStateLoopAttributeOne.getTimeLineType(loopAttributeType: loopAttributeType,
+                                                                        selectedTimeLineSwatch: selectedTimeLineSwatch,
+                                                                        creationInterfaceConfiguration: creationInterfaceConfiguration)
+        let timeLineSwatchType = HistoryStateLoopAttributeOne.getSwatchType(loopAttributeType: loopAttributeType,
+                                                                            selectedTimeLineSwatch: selectedTimeLineSwatch)
+        let topMenuType = HistoryStateLoopAttributeOne.getTopMenuType(loopAttributeType: loopAttributeType)
+        
+        let result = HistoryWorldConfiguration(documentMode: .view, // Good
+                                                editModeType: .dontCare, // Good
+                                                weightModeType: .dontCare, // Good
+                                                graphType: .dontCare, // Good
+                                                guidesType: .dontCare, // Good
+                                                jigglePointTanType: .dontCare, // Good
+                                                guidePointTanType: .dontCare, // Good
+                                                phoneExpandedTopType: topMenuType, // Good
+                                                timeLineType: timeLineType, // Good
+                                                animationLoopType: .forceEnter, // Good
+                                                animationContinuousType: .forceLeave, // Good
+                                                animationLoopsPageType: .dontCare, // Good
+                                                animationTimeLinePageType: pageType, // Good
+                                                animationContinuousPageType: .dontCare, // Good
+                                                timeLineSwatchType: timeLineSwatchType) // Good
+         return result
     }
     
 }

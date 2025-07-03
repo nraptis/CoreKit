@@ -50,7 +50,7 @@ public class JiggleRenderer {
     var isJiggleSelected = false
     public var isJiggleFrozen = false
     
-    var isDarkMode = false
+    var isDarkModeEnabled = false
     var isStereoscopicMode = false
     var isBloomMode = false
     
@@ -261,7 +261,7 @@ public class JiggleRenderer {
         
         self.isJiggleSelected = isJiggleSelected
         self.isJiggleFrozen = isJiggleFrozen
-        self.isDarkMode = renderInfo.isShowingDarkMode
+        self.isDarkModeEnabled = renderInfo.isShowingDarkMode
         self.isStereoscopicMode = renderInfo.isShowingMeshViewStereoscopic
         self.creatorMode = creatorMode
         self.editMode = editMode
@@ -274,7 +274,7 @@ public class JiggleRenderer {
         pointsCreatorModeFormat = getPointsCreatorModeFormat(creatorMode: creatorMode)
         tansCreatorModeFormat = getTansCreatorModeFormat(creatorMode: creatorMode)
         
-        color_bloom = RTJ.bloom(isDarkMode: isDarkMode)
+        color_bloom = RTJ.bloom(isDarkModeEnabled: isDarkModeEnabled)
         pre_prepareJiggleCenter(renderInfo: renderInfo)
         pre_prepareWeightCenter(renderInfo: renderInfo)
         pre_preparePoints(renderInfo: renderInfo)

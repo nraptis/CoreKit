@@ -19,7 +19,7 @@ public extension Jiggle {
                  editMode: EditMode,
                  weightMode: WeightMode,
                  isGuidesMode: Bool,
-                 isDarkMode: Bool,
+                 isDarkModeEnabled: Bool,
                  isIpad: Bool,
                  isJiggleSelected: Bool,
                  isJiggleFrozen: Bool,
@@ -78,7 +78,7 @@ public extension Jiggle {
                                   worldScalePrecise: worldScalePrecise,
                                   creatorMode: creatorMode,
                                   weightMode: weightMode,
-                                  isDarkMode: isDarkMode,
+                                  isDarkModeEnabled: isDarkModeEnabled,
                                   isJiggleSelected: isJiggleSelected,
                                   isJiggleFrozen: isJiggleFrozen,
                                   jiggleCenter: center,
@@ -103,7 +103,7 @@ public extension Jiggle {
                          creatorMode: creatorMode,
                          editMode: editMode,
                          isGuidesMode: isGuidesMode,
-                         isDarkMode: isDarkMode,
+                         isDarkModeEnabled: isDarkModeEnabled,
                          isIpad: isIpad,
                          isJiggleSelected: isJiggleSelected,
                          isJiggleFrozen: isJiggleFrozen,
@@ -122,7 +122,7 @@ public extension Jiggle {
                  editMode: EditMode,
                  weightMode: WeightMode,
                  isGuidesMode: Bool,
-                 isDarkMode: Bool,
+                 isDarkModeEnabled: Bool,
                  isIpad: Bool,
                  isJiggleSelected: Bool,
                  isJiggleFrozen: Bool,
@@ -160,7 +160,7 @@ public extension Jiggle {
                                   worldScalePrecise: worldScalePrecise,
                                   creatorMode: creatorMode,
                                   weightMode: weightMode,
-                                  isDarkMode: isDarkMode,
+                                  isDarkModeEnabled: isDarkModeEnabled,
                                   isJiggleSelected: isJiggleSelected,
                                   isJiggleFrozen: isJiggleFrozen,
                                   jiggleCenter: center,
@@ -181,7 +181,7 @@ public extension Jiggle {
                                   worldScalePrecise: worldScalePrecise,
                                   creatorMode: creatorMode,
                                   weightMode: weightMode,
-                                  isDarkMode: isDarkMode,
+                                  isDarkModeEnabled: isDarkModeEnabled,
                                   isJiggleSelected: isJiggleSelected,
                                   isJiggleFrozen: isJiggleFrozen,
                                   jiggleCenter: center,
@@ -206,7 +206,7 @@ public extension Jiggle {
                          creatorMode: creatorMode,
                          editMode: editMode,
                          isGuidesMode: isGuidesMode,
-                         isDarkMode: isDarkMode,
+                         isDarkModeEnabled: isDarkModeEnabled,
                          isIpad: isIpad,
                          isJiggleSelected: isJiggleSelected,
                          isJiggleFrozen: isJiggleFrozen,
@@ -249,7 +249,7 @@ public extension Jiggle {
                                   creatorMode: CreatorMode,
                                   editMode: EditMode,
                                   isGuidesMode: Bool,
-                                  isDarkMode: Bool,
+                                  isDarkModeEnabled: Bool,
                                   isIpad: Bool,
                                   isJiggleSelected: Bool,
                                   isJiggleFrozen: Bool,
@@ -280,15 +280,15 @@ public extension Jiggle {
         case .none:
             break
         case .standardForced:
-            refreshMeshStandard(isDarkMode: isDarkMode)
+            refreshMeshStandard(isDarkModeEnabled: isDarkModeEnabled)
         case .standardIfNeeded:
             var checkHashMeshStandard = MeshStandardHash()
-            checkHashMeshStandard.change(polyHash: currentHashPoly, isDarkMode: isDarkMode)
+            checkHashMeshStandard.change(polyHash: currentHashPoly, isDarkModeEnabled: isDarkModeEnabled)
             if checkHashMeshStandard != currentHashMeshStandard {
-                refreshMeshStandard(isDarkMode: isDarkMode)
+                refreshMeshStandard(isDarkModeEnabled: isDarkModeEnabled)
             }
         case .weightsForced:
-            refreshMeshWeights(landscape: landscape, isDarkMode: isDarkMode, isIpad: isIpad)
+            refreshMeshWeights(landscape: landscape, isDarkModeEnabled: isDarkModeEnabled, isIpad: isIpad)
         case .weightsIfNeeded:
             var guideOutlineHashes = [OutlineHashGuide]()
             for guideIndex in 0..<guideCount {
@@ -300,10 +300,10 @@ public extension Jiggle {
                                         guideOutlineHashes: guideOutlineHashes,
                                         guideCenterX: guideCenter.x,
                                         guideCenterY: guideCenter.y,
-                                        isDarkMode: isDarkMode)
+                                        isDarkModeEnabled: isDarkModeEnabled)
             if checkHashMeshWeights != currentHashMeshWeights {
                 
-                refreshMeshWeights(landscape: landscape, isDarkMode: isDarkMode, isIpad: isIpad)
+                refreshMeshWeights(landscape: landscape, isDarkModeEnabled: isDarkModeEnabled, isIpad: isIpad)
             }
         case .affineOnlyStandard, .affineOnlyWeights:
             refreshMeshAffine()
@@ -318,7 +318,7 @@ public extension Jiggle {
                                             creatorMode: creatorMode,
                                             editMode: editMode,
                                             isGuidesMode: isGuidesMode,
-                                            isDarkMode: isDarkMode,
+                                            isDarkModeEnabled: isDarkModeEnabled,
                                             isJiggleSelected: isJiggleSelected,
                                             isJiggleFrozen: isJiggleFrozen,
                                             lineThicknessType: lineThicknessType,
@@ -328,7 +328,7 @@ public extension Jiggle {
                                            creatorMode: creatorMode,
                                            editMode: editMode,
                                            isGuidesMode: isGuidesMode,
-                                           isDarkMode: isDarkMode,
+                                           isDarkModeEnabled: isDarkModeEnabled,
                                            isJiggleSelected: isJiggleSelected,
                                            isJiggleFrozen: isJiggleFrozen,
                                            lineThicknessType: lineThicknessType)
@@ -359,7 +359,7 @@ public extension Jiggle {
                                                     rotation: rotation,
                                                     isJiggleSelected: isJiggleSelected,
                                                     isJiggleFrozen: isJiggleFrozen,
-                                                    isDarkMode: isDarkMode,
+                                                    isDarkModeEnabled: isDarkModeEnabled,
                                                     lineThicknessType: lineThicknessType)
             
             if checkHashSolidLineBufferStandard != currentHashSolidLineBufferStandard {
@@ -367,7 +367,7 @@ public extension Jiggle {
                                                 creatorMode: creatorMode,
                                                 editMode: editMode,
                                                 isGuidesMode: isGuidesMode,
-                                                isDarkMode: isDarkMode,
+                                                isDarkModeEnabled: isDarkModeEnabled,
                                                 isJiggleSelected: isJiggleSelected,
                                                 isJiggleFrozen: isJiggleFrozen,
                                                 lineThicknessType: lineThicknessType,
@@ -386,7 +386,7 @@ public extension Jiggle {
                                                    rotation: rotation,
                                                    isJiggleSelected: isJiggleSelected,
                                                    isJiggleFrozen: isJiggleFrozen,
-                                                   isDarkMode: isDarkMode,
+                                                   isDarkModeEnabled: isDarkModeEnabled,
                                                    lineThicknessType: lineThicknessType)
             
             if checkHashSolidLineBufferPrecise != currentHashSolidLineBufferPrecise {
@@ -394,7 +394,7 @@ public extension Jiggle {
                                                creatorMode: creatorMode,
                                                editMode: editMode,
                                                isGuidesMode: isGuidesMode,
-                                               isDarkMode: isDarkMode,
+                                               isDarkModeEnabled: isDarkModeEnabled,
                                                isJiggleSelected: isJiggleSelected,
                                                isJiggleFrozen: isJiggleFrozen,
                                                lineThicknessType: lineThicknessType)
@@ -409,13 +409,13 @@ public extension Jiggle {
             checkHashTrianglesStandard.change(polyHash: currentHashPoly,
                                               isSelected: isJiggleSelected,
                                               isFrozen: isJiggleFrozen,
-                                              isDarkMode: isDarkMode,
+                                              isDarkModeEnabled: isDarkModeEnabled,
                                               centerX: center.x,
                                               centerY: center.y,
                                               scale: scale,
                                               rotation: rotation)
             if checkHashTrianglesStandard != currentHashTrianglesStandard {
-                refreshTriangleBufferEditStandard(isDarkMode: isDarkMode,
+                refreshTriangleBufferEditStandard(isDarkModeEnabled: isDarkModeEnabled,
                                                   isJiggleSelected: isJiggleSelected,
                                                   isJiggleFrozen: isJiggleFrozen,
                                                   opacityPercent: opacityPercent)
@@ -426,13 +426,13 @@ public extension Jiggle {
             checkHashTrianglesWeights.change(polyHash: currentHashPoly,
                                              isSelected: isJiggleSelected,
                                              isFrozen: isJiggleFrozen,
-                                             isDarkMode: isDarkMode,
+                                             isDarkModeEnabled: isDarkModeEnabled,
                                              centerX: center.x,
                                              centerY: center.y,
                                              scale: scale,
                                              rotation: rotation)
             if checkHashTrianglesWeights != currentHashTrianglesWeights {
-                refreshTriangleBufferEditWeights(isDarkMode: isDarkMode,
+                refreshTriangleBufferEditWeights(isDarkModeEnabled: isDarkModeEnabled,
                                                  isJiggleSelected: isJiggleSelected,
                                                  isJiggleFrozen: isJiggleFrozen,
                                                  opacityPercent: opacityPercent)
@@ -444,19 +444,19 @@ public extension Jiggle {
         case .none:
             break
         case .forced:
-            refreshTriangleBuffersSwivel(isDarkMode: isDarkMode)
+            refreshTriangleBuffersSwivel(isDarkModeEnabled: isDarkModeEnabled)
         case .ifNeeded:
             var checkHashTrianglesSwivel = TriangleBufferHash()
             checkHashTrianglesSwivel.change(polyHash: currentHashPoly,
                                             isSelected: true,
                                             isFrozen: isJiggleFrozen,
-                                            isDarkMode: isDarkMode,
+                                            isDarkModeEnabled: isDarkModeEnabled,
                                             centerX: center.x,
                                             centerY: center.y,
                                             scale: scale,
                                             rotation: rotation)
             if checkHashTrianglesSwivel != currentHashTrianglesSwivel {
-                refreshTriangleBuffersSwivel(isDarkMode: isDarkMode)
+                refreshTriangleBuffersSwivel(isDarkModeEnabled: isDarkModeEnabled)
             }
         }
         
@@ -560,14 +560,14 @@ public extension Jiggle {
         currentHashTrianglesViewStereoscopic.invalidate()
     }
     
-    private func refreshMeshStandard(isDarkMode: Bool) {
+    private func refreshMeshStandard(isDarkModeEnabled: Bool) {
         jiggleMesh.refreshMeshStandard(triangleData: polyMesh.triangleData,
                                        jiggleCenter: center,
                                        jiggleScale: scale,
                                        jiggleRotation: rotation)
         
         currentHashMeshStandard.change(polyHash: currentHashPoly,
-                                       isDarkMode: isDarkMode)
+                                       isDarkModeEnabled: isDarkModeEnabled)
         
         currentHashTrianglesStandard.invalidate()
         currentHashTrianglesSwivel.invalidate()
@@ -577,7 +577,7 @@ public extension Jiggle {
     }
     
     private func refreshMeshWeights(landscape: Bool,
-                                    isDarkMode: Bool,
+                                    isDarkModeEnabled: Bool,
                                     isIpad: Bool) {
         
         readAndSortValidGuides()
@@ -605,11 +605,11 @@ public extension Jiggle {
                                       guideOutlineHashes: guideOutlineHashes,
                                       guideCenterX: guideCenter.x,
                                       guideCenterY: guideCenter.y,
-                                      isDarkMode: isDarkMode)
+                                      isDarkModeEnabled: isDarkModeEnabled)
         
         // The "standard" mesh can use the exact same stuff.
         currentHashMeshStandard.change(polyHash: currentHashPoly,
-                                       isDarkMode: isDarkMode)
+                                       isDarkModeEnabled: isDarkModeEnabled)
         
         
         currentHashTrianglesStandard.invalidate()
@@ -644,15 +644,15 @@ public extension Jiggle {
                                          creatorMode: CreatorMode,
                                          editMode: EditMode,
                                          isGuidesMode: Bool,
-                                         isDarkMode: Bool,
+                                         isDarkModeEnabled: Bool,
                                          isJiggleSelected: Bool,
                                          isJiggleFrozen: Bool,
                                          lineThicknessType: RenderLineThicknessType,
                                          universeScaleInverse: Float) {
         
         if isJiggleFrozen {
-            solidLineBufferRegularStroke.rgba = RTJ.strokeDis(isDarkMode: isDarkMode)
-            solidLineBufferRegularFill.rgba = RTJ.fillDis(isDarkMode: isDarkMode)
+            solidLineBufferRegularStroke.rgba = RTJ.strokeDis(isDarkModeEnabled: isDarkModeEnabled)
+            solidLineBufferRegularFill.rgba = RTJ.fillDis(isDarkModeEnabled: isDarkModeEnabled)
         } else {
             
             let creatorModeFormat: BorderCreatorModeFormat
@@ -689,28 +689,28 @@ public extension Jiggle {
                 }
             }
             
-            solidLineBufferRegularBloom.rgba = RTJ.bloom(isDarkMode: isDarkMode)
+            solidLineBufferRegularBloom.rgba = RTJ.bloom(isDarkModeEnabled: isDarkModeEnabled)
             switch creatorModeFormat {
             case .regular:
                 if isJiggleSelected {
-                    solidLineBufferRegularStroke.rgba = RTJ.strokeRegSel(isDarkMode: isDarkMode)
+                    solidLineBufferRegularStroke.rgba = RTJ.strokeRegSel(isDarkModeEnabled: isDarkModeEnabled)
                     switch editMode {
                     case .jiggles:
-                        solidLineBufferRegularFill.rgba = RTJ.fillGrb(isDarkMode: isDarkMode)
+                        solidLineBufferRegularFill.rgba = RTJ.fillGrb(isDarkModeEnabled: isDarkModeEnabled)
                     case .points:
-                        solidLineBufferRegularFill.rgba = RTJ.fillRegSelUnm(isDarkMode: isDarkMode)
+                        solidLineBufferRegularFill.rgba = RTJ.fillRegSelUnm(isDarkModeEnabled: isDarkModeEnabled)
                     }
                 } else {
-                    solidLineBufferRegularStroke.rgba = RTJ.strokeRegUns(isDarkMode: isDarkMode)
-                    solidLineBufferRegularFill.rgba = RTJ.fillRegUnsUnm(isDarkMode: isDarkMode)
+                    solidLineBufferRegularStroke.rgba = RTJ.strokeRegUns(isDarkModeEnabled: isDarkModeEnabled)
+                    solidLineBufferRegularFill.rgba = RTJ.fillRegUnsUnm(isDarkModeEnabled: isDarkModeEnabled)
                 }
             case .alternative:
                 if isJiggleSelected {
-                    solidLineBufferRegularStroke.rgba = RTJ.strokeAltSel(isDarkMode: isDarkMode)
-                    solidLineBufferRegularFill.rgba = RTJ.fillAltSelUnm(isDarkMode: isDarkMode)
+                    solidLineBufferRegularStroke.rgba = RTJ.strokeAltSel(isDarkModeEnabled: isDarkModeEnabled)
+                    solidLineBufferRegularFill.rgba = RTJ.fillAltSelUnm(isDarkModeEnabled: isDarkModeEnabled)
                 } else {
-                    solidLineBufferRegularStroke.rgba = RTJ.strokeAltUns(isDarkMode: isDarkMode)
-                    solidLineBufferRegularFill.rgba = RTJ.fillAltUnsUnm(isDarkMode: isDarkMode)
+                    solidLineBufferRegularStroke.rgba = RTJ.strokeAltUns(isDarkModeEnabled: isDarkModeEnabled)
+                    solidLineBufferRegularFill.rgba = RTJ.fillAltUnsUnm(isDarkModeEnabled: isDarkModeEnabled)
                 }
             }
         }
@@ -751,7 +751,7 @@ public extension Jiggle {
                                                   rotation: rotation,
                                                   isJiggleSelected: isJiggleSelected,
                                                   isJiggleFrozen: isJiggleFrozen,
-                                                  isDarkMode: isDarkMode,
+                                                  isDarkModeEnabled: isDarkModeEnabled,
                                                   lineThicknessType: lineThicknessType)
         
     }
@@ -760,7 +760,7 @@ public extension Jiggle {
                                         creatorMode: CreatorMode,
                                         editMode: EditMode,
                                         isGuidesMode: Bool,
-                                        isDarkMode: Bool,
+                                        isDarkModeEnabled: Bool,
                                         isJiggleSelected: Bool,
                                         isJiggleFrozen: Bool,
                                         lineThicknessType: RenderLineThicknessType) {
@@ -801,7 +801,7 @@ public extension Jiggle {
                                                  rotation: rotation,
                                                  isJiggleSelected: isJiggleSelected,
                                                  isJiggleFrozen: isJiggleFrozen,
-                                                 isDarkMode: isDarkMode,
+                                                 isDarkModeEnabled: isDarkModeEnabled,
                                                  lineThicknessType: lineThicknessType)
     }
     

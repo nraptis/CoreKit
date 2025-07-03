@@ -11,50 +11,50 @@ import Foundation
 
 public extension Jiggle {
     
-    func refreshTriangleBufferEditStandard(isDarkMode: Bool,
+    func refreshTriangleBufferEditStandard(isDarkModeEnabled: Bool,
                                            isJiggleSelected: Bool,
                                            isJiggleFrozen: Bool,
                                            opacityPercent: Float) {
         jiggleMesh.refreshTriangleBufferEditStandard(isSelected: isJiggleSelected,
                                                      isFrozen: isJiggleFrozen,
-                                                     isDarkMode: isDarkMode,
+                                                     isDarkModeEnabled: isDarkModeEnabled,
                                                      opacityPercent: opacityPercent)
         currentHashTrianglesStandard.change(polyHash: currentHashPoly,
                                             isSelected: isJiggleSelected,
                                             isFrozen: isJiggleFrozen,
-                                            isDarkMode: isDarkMode,
+                                            isDarkModeEnabled: isDarkModeEnabled,
                                             centerX: center.x,
                                             centerY: center.y,
                                             scale: scale,
                                             rotation: rotation)
     }
     
-    func refreshTriangleBufferEditWeights(isDarkMode: Bool,
+    func refreshTriangleBufferEditWeights(isDarkModeEnabled: Bool,
                                           isJiggleSelected: Bool,
                                           isJiggleFrozen: Bool,
                                           opacityPercent: Float) {
         jiggleMesh.refreshTriangleBufferEditWeights(isSelected: isJiggleSelected,
                                                     isFrozen: isJiggleFrozen,
-                                                    isDarkMode: isDarkMode,
+                                                    isDarkModeEnabled: isDarkModeEnabled,
                                                     sortedGuideCount: sortedGuideCount,
                                                     opacityPercent: opacityPercent)
         currentHashTrianglesWeights.change(polyHash: currentHashPoly,
                                            isSelected: isJiggleSelected,
                                            isFrozen: isJiggleFrozen,
-                                           isDarkMode: isDarkMode,
+                                           isDarkModeEnabled: isDarkModeEnabled,
                                            centerX: center.x,
                                            centerY: center.y,
                                            scale: scale,
                                            rotation: rotation)
     }
     
-    func refreshTriangleBuffersSwivel(isDarkMode: Bool) {
-        jiggleMesh.refreshTriangleBuffersSwivel(isDarkMode: isDarkMode,
+    func refreshTriangleBuffersSwivel(isDarkModeEnabled: Bool) {
+        jiggleMesh.refreshTriangleBuffersSwivel(isDarkModeEnabled: isDarkModeEnabled,
                                                 sortedGuideCount: sortedGuideCount)
         currentHashTrianglesSwivel.change(polyHash: currentHashPoly,
                                           isSelected: true,
                                           isFrozen: false,
-                                          isDarkMode: isDarkMode,
+                                          isDarkModeEnabled: isDarkModeEnabled,
                                           centerX: center.x,
                                           centerY: center.y,
                                           scale: scale,
@@ -66,7 +66,7 @@ public extension Jiggle {
         currentHashTrianglesViewStandard.change(polyHash: currentHashPoly,
                                                 isSelected: true,
                                                 isFrozen: false,
-                                                isDarkMode: false,
+                                                isDarkModeEnabled: false,
                                                 centerX: center.x,
                                                 centerY: center.y,
                                                 scale: scale,
@@ -81,7 +81,7 @@ public extension Jiggle {
         currentHashTrianglesViewStereoscopic.change(polyHash: currentHashPoly,
                                                     isSelected: true,
                                                     isFrozen: false,
-                                                    isDarkMode: false,
+                                                    isDarkModeEnabled: false,
                                                     centerX: center.x,
                                                     centerY: center.y,
                                                     scale: scale,

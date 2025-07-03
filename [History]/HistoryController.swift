@@ -11,7 +11,8 @@ public class HistoryController {
     
     public static let invalidInterfaceElement = UInt16(7777)
     
-    private var historyStack = [HistoryState]()
+    private var historyStack = [HistoryState?]()
+    private var historyCount = 0
     private var historyIndex: Int = 0
     private var isMostRecentActionUndo = false
     private var isMostRecentActionRedo = false
@@ -93,6 +94,7 @@ public class HistoryController {
         public let selectedJiggleAttribute: LoopAttribute
         public let mirrorEnabled: Bool
         public let mirrorElementType: MirrorElementType
+        public let isTanMode: Bool
     }
     
     public struct SnapShotLoopAllData {
@@ -102,6 +104,7 @@ public class HistoryController {
         public let otherJiggleAttributes: [LoopAttribute]
         public let mirrorEnabled: Bool
         public let mirrorElementType: MirrorElementType
+        public let isTanMode: Bool
     }
     
     @frozen public enum SnapShotLoopMode {
@@ -119,23 +122,33 @@ public class HistoryController {
         
     }
     
-    private var __tempHistoryStack = [HistoryState]()
     @MainActor func addHistoryState(_ historyState: HistoryState) -> Void {
-        __tempHistoryStack.removeAll(keepingCapacity: true)
+        if historyIndex <= historyCount {
+            while historyStack.count <= historyCount {
+                historyStack.append(nil)
+            }
+        }
+        
         var index = historyIndex
         if isMostRecentActionUndo == false {
             index += 1
         }
         if index > 0 {
-            if index > historyStack.count { index = historyStack.count }
-            for i in 0..<(index) {
-                __tempHistoryStack.append(historyStack[i])
-            }
+            if index > historyCount { index = historyCount }
+            var seek = index
+            while seek < historyCount { historyStack[seek] = nil; seek += 1 }
+            historyCount = index
+        } else {
+            // Remove all elements...
+            var seek = 0
+            while seek < historyCount { historyStack[seek] = nil; seek += 1 }
+            historyCount = 0
         }
-        __tempHistoryStack.append(historyState)
-        historyIndex = __tempHistoryStack.count
-        historyStack.removeAll(keepingCapacity: true)
-        historyStack.append(contentsOf: __tempHistoryStack)
+        
+        historyStack[historyCount] = historyState
+        historyCount += 1
+        historyIndex = historyCount
+        
         isMostRecentActionUndo = false
         isMostRecentActionRedo = false
         if let delegate = delegate {
@@ -146,9 +159,9 @@ public class HistoryController {
     @MainActor public func canUndo() -> Bool {
         if historyStack.count > 0 {
             if isMostRecentActionRedo {
-                return (historyIndex >= 0 && historyIndex < historyStack.count)
+                return (historyIndex >= 0 && historyIndex < historyCount)
             } else {
-                return (historyIndex > 0 && historyIndex <= historyStack.count)
+                return (historyIndex > 0 && historyIndex <= historyCount)
             }
         }
         return false
@@ -157,39 +170,43 @@ public class HistoryController {
     @MainActor public func canRedo() -> Bool {
         if historyStack.count > 0 {
             if isMostRecentActionUndo {
-                return (historyIndex >= 0 && historyIndex < historyStack.count)
+                return (historyIndex >= 0 && historyIndex < historyCount)
             } else {
-                return (historyIndex >= 0 && historyIndex < (historyStack.count - 1))
+                return (historyIndex >= 0 && historyIndex < (historyCount - 1))
             }
         }
         return false
     }
     
     @MainActor public func undo() {
-        let index = isMostRecentActionRedo ? historyIndex : (historyIndex - 1)
-        let historyState = historyStack[index]
-        if let delegate = delegate {
-            delegate.enterHistoryUndo(historyState)
+        if canUndo() {
+            let index = isMostRecentActionRedo ? historyIndex : (historyIndex - 1)
+            if let historyState = historyStack[index] {
+                if let delegate = delegate {
+                    delegate.enterHistoryUndo(historyState)
+                }
+            }
+            
+            historyIndex = index
+            isMostRecentActionUndo = true
+            isMostRecentActionRedo = false
         }
-        
-        historyIndex = index
-        isMostRecentActionUndo = true
-        isMostRecentActionRedo = false
     }
     
     @MainActor public func redo() {
-        let index = isMostRecentActionUndo ? historyIndex : (historyIndex + 1)
-        let historyState = historyStack[index]
-        
-        if let delegate = delegate {
-            delegate.enterHistoryRedo(historyState)
+        if canRedo() {
+            let index = isMostRecentActionUndo ? historyIndex : (historyIndex + 1)
+            if let historyState = historyStack[index] {
+                if let delegate = delegate {
+                    delegate.enterHistoryRedo(historyState)
+                }
+            }
+            
+            historyIndex = index
+            isMostRecentActionUndo = false
+            isMostRecentActionRedo = true
         }
-        
-        historyIndex = index
-        isMostRecentActionUndo = false
-        isMostRecentActionRedo = true
     }
-    
     
     // Jiggle, A
     @MainActor public func historyRecordCreateJiggle(data: Data?,
@@ -202,6 +219,17 @@ public class HistoryController {
     }
     
     // Jiggle, B
+    @MainActor public func historyRecordCreateMultipleJiggles(jiggleIndex: Int?,
+                                                              datas: [Data],
+                                                              interfaceConfiguration: any InterfaceConfigurationConforming) {
+        guard let jiggleIndex = jiggleIndex else { return }
+        let historyStateCreateMultipleJiggles = HistoryStateCreateMultipleJiggles(jiggleIndex: jiggleIndex,
+                                                                                  datas: datas,
+                                                                                  interfaceConfiguration: interfaceConfiguration)
+        addHistoryState(historyStateCreateMultipleJiggles)
+    }
+    
+    // Jiggle, C
     var _transformJiggleData = TransformJiggleData()
     @MainActor public func transformJiggleCapture(startCenter: Math.Point,
                                                   startScale: Float,
@@ -210,6 +238,8 @@ public class HistoryController {
         _transformJiggleData.startScale = startScale
         _transformJiggleData.startRotation = startRotation
     }
+    
+    // Jiggle, D
     @MainActor public func transformJiggleNotify(jiggleIndex: Int?,
                                                  endCenter: Math.Point,
                                                  endScale: Float,
@@ -227,8 +257,7 @@ public class HistoryController {
         addHistoryState(historyStateTransformJiggle)
     }
     
-    
-    // Jiggle, C
+    // Jiggle, E
     @MainActor public func historyRecordRotateOrFlipJiggle(jiggleIndex: Int,
                                                            startData: Data,
                                                            endData: Data,
@@ -240,7 +269,7 @@ public class HistoryController {
         addHistoryState(historyStateRotateOrFlipJiggle)
     }
     
-    // Jiggle, D
+    // Jiggle, F
     var _moveJiggleCenterData = MoveJiggleCenterData()
     @MainActor public func moveJiggleCenterCapture(jiggleIndex: Int?,
                                                    startCenter: Math.Point) {
@@ -248,10 +277,12 @@ public class HistoryController {
         _moveJiggleCenterData.jiggleIndex = jiggleIndex
         _moveJiggleCenterData.startCenter = startCenter
     }
+    
     @MainActor public func moveJiggleCenterTrack(endCenter: Math.Point) {
         _moveJiggleCenterData.didChange = true
         _moveJiggleCenterData.endCenter = endCenter
     }
+    
     @MainActor public func moveJiggleCenterNotifyIfChanged(interfaceConfiguration: any InterfaceConfigurationConforming) {
         guard let jiggleIndex = _moveJiggleCenterData.jiggleIndex else { return }
         if _moveJiggleCenterData.didChange {
@@ -263,7 +294,7 @@ public class HistoryController {
         }
     }
     
-    // Jiggle, E
+    // Jiggle, G
     var _moveWeightCenterData = MoveWeightCenterData()
     @MainActor public func moveWeightCenterCapture(jiggleIndex: Int?,
                                                    startCenter: Math.Point) {
@@ -271,10 +302,12 @@ public class HistoryController {
         _moveWeightCenterData.jiggleIndex = jiggleIndex
         _moveWeightCenterData.startCenter = startCenter
     }
+    
     @MainActor public func moveWeightCenterTrack(endCenter: Math.Point) {
         _moveWeightCenterData.didChange = true
         _moveWeightCenterData.endCenter = endCenter
     }
+    
     @MainActor public func moveWeightCenterNotifyIfChanged(interfaceConfiguration: any InterfaceConfigurationConforming) {
         guard let jiggleIndex = _moveWeightCenterData.jiggleIndex else { return }
         if _moveWeightCenterData.didChange {
@@ -287,9 +320,7 @@ public class HistoryController {
         }
     }
     
-    
-    
-    // Jiggle, F
+    // Jiggle, H
     @MainActor public func historyRecordDeleteJiggle(jiggleIndex: Int?,
                                                      data: Data?,
                                                      interfaceConfiguration: any InterfaceConfigurationConforming) {
@@ -314,6 +345,22 @@ public class HistoryController {
     }
     
     // Guide, B
+    @MainActor public func historyRecordCreateMultipleGuides(jiggleIndex: Int?,
+                                                             guideIndex: Int?,
+                                                             
+                                                             datas: [Data],
+                                                             interfaceConfiguration: any InterfaceConfigurationConforming) {
+        guard let jiggleIndex = jiggleIndex else { return }
+        guard let guideIndex = guideIndex else { return }
+        
+        let historyStateCreateGuide = HistoryStateCreateMultipleGuides(jiggleIndex: jiggleIndex,
+                                                                       guideIndex: guideIndex,
+                                                                       datas: datas,
+                                                                       interfaceConfiguration: interfaceConfiguration)
+        addHistoryState(historyStateCreateGuide)
+    }
+    
+    // Guide, C
     var _transformGuideData = TransformGuideData()
     @MainActor public func transformGuideCapture(startCenter: Math.Point,
                                                  startScale: Float,
@@ -323,6 +370,7 @@ public class HistoryController {
         _transformGuideData.startRotation = startRotation
     }
     
+    // Guide, D
     @MainActor public func transformGuideNotify(jiggleIndex: Int?,
                                                 guideIndex: Int?,
                                                 endCenter: Math.Point,
@@ -344,7 +392,7 @@ public class HistoryController {
     }
     
     
-    // Guide, C
+    // Guide, E
     @MainActor public func historyRecordRotateOrFlipGuide(jiggleIndex: Int,
                                                           guideIndex: Int,
                                                           startData: Data,
@@ -360,7 +408,7 @@ public class HistoryController {
     
     
     
-    // Guide, D
+    // Guide, F
     @MainActor public func historyRecordReplaceAllGuides(jiggleIndex: Int?,
                                                          weightCurveIndex: Int?,
                                                          startWeightCenter: Math.Point,
@@ -370,17 +418,17 @@ public class HistoryController {
                                                          interfaceConfiguration: any InterfaceConfigurationConforming) {
         guard let jiggleIndex = jiggleIndex else { return }
         guard let weightCurveIndex = weightCurveIndex else { return }
-        let historyStateGenerateTopography = HistoryStateGenerateTopography(jiggleIndex: jiggleIndex,
+        let historyStateReplaceAllGuides = HistoryStateReplaceAllGuides(jiggleIndex: jiggleIndex,
                                                                             weightCurveIndex: weightCurveIndex,
                                                                             startDatas: startDatas,
                                                                             endDatas: endDatas,
                                                                             startWeightCenter: startWeightCenter,
                                                                             endWeightCenter: endWeightCenter,
                                                                             interfaceConfiguration: interfaceConfiguration)
-        addHistoryState(historyStateGenerateTopography)
+        addHistoryState(historyStateReplaceAllGuides)
     }
     
-    // Guide, E
+    // Guide, G
     @MainActor public func historyRecordDeleteGuide(jiggleIndex: Int?,
                                                     guideIndex: Int?,
                                                     data: Data?,
@@ -394,7 +442,6 @@ public class HistoryController {
                                                               interfaceConfiguration: interfaceConfiguration)
         addHistoryState(historyStateDeleteGuide)
     }
-    
     
     // Jiggle-Point, A
     @MainActor public func historyRecordCreateJigglePoint(jiggleIndex: Int?,
@@ -498,15 +545,14 @@ public class HistoryController {
         return result
     }
     
-    
     // Jiggle-Point, E
-    @MainActor public func historyRecordUpdateJigglePointDataOne(jiggleIndex: Int?,
-                                                                 controlPointIndex: Int?,
-                                                                 startData: ControlPointData,
-                                                                 endData: ControlPointData,
-                                                                 multiModeSelectionType: MultiModeSelectionType,
-                                                                 tanType: TanType,
-                                                                 interfaceConfiguration: any InterfaceConfigurationConforming) {
+    @MainActor public func historyRecordUpdateJigglePointOne(jiggleIndex: Int?,
+                                                             controlPointIndex: Int?,
+                                                             startData: ControlPointData,
+                                                             endData: ControlPointData,
+                                                             multiModeSelectionType: MultiModeSelectionType,
+                                                             tanType: TanType,
+                                                             interfaceConfiguration: any InterfaceConfigurationConforming) {
         guard let jiggleIndex = jiggleIndex else { return }
         guard let controlPointIndex = controlPointIndex else { return }
         let historyStateUpdateJigglePointOne = HistoryStateUpdateJigglePointOne(jiggleIndex: jiggleIndex,
@@ -520,13 +566,14 @@ public class HistoryController {
     }
     
     // Jiggle-Point, F
-    @MainActor public func historyRecordUpdateJigglePointDataAll(jiggleIndex: Int?,
-                                                                 controlPointIndex: Int?,
-                                                                 startDatas: [ControlPointData],
-                                                                 endDatas: [ControlPointData],
-                                                                 multiModeSelectionType: MultiModeSelectionType,
-                                                                 tanType: TanType,
-                                                                 interfaceConfiguration: any InterfaceConfigurationConforming) {
+    @MainActor public func historyRecordUpdateJigglePointAll(jiggleIndex: Int?,
+                                                             controlPointIndex: Int?,
+                                                             startDatas: [ControlPointData],
+                                                             endDatas: [ControlPointData],
+                                                             multiModeSelectionType: MultiModeSelectionType,
+                                                             tanType: TanType,
+                                                             interfaceConfiguration: any InterfaceConfigurationConforming) {
+        
         guard let jiggleIndex = jiggleIndex else { return }
         guard let controlPointIndex = controlPointIndex else { return }
         
@@ -542,12 +589,12 @@ public class HistoryController {
     
     
     // Jiggle-Point, G
-    @MainActor public func historyRecordReplaceJigglePointDataAll(jiggleIndex: Int?,
-                                                                  startDatas: [ControlPointData],
-                                                                  startSelectedIndex: Int,
-                                                                  endDatas: [ControlPointData],
-                                                                  endSelectedIndex: Int,
-                                                                  interfaceConfiguration: any InterfaceConfigurationConforming) {
+    @MainActor public func historyRecordReplaceJigglePointAll(jiggleIndex: Int?,
+                                                              startDatas: [ControlPointData],
+                                                              startSelectedIndex: Int,
+                                                              endDatas: [ControlPointData],
+                                                              endSelectedIndex: Int,
+                                                              interfaceConfiguration: any InterfaceConfigurationConforming) {
         guard let jiggleIndex = jiggleIndex else { return }
         let historyStateUpdateGuidePointOne = HistoryStateReplaceJigglePointAll(jiggleIndex: jiggleIndex,
                                                                                 startDatas: startDatas,
@@ -699,16 +746,15 @@ public class HistoryController {
     }
     
     
-    
     // Guide-Point, E
-    @MainActor public func historyRecordUpdateGuidePointDataOne(jiggleIndex: Int?,
-                                                                guideIndex: Int?,
-                                                                guidePointIndex: Int?,
-                                                                startData: ControlPointData,
-                                                                endData: ControlPointData,
-                                                                multiModeSelectionType: MultiModeSelectionType,
-                                                                tanType: TanType,
-                                                                interfaceConfiguration: any InterfaceConfigurationConforming) {
+    @MainActor public func historyRecordUpdateGuidePointOne(jiggleIndex: Int?,
+                                               guideIndex: Int?,
+                                               guidePointIndex: Int?,
+                                               startData: ControlPointData,
+                                               endData: ControlPointData,
+                                               multiModeSelectionType: MultiModeSelectionType,
+                                               tanType: TanType,
+                                               interfaceConfiguration: any InterfaceConfigurationConforming) {
         guard let jiggleIndex = jiggleIndex else { return }
         guard let guideIndex = guideIndex else { return }
         guard let guidePointIndex = guidePointIndex else { return }
@@ -724,16 +770,15 @@ public class HistoryController {
         addHistoryState(historyStateUpdateGuidePointOne)
     }
     
-    
     // Guide-Point, F
-    @MainActor public func historyRecordUpdateGuidePointDataAll(jiggleIndex: Int?,
-                                                                guideIndex: Int?,
-                                                                guidePointIndex: Int?,
-                                                                startDatas: [ControlPointData],
-                                                                endDatas: [ControlPointData],
-                                                                multiModeSelectionType: MultiModeSelectionType,
-                                                                tanType: TanType,
-                                                                interfaceConfiguration: any InterfaceConfigurationConforming) {
+    @MainActor public func historyRecordUpdateGuidePointAll(jiggleIndex: Int?,
+                                                            guideIndex: Int?,
+                                                            guidePointIndex: Int?,
+                                                            startDatas: [ControlPointData],
+                                                            endDatas: [ControlPointData],
+                                                            multiModeSelectionType: MultiModeSelectionType,
+                                                            tanType: TanType,
+                                                            interfaceConfiguration: any InterfaceConfigurationConforming) {
         guard let jiggleIndex = jiggleIndex else { return }
         guard let guideIndex = guideIndex else { return }
         guard let guidePointIndex = guidePointIndex else { return }
@@ -751,13 +796,13 @@ public class HistoryController {
     
     
     // Guide-Point, G
-    @MainActor public func historyRecordReplaceGuidePointDataAll(jiggleIndex: Int?,
-                                                                 guideIndex: Int?,
-                                                                 startDatas: [ControlPointData],
-                                                                 startSelectedIndex: Int,
-                                                                 endDatas: [ControlPointData],
-                                                                 endSelectedIndex: Int,
-                                                                 interfaceConfiguration: any InterfaceConfigurationConforming) {
+    @MainActor public func historyRecordReplaceGuidePointAll(jiggleIndex: Int?,
+                                                             guideIndex: Int?,
+                                                             startDatas: [ControlPointData],
+                                                             startSelectedIndex: Int,
+                                                             endDatas: [ControlPointData],
+                                                             endSelectedIndex: Int,
+                                                             interfaceConfiguration: any InterfaceConfigurationConforming) {
         guard let jiggleIndex = jiggleIndex else { return }
         guard let guideIndex = guideIndex else { return }
         let historyStateUpdateGuidePointOne = HistoryStateReplaceGuidePointAll(jiggleIndex: jiggleIndex,
@@ -789,7 +834,7 @@ public class HistoryController {
         addHistoryState(historyStateDeleteGuidePoint)
     }
     
-    @MainActor public func historyRecordGraphPosition(jiggleIndex: Int,
+    @MainActor public func historyRecordMoveWeightGraphPosition(jiggleIndex: Int,
                                                       weightCurveIndex: Int,
                                                       startData: GraphAttributeDataHeight,
                                                       endData: GraphAttributeDataHeight,
@@ -807,7 +852,7 @@ public class HistoryController {
         addHistoryState(historyStateMoveWeightGraphPosition)
     }
     
-    @MainActor public func historyRecordGraphTangent(jiggleIndex: Int,
+    @MainActor public func historyRecordMoveWeightGraphTangent(jiggleIndex: Int,
                                                      weightCurveIndex: Int,
                                                      startData: GraphAttributeDataTanHandles,
                                                      endData: GraphAttributeDataTanHandles,
@@ -834,11 +879,10 @@ public class HistoryController {
         addHistoryState(historyStateMoveWeightGraphTangent)
     }
     
-    @MainActor public func historyRecordGraphReset(jiggleIndex: Int,
+    @MainActor public func historyRecordResetWeightGraph(jiggleIndex: Int,
                                                    startResetType: WeightCurveResetType,
                                                    endResetType: WeightCurveResetType,
                                                    startData: SnapShotGraphDataEntireGraph,
-                                                   endData: SnapShotGraphDataEntireGraph,
                                                    interfaceConfiguration: any InterfaceConfigurationConforming) {
         
         let storageNodeStart = WeightGraphStorageNode(startHeightManual: startData.weightCurvePointStart.isManualHeightEnabled,
@@ -872,6 +916,67 @@ public class HistoryController {
         
     }
     
+    @MainActor public func historyRecordReplaceWeightGraph(jiggleIndex: Int,
+                                                     startResetType: WeightCurveResetType,
+                                                     endResetType: WeightCurveResetType,
+                                                     startData: SnapShotGraphDataEntireGraph,
+                                                     endData: SnapShotGraphDataEntireGraph,
+                                                     interfaceConfiguration: any InterfaceConfigurationConforming) {
+        
+        let startStorageNodeStart = WeightGraphStorageNode(startHeightManual: startData.weightCurvePointStart.isManualHeightEnabled,
+                                                           startHeightFactor: startData.weightCurvePointStart.normalizedHeightFactor,
+                                                           startTangentManual: startData.weightCurvePointStart.isManualTanHandleEnabled,
+                                                           startDirection: startData.weightCurvePointStart.normalizedTanDirection,
+                                                           startMagnitudeIn: startData.weightCurvePointStart.normalizedTanMagnitudeIn,
+                                                           startMagnitudeOut: startData.weightCurvePointStart.normalizedTanMagnitudeOut)
+        let startStorageNodeMiddle = WeightGraphStorageNode(startHeightManual: startData.weightCurvePointMiddle.isManualHeightEnabled,
+                                                            startHeightFactor: startData.weightCurvePointMiddle.normalizedHeightFactor,
+                                                            startTangentManual: startData.weightCurvePointMiddle.isManualTanHandleEnabled,
+                                                            startDirection: startData.weightCurvePointMiddle.normalizedTanDirection,
+                                                            startMagnitudeIn: startData.weightCurvePointMiddle.normalizedTanMagnitudeIn,
+                                                            startMagnitudeOut: startData.weightCurvePointMiddle.normalizedTanMagnitudeOut)
+        let startStorageNodeEnd = WeightGraphStorageNode(startHeightManual: startData.weightCurvePointEnd.isManualHeightEnabled,
+                                                         startHeightFactor: startData.weightCurvePointEnd.normalizedHeightFactor,
+                                                         startTangentManual: startData.weightCurvePointEnd.isManualTanHandleEnabled,
+                                                         startDirection: startData.weightCurvePointEnd.normalizedTanDirection,
+                                                         startMagnitudeIn: startData.weightCurvePointEnd.normalizedTanMagnitudeIn,
+                                                         startMagnitudeOut: startData.weightCurvePointEnd.normalizedTanMagnitudeOut)
+        
+        
+        let endStorageNodeStart = WeightGraphStorageNode(startHeightManual: endData.weightCurvePointStart.isManualHeightEnabled,
+                                                         startHeightFactor: endData.weightCurvePointStart.normalizedHeightFactor,
+                                                         startTangentManual: endData.weightCurvePointStart.isManualTanHandleEnabled,
+                                                         startDirection: endData.weightCurvePointStart.normalizedTanDirection,
+                                                         startMagnitudeIn: endData.weightCurvePointStart.normalizedTanMagnitudeIn,
+                                                         startMagnitudeOut: endData.weightCurvePointStart.normalizedTanMagnitudeOut)
+        let endStorageNodeMiddle = WeightGraphStorageNode(startHeightManual: endData.weightCurvePointMiddle.isManualHeightEnabled,
+                                                          startHeightFactor: endData.weightCurvePointMiddle.normalizedHeightFactor,
+                                                          startTangentManual: endData.weightCurvePointMiddle.isManualTanHandleEnabled,
+                                                          startDirection: endData.weightCurvePointMiddle.normalizedTanDirection,
+                                                          startMagnitudeIn: endData.weightCurvePointMiddle.normalizedTanMagnitudeIn,
+                                                          startMagnitudeOut: endData.weightCurvePointMiddle.normalizedTanMagnitudeOut)
+        let endStorageNodeEnd = WeightGraphStorageNode(startHeightManual: endData.weightCurvePointEnd.isManualHeightEnabled,
+                                                       startHeightFactor: endData.weightCurvePointEnd.normalizedHeightFactor,
+                                                       startTangentManual: endData.weightCurvePointEnd.isManualTanHandleEnabled,
+                                                       startDirection: endData.weightCurvePointEnd.normalizedTanDirection,
+                                                       startMagnitudeIn: endData.weightCurvePointEnd.normalizedTanMagnitudeIn,
+                                                       startMagnitudeOut: endData.weightCurvePointEnd.normalizedTanMagnitudeOut)
+        
+        let historyStateReplaceWeightGraph = HistoryStateReplaceWeightGraph(jiggleIndex: jiggleIndex,
+                                                                            startStorageNodeStart: startStorageNodeStart,
+                                                                            startStorageNodeMiddle: startStorageNodeMiddle,
+                                                                            startStorageNodeEnd: startStorageNodeEnd,
+                                                                            startResetType: startResetType,
+                                                                            endStorageNodeStart: endStorageNodeStart,
+                                                                            endStorageNodeMiddle: endStorageNodeMiddle,
+                                                                            endStorageNodeEnd: endStorageNodeEnd,
+                                                                            endResetType: endResetType,
+                                                                            interfaceConfiguration: interfaceConfiguration)
+        addHistoryState(historyStateReplaceWeightGraph)
+        
+        
+    }
+    
     
     // Grab-Animation-A
     @MainActor public func historyRecordGrabAttributeOne(jiggleIndex: Int,
@@ -901,11 +1006,13 @@ public class HistoryController {
     @MainActor public func historyRecordContinuousAttributeOne(jiggleIndex: Int,
                                                                startAttribute: ContinuousAttribute,
                                                                endAttribute: ContinuousAttribute,
-                                                               interfaceConfiguration: any InterfaceConfigurationConforming) {
+                                                               interfaceConfiguration: any InterfaceConfigurationConforming,
+                                                               pageType: HistoryWorldConfiguration.FivePageType) {
         let historyStateContinuousAttributeOne = HistoryStateContinuousAttributeOne(jiggleIndex: jiggleIndex,
                                                                                     startAttribute: startAttribute,
                                                                                     endAttribute: endAttribute,
-                                                                                    interfaceConfiguration: interfaceConfiguration)
+                                                                                    interfaceConfiguration: interfaceConfiguration,
+                                                                                    pageType: pageType)
         addHistoryState(historyStateContinuousAttributeOne)
     }
     
@@ -913,11 +1020,13 @@ public class HistoryController {
     @MainActor public func historyRecordContinuousAttributeAll(jiggleIndex: Int,
                                                                startAttributes: [ContinuousAttribute],
                                                                endAttributes: [ContinuousAttribute],
-                                                               interfaceConfiguration: any InterfaceConfigurationConforming) {
+                                                               interfaceConfiguration: any InterfaceConfigurationConforming,
+                                                               pageType: HistoryWorldConfiguration.FivePageType) {
         let historyStateContinuousAttributeAll = HistoryStateContinuousAttributeAll(jiggleIndex: jiggleIndex,
                                                                                     startAttributes: startAttributes,
                                                                                     endAttributes: endAttributes,
-                                                                                    interfaceConfiguration: interfaceConfiguration)
+                                                                                    interfaceConfiguration: interfaceConfiguration,
+                                                                                    pageType: pageType)
         addHistoryState(historyStateContinuousAttributeAll)
     }
     
@@ -927,12 +1036,14 @@ public class HistoryController {
                                                          selectedTimeLineSwatch: Swatch,
                                                          startAttribute: LoopAttribute,
                                                          endAttribute: LoopAttribute,
-                                                         interfaceConfiguration: any InterfaceConfigurationConforming) {
+                                                         interfaceConfiguration: any InterfaceConfigurationConforming,
+                                                         pageType: HistoryWorldConfiguration.ThreePageType) {
         let historyStateLoopAttributeOne = HistoryStateLoopAttributeOne(jiggleIndex: jiggleIndex,
                                                                         startAttribute: startAttribute,
                                                                         endAttribute: endAttribute,
                                                                         selectedTimeLineSwatch: selectedTimeLineSwatch,
-                                                                        interfaceConfiguration: interfaceConfiguration)
+                                                                        interfaceConfiguration: interfaceConfiguration,
+                                                                        pageType: pageType)
         addHistoryState(historyStateLoopAttributeOne)
     }
     
@@ -941,12 +1052,14 @@ public class HistoryController {
                                                          selectedTimeLineSwatch: Swatch,
                                                          startAttributes: [LoopAttribute],
                                                          endAttributes: [LoopAttribute],
-                                                         interfaceConfiguration: any InterfaceConfigurationConforming) {
+                                                         interfaceConfiguration: any InterfaceConfigurationConforming,
+                                                         pageType: HistoryWorldConfiguration.ThreePageType) {
         let historyStateLoopAttributeAll = HistoryStateLoopAttributeAll(jiggleIndex: jiggleIndex,
                                                                         startAttributes: startAttributes,
                                                                         endAttributes: endAttributes,
                                                                         selectedTimeLineSwatch: selectedTimeLineSwatch,
-                                                                        interfaceConfiguration: interfaceConfiguration)
+                                                                        interfaceConfiguration: interfaceConfiguration,
+                                                                        pageType: pageType)
         addHistoryState(historyStateLoopAttributeAll)
     }
     
@@ -961,6 +1074,17 @@ public class HistoryController {
             }
         }
         return nil
+    }
+    
+    public func dispose() {
+        historyStack = []
+        historyCount = 0
+        historyIndex = 0
+        
+        snapShotGraphReset()
+        snapShotGrabReset()
+        snapShotContinuousReset()
+        snapShotLoopReset()
     }
     
 }

@@ -140,5 +140,10 @@ public class Sprite {
         endX = (x + width)
         endY = (y + height)
     }
+    
+    public func dispose() {
+        self.texture = nil
+    }
+    
 }
 
